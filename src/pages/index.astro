@@ -1,49 +1,220 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const vlogs = (await getCollection('vlog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+).slice(0, 1);
+
+const writings = (await getCollection('writing')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+).slice(0, 1);
+
+const galleries = (await getCollection('gallery')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+).slice(0, 1);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title="康予纳安">
+
+  <!-- 导航栏 -->
+  <nav class="nav">
+    <div class="nav-logo">康予纳安</div>
+    <div class="nav-links">
+      <a href="/vlog">视频日记</a>
+      <a href="/writing">文章</a>
+      <a href="/gallery">画集</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <!-- Hero 区 -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-badges">
+        <span class="badge badge-blue">创作者</span>
+        <span class="badge badge-blue">画师</span>
+        <span class="badge badge-red">乐手</span>
+      </div>
+      <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
+      <p class="hero-intro">
+        欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，
+        可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦
+      </p>
+      <div class="hero-btns">
+        <a href="/vlog" class="btn-primary">到处看看 →</a>
+        <a href="/about" class="btn-secondary">关于我</a>
+        <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-box">自设插图 / 氛围感配图</div>
+      <div class="band-box">乐队合照</div>
+    </div>
+  </section>
+
+  <!-- 最新内容 -->
+  <section class="content-section">
+    <div class="section-hd">
+      <span class="section-label">最新内容</span>
+      <a href="/all" class="section-more">查看全部 →</a>
+    </div>
+    <div class="cards-grid">
+    {vlogs.map(post => (
+      <a href={`/vlog/${post.slug}`} class="card">
+        <div class="thumb thumb-blue">视频封面</div>
+        <span class="ctype ctype-blue">视频日记</span>
+        <div class="card-title">{post.data.title}</div>
+        <div class="card-date">{post.data.date}</div>
+      </a>
+    ))}
+    {writings.map(post => (
+      <a href={`/writing/${post.slug}`} class="card">
+        <div class="thumb thumb-gray">文章配图</div>
+        <span class="ctype ctype-gray">文章</span>
+        <div class="card-title">{post.data.title}</div>
+        <div class="card-date">{post.data.date}</div>
+      </a>
+    ))}
+    {galleries.map(post => (
+      <a href={`/gallery/${post.slug}`} class="card">
+        <div class="thumb thumb-red">
+          {post.data.image && <img src={post.data.image} alt={post.data.title} style="width:100%;height:100%;object-fit:cover;border-radius:7px"/>}
+        </div>
+        <span class="ctype ctype-red">画集</span>
+        <div class="card-title">{post.data.title}</div>
+        <div class="card-date">{post.data.date}</div>
+      </a>
+    ))}
+    </div>
+  </section>
+
+  <!-- CamEllya 专区入口 -->
+  <section class="content-section">
+    <div class="section-hd">
+      <span class="section-label">CamEllya 专区</span>
+      <a href="/camellya" class="section-more">进入专区 →</a>
+    </div>
+    <div class="camellya-block">
+      <div class="cam-header">
+        <div>
+          <div class="cam-title">CamEllya</div>
+          <div class="cam-sub">世界观 · 角色 · 漫画</div>
+        </div>
+        <span class="cam-badge">副主页</span>
+      </div>
+      <div class="cam-grid">
+        <a href="/camellya/characters" class="cam-cell">
+          <div class="cam-cname">角色</div>
+          <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
+        </a>
+        <a href="/camellya/world" class="cam-cell">
+          <div class="cam-cname">世界观</div>
+          <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
+        </a>
+        <a href="/camellya/comics" class="cam-cell">
+          <div class="cam-cname">漫画</div>
+          <div class="cam-cdesc">故事连载、短篇与番外更新</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 标签 + 关于 -->
+  <div class="tags-strip">
+    <div class="tags">
+      <span class="atag">画画</span>
+      <span class="atag">写字</span>
+      <span class="atag">玩音乐</span>
+      <span class="atag">键盘手</span>
+      <span class="atag atag-red">CamEllya</span>
+    </div>
+    <a href="/about" class="section-more">了解更多关于我 →</a>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+
+</BaseLayout>
+
+<style>
+.nav {
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  border-bottom: 0.5px solid var(--color-border);
+}
+.nav-logo { font-size: 15px; font-weight: 500; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--color-muted); }
+.nav-links a:hover { color: var(--color-blue); }
+.nav-accent { color: var(--color-red) !important; font-weight: 500; }
+
+.hero {
+  background: var(--color-surface);
+  padding: 48px 32px 40px;
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  border-bottom: 0.5px solid var(--color-border);
+}
+.hero-text { flex: 1; }
+.hero-badges { display: flex; gap: 6px; margin-bottom: 14px; }
+.badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.badge-blue { background: var(--color-blue-light); color: #1A7FAD; }
+.badge-red { background: var(--color-red-light); color: var(--color-red); }
+.hero-name { font-size: 30px; font-weight: 500; line-height: 1.3; margin-bottom: 12px; }
+.hero-name span { color: var(--color-blue); }
+.hero-intro { font-size: 14px; color: var(--color-muted); line-height: 1.85; margin-bottom: 22px; max-width: 420px; }
+.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-primary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--color-blue); color: #fff; }
+.btn-secondary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: #fff; color: #555; border: 0.5px solid var(--color-border); }
+.btn-red { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--color-red-light); color: var(--color-red); border: 0.5px solid var(--color-red-border); }
+.hero-visual { width: 168px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.avatar-box { width: 130px; height: 130px; border-radius: 14px; background: var(--color-blue-light); border: 0.5px solid var(--color-blue-border); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #1A7FAD; text-align: center; line-height: 1.7; }
+.band-box { width: 130px; height: 56px; border-radius: 10px; background: var(--color-bg); border: 0.5px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-hint); }
+
+.content-section { padding: 24px 32px; border-bottom: 0.5px solid var(--color-border); }
+.section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-label { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .05em; }
+.section-more { font-size: 12px; color: var(--color-blue); }
+.cards-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.card { background: var(--color-surface); border-radius: 10px; border: 0.5px solid var(--color-border); padding: 14px; }
+.card:hover { border-color: var(--color-blue); }
+.thumb { width: 100%; height: 60px; border-radius: 7px; margin-bottom: 9px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; }
+.thumb-blue { background: var(--color-blue-light); }
+.thumb-gray { background: var(--color-bg); }
+.thumb-red { background: var(--color-red-light); }
+.ctype { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 5px; }
+.ctype-blue { background: var(--color-blue-light); color: #1A7FAD; }
+.ctype-gray { background: var(--color-bg); color: #666; }
+.ctype-red { background: var(--color-red-light); color: var(--color-red); }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text); margin-bottom: 3px; line-height: 1.4; }
+.card-date { font-size: 11px; color: var(--color-hint); }
+
+.camellya-block { background: var(--color-surface); border-radius: 12px; border: 0.5px solid var(--color-border); overflow: hidden; }
+.cam-header { background: var(--color-blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--color-blue-border); display: flex; align-items: center; justify-content: space-between; }
+.cam-title { font-size: 16px; font-weight: 500; color: #1A7FAD; }
+.cam-sub { font-size: 12px; color: var(--color-blue); margin-top: 2px; }
+.cam-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: #fff; color: #1A7FAD; border: 0.5px solid var(--color-blue-border); }
+.cam-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cam-cell { padding: 16px 18px; border-right: 0.5px solid var(--color-border); color: inherit; }
+.cam-cell:last-child { border-right: none; }
+.cam-cell:hover { background: #F8FBFE; }
+.cam-cname { font-size: 13px; font-weight: 500; color: var(--color-text); margin-bottom: 4px; }
+.cam-cdesc { font-size: 12px; color: var(--color-muted); line-height: 1.55; }
+
+.tags-strip { padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.atag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--color-surface); border: 0.5px solid var(--color-border); color: var(--color-muted); }
+.atag-red { background: var(--color-red-light); border-color: var(--color-red-border); color: var(--color-red); }
+
+.footer { background: var(--color-surface); padding: 14px 32px; border-top: 0.5px solid var(--color-border); display: flex; justify-content: space-between; font-size: 12px; color: var(--color-hint); }
+.footer-dot { color: var(--color-blue); }
+</style>
