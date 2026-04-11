@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('gallery'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+<BaseLayout title="画集 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/vlog">视频日记</a>
+      <a href="/writing">文章</a>
+      <a href="/gallery" class="nav-active">画集</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <h1 class="page-title">画集</h1>
+    <div class="masonry">
+      {posts.map(post => (
+        <a href={`/gallery/${post.id}`} class="masonry-item">
+          <img src={post.data.image} alt={post.data.title} loading="lazy" />
+          <div class="overlay">
+            <div class="overlay-title">{post.data.title}</div>
+            <div class="overlay-date">{post.data.date}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6;
+  --surface: #ffffff;
+  --blue: #4AACDB;
+  --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0;
+  --red: #C94040;
+  --red-light: #FDECEC;
+  --red-border: #f0bfbf;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --hint: #aaaaaa;
+  --border: #e0e4ea;
+}
+
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-active { color: var(--blue) !important; font-weight: 500; }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
+
+.page-main { max-width: 1200px; margin: 0 auto; padding: 40px 32px; }
+.page-title { font-size: 24px; font-weight: 500; color: var(--text); margin-bottom: 32px; }
+
+.masonry {
+  columns: 4;
+  column-gap: 14px;
+}
+
+.masonry-item {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.masonry-item:hover img {
+  transform: scale(1.03);
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  padding: 24px 14px 12px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.masonry-item:hover .overlay {
+  opacity: 1;
+}
+
+.overlay-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.overlay-date {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+}
+
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
+.footer-dot { color: var(--blue); }
+</style>
