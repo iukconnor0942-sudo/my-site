@@ -2,22 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const vlogs = (await getCollection('vlog')).sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-).slice(0, 1);
+const vlogs = (await getCollection('vlog'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 1);
 
-const writings = (await getCollection('writing')).sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-).slice(0, 1);
+const writings = (await getCollection('writing'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 1);
 
-const galleries = (await getCollection('gallery')).sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-).slice(0, 1);
+const galleries = (await getCollection('gallery'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 1);
 ---
 
 <BaseLayout title="康予纳安">
-
-  <!-- 导航栏 -->
   <nav class="nav">
     <div class="nav-logo">康予纳安</div>
     <div class="nav-links">
@@ -29,68 +27,62 @@ const galleries = (await getCollection('gallery')).sort(
     </div>
   </nav>
 
-  <!-- Hero 区 -->
   <section class="hero">
-    <div class="hero-text">
+    <div class="hero-side">
+      
+    </div>
+    <div class="hero-center">
       <div class="hero-badges">
         <span class="badge badge-blue">创作者</span>
         <span class="badge badge-blue">画师</span>
         <span class="badge badge-red">乐手</span>
       </div>
       <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
-      <p class="hero-intro">
-        欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，
-        可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦
-      </p>
+      <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
       <div class="hero-btns">
         <a href="/vlog" class="btn-primary">到处看看 →</a>
         <a href="/about" class="btn-secondary">关于我</a>
         <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="avatar-box">自设插图 / 氛围感配图</div>
-      <div class="band-box">乐队合照</div>
+    <div class="hero-side">
+     
     </div>
   </section>
 
-  <!-- 最新内容 -->
   <section class="content-section">
     <div class="section-hd">
       <span class="section-label">最新内容</span>
-      <a href="/all" class="section-more">查看全部 →</a>
+      <a href="#" class="section-more">查看全部 →</a>
     </div>
     <div class="cards-grid">
-    {vlogs.map(post => (
-      <a href={`/vlog/${post.slug}`} class="card">
-        <div class="thumb thumb-blue">视频封面</div>
-        <span class="ctype ctype-blue">视频日记</span>
-        <div class="card-title">{post.data.title}</div>
-        <div class="card-date">{post.data.date}</div>
-      </a>
-    ))}
-    {writings.map(post => (
-      <a href={`/writing/${post.slug}`} class="card">
-        <div class="thumb thumb-gray">文章配图</div>
-        <span class="ctype ctype-gray">文章</span>
-        <div class="card-title">{post.data.title}</div>
-        <div class="card-date">{post.data.date}</div>
-      </a>
-    ))}
-    {galleries.map(post => (
-      <a href={`/gallery/${post.slug}`} class="card">
-        <div class="thumb thumb-red">
-          {post.data.image && <img src={post.data.image} alt={post.data.title} style="width:100%;height:100%;object-fit:cover;border-radius:7px"/>}
-        </div>
-        <span class="ctype ctype-red">画集</span>
-        <div class="card-title">{post.data.title}</div>
-        <div class="card-date">{post.data.date}</div>
-      </a>
-    ))}
+      {vlogs.map(post => (
+        <a href={`/vlog/${post.id}`} class="card">
+          <div class="thumb thumb-blue">视频封面</div>
+          <span class="ctype ctype-blue">视频日记</span>
+          <div class="card-title">{post.data.title}</div>
+          <div class="card-date">{post.data.date}</div>
+        </a>
+      ))}
+      {writings.map(post => (
+        <a href={`/writing/${post.id}`} class="card">
+          <div class="thumb thumb-gray">文章配图</div>
+          <span class="ctype ctype-gray">文章</span>
+          <div class="card-title">{post.data.title}</div>
+          <div class="card-date">{post.data.date}</div>
+        </a>
+      ))}
+      {galleries.map(post => (
+        <a href={`/gallery/${post.id}`} class="card">
+          <div class="thumb thumb-red">画作预览</div>
+          <span class="ctype ctype-red">画集</span>
+          <div class="card-title">{post.data.title}</div>
+          <div class="card-date">{post.data.date}</div>
+        </a>
+      ))}
     </div>
   </section>
 
-  <!-- CamEllya 专区入口 -->
   <section class="content-section">
     <div class="section-hd">
       <span class="section-label">CamEllya 专区</span>
@@ -105,15 +97,15 @@ const galleries = (await getCollection('gallery')).sort(
         <span class="cam-badge">副主页</span>
       </div>
       <div class="cam-grid">
-        <a href="/camellya/characters" class="cam-cell">
+        <a href="/camellya#characters" class="cam-cell">
           <div class="cam-cname">角色</div>
           <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
         </a>
-        <a href="/camellya/world" class="cam-cell">
+        <a href="/camellya#world" class="cam-cell">
           <div class="cam-cname">世界观</div>
           <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
         </a>
-        <a href="/camellya/comics" class="cam-cell">
+        <a href="/camellya#comics" class="cam-cell">
           <div class="cam-cname">漫画</div>
           <div class="cam-cdesc">故事连载、短篇与番外更新</div>
         </a>
@@ -121,7 +113,6 @@ const galleries = (await getCollection('gallery')).sort(
     </div>
   </section>
 
-  <!-- 标签 + 关于 -->
   <div class="tags-strip">
     <div class="tags">
       <span class="atag">画画</span>
@@ -133,88 +124,105 @@ const galleries = (await getCollection('gallery')).sort(
     <a href="/about" class="section-more">了解更多关于我 →</a>
   </div>
 
-  <!-- 页脚 -->
   <footer class="footer">
     <span>© 2026 康予纳安</span>
     <span class="footer-dot">持续更新中 ✦</span>
   </footer>
-
 </BaseLayout>
 
 <style>
-.nav {
-  background: var(--color-surface);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 32px;
-  border-bottom: 0.5px solid var(--color-border);
+:root {
+  --bg: #F2F4F6;
+  --surface: #ffffff;
+  --blue: #4AACDB;
+  --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0;
+  --red: #C94040;
+  --red-light: #FDECEC;
+  --red-border: #f0bfbf;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --hint: #aaaaaa;
+  --border: #e0e4ea;
 }
-.nav-logo { font-size: 15px; font-weight: 500; }
+
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); }
 .nav-links { display: flex; gap: 22px; }
-.nav-links a { font-size: 13px; color: var(--color-muted); }
-.nav-links a:hover { color: var(--color-blue); }
-.nav-accent { color: var(--color-red) !important; font-weight: 500; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
 
 .hero {
-  background: var(--color-surface);
+  background-image: url('/images/hero-bg.png');
+  background-size: cover;
+  background-position: center 30%;
+  position: relative;
   padding: 48px 32px 40px;
   display: flex;
-  gap: 32px;
-  align-items: flex-start;
-  border-bottom: 0.5px solid var(--color-border);
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.5px solid var(--border);
 }
-.hero-text { flex: 1; }
-.hero-badges { display: flex; gap: 6px; margin-bottom: 14px; }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.72);
+  z-index: 0;
+}
+.hero-side { position: relative; z-index: 1; flex-shrink: 0; }
+.photo-box { width: 160px; height: 120px; border-radius: 12px; object-fit: cover; object-position: center 60%; display: block; }
+.band-box { width: 160px; height: 160px; border-radius: 12px; object-fit: cover; display: block; }
+.hero-center { position: relative; z-index: 1; flex: 1; text-align: center; max-width: 460px; }
+.hero-badges { display: flex; gap: 6px; margin-bottom: 14px; justify-content: center; }
 .badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
-.badge-blue { background: var(--color-blue-light); color: #1A7FAD; }
-.badge-red { background: var(--color-red-light); color: var(--color-red); }
-.hero-name { font-size: 30px; font-weight: 500; line-height: 1.3; margin-bottom: 12px; }
-.hero-name span { color: var(--color-blue); }
-.hero-intro { font-size: 14px; color: var(--color-muted); line-height: 1.85; margin-bottom: 22px; max-width: 420px; }
-.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-.btn-primary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--color-blue); color: #fff; }
-.btn-secondary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: #fff; color: #555; border: 0.5px solid var(--color-border); }
-.btn-red { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--color-red-light); color: var(--color-red); border: 0.5px solid var(--color-red-border); }
-.hero-visual { width: 168px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; align-items: center; }
-.avatar-box { width: 130px; height: 130px; border-radius: 14px; background: var(--color-blue-light); border: 0.5px solid var(--color-blue-border); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #1A7FAD; text-align: center; line-height: 1.7; }
-.band-box { width: 130px; height: 56px; border-radius: 10px; background: var(--color-bg); border: 0.5px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-hint); }
+.badge-blue { background: var(--blue-light); color: #1A7FAD; }
+.badge-red { background: var(--red-light); color: var(--red); }
+.hero-name { font-size: 30px; font-weight: 500; line-height: 1.3; margin-bottom: 12px; color: var(--text); }
+.hero-name span { color: var(--blue); }
+.hero-intro { font-size: 14px; color: var(--muted); line-height: 1.85; margin-bottom: 22px; }
+.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn-primary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--blue); color: #fff; text-decoration: none; }
+.btn-secondary { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: #fff; color: #555; border: 0.5px solid var(--border); text-decoration: none; }
+.btn-red { font-size: 13px; padding: 8px 20px; border-radius: 8px; background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); text-decoration: none; }
 
-.content-section { padding: 24px 32px; border-bottom: 0.5px solid var(--color-border); }
+.content-section { padding: 24px 32px; border-bottom: 0.5px solid var(--border); }
 .section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .section-label { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .05em; }
-.section-more { font-size: 12px; color: var(--color-blue); }
+.section-more { font-size: 12px; color: var(--blue); text-decoration: none; }
 .cards-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.card { background: var(--color-surface); border-radius: 10px; border: 0.5px solid var(--color-border); padding: 14px; }
-.card:hover { border-color: var(--color-blue); }
+.card { background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); padding: 14px; color: inherit; text-decoration: none; display: block; }
+.card:hover { border-color: var(--blue); }
 .thumb { width: 100%; height: 60px; border-radius: 7px; margin-bottom: 9px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; }
-.thumb-blue { background: var(--color-blue-light); }
-.thumb-gray { background: var(--color-bg); }
-.thumb-red { background: var(--color-red-light); }
+.thumb-blue { background: var(--blue-light); }
+.thumb-gray { background: var(--bg); }
+.thumb-red { background: var(--red-light); }
 .ctype { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 5px; }
-.ctype-blue { background: var(--color-blue-light); color: #1A7FAD; }
-.ctype-gray { background: var(--color-bg); color: #666; }
-.ctype-red { background: var(--color-red-light); color: var(--color-red); }
-.card-title { font-size: 13px; font-weight: 500; color: var(--color-text); margin-bottom: 3px; line-height: 1.4; }
-.card-date { font-size: 11px; color: var(--color-hint); }
+.ctype-blue { background: var(--blue-light); color: #1A7FAD; }
+.ctype-gray { background: var(--bg); color: #666; }
+.ctype-red { background: var(--red-light); color: var(--red); }
+.card-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--text); }
+.card-date { font-size: 11px; color: var(--hint); }
 
-.camellya-block { background: var(--color-surface); border-radius: 12px; border: 0.5px solid var(--color-border); overflow: hidden; }
-.cam-header { background: var(--color-blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--color-blue-border); display: flex; align-items: center; justify-content: space-between; }
+.camellya-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
+.cam-header { background: var(--blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--blue-border); display: flex; align-items: center; justify-content: space-between; }
 .cam-title { font-size: 16px; font-weight: 500; color: #1A7FAD; }
-.cam-sub { font-size: 12px; color: var(--color-blue); margin-top: 2px; }
-.cam-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: #fff; color: #1A7FAD; border: 0.5px solid var(--color-blue-border); }
+.cam-sub { font-size: 12px; color: var(--blue); margin-top: 2px; }
+.cam-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: #fff; color: #1A7FAD; border: 0.5px solid var(--blue-border); }
 .cam-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.cam-cell { padding: 16px 18px; border-right: 0.5px solid var(--color-border); color: inherit; }
+.cam-cell { padding: 16px 18px; border-right: 0.5px solid var(--border); color: inherit; text-decoration: none; display: block; }
 .cam-cell:last-child { border-right: none; }
 .cam-cell:hover { background: #F8FBFE; }
-.cam-cname { font-size: 13px; font-weight: 500; color: var(--color-text); margin-bottom: 4px; }
-.cam-cdesc { font-size: 12px; color: var(--color-muted); line-height: 1.55; }
+.cam-cname { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.cam-cdesc { font-size: 12px; color: var(--muted); line-height: 1.55; }
 
 .tags-strip { padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
 .tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.atag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--color-surface); border: 0.5px solid var(--color-border); color: var(--color-muted); }
-.atag-red { background: var(--color-red-light); border-color: var(--color-red-border); color: var(--color-red); }
+.atag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--surface); border: 0.5px solid var(--border); color: var(--muted); }
+.atag-red { background: var(--red-light); border-color: var(--red-border); color: var(--red); }
 
-.footer { background: var(--color-surface); padding: 14px 32px; border-top: 0.5px solid var(--color-border); display: flex; justify-content: space-between; font-size: 12px; color: var(--color-hint); }
-.footer-dot { color: var(--color-blue); }
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); }
+.footer-dot { color: var(--blue); }
 </style>
