@@ -1,0 +1,44 @@
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>验证 · 康予纳安</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; background: #F2F4F6; display: flex; align-items: center; justify-content: center; font-family: 'PingFang SC', sans-serif; }
+    .card { background: #fff; border-radius: 20px; border: 0.5px solid #e0e4ea; padding: 48px 40px; text-align: center; max-width: 400px; width: 90%; }
+    .title { font-size: 22px; font-weight: 500; color: #1a1a1a; margin-bottom: 8px; }
+    .title span { color: #4AACDB; }
+    .sub { font-size: 14px; color: #888; margin-bottom: 32px; line-height: 1.7; }
+    .turnstile-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+    .btn { display: inline-block; padding: 10px 32px; background: #4AACDB; color: #fff; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s; }
+    .btn.active { opacity: 1; pointer-events: auto; }
+    .footer-text { margin-top: 24px; font-size: 12px; color: #bbb; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">欢迎来到<span>康予纳安</span></div>
+    <div class="sub">请完成验证后进入网站 🌸</div>
+    <div class="turnstile-wrap">
+      <div class="cf-turnstile"
+        data-sitekey="0x4AAAAAAC8Ozsq6TZw4T0Og"
+        data-callback="onVerified"
+        data-theme="light">
+      </div>
+    </div>
+    <button class="btn" id="enter-btn" onclick="enterSite()">进入网站 →</button>
+    <div class="footer-text">© 2026 康予纳安</div>
+  </div>
+  <script>
+    function onVerified(token) {
+      document.getElementById('enter-btn').classList.add('active');
+    }
+    function enterSite() {
+      sessionStorage.setItem('verified', 'true');
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>
