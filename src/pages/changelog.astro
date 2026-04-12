@@ -21,20 +21,30 @@ const logs = (await getCollection('changelog'))
     <p class="page-sub">记录这个网站每一次成长的痕迹 ✦</p>
 
     <div class="log-list">
-      {logs.map(log => (
-        <div class="log-item">
-          <div class="log-date">{log.data.date}</div>
-          <div class="log-content">
-            <div class="log-title">{log.data.title}</div>
-            <div class="log-tags">
-              {log.data.tags?.map(tag => (
-                <span class="log-tag">{tag}</span>
-              ))}
+      {logs.map(async (log) => {
+        // 修复点 1: 需要调用 render() 来获取渲染后的组件
+        const { Content } = await log.render();
+        return (
+          <div class="log-item">
+            {/* 修复点 2: 确保日期对象能正确转为字符串显示 */}
+            <div class="log-date">
+              {new Date(log.data.date).toLocaleDateString('zh-CN')}
             </div>
-            <div class="log-body" set:html={log.body} />
+            <div class="log-content">
+              <div class="log-title">{log.data.title}</div>
+              <div class="log-tags">
+                {log.data.tags?.map(tag => (
+                  <span class="log-tag">{tag}</span>
+                ))}
+              </div>
+              <div class="log-body">
+                {/* 修复点 3: 使用渲染出的 <Content /> 替代 set:html */}
+                <Content />
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </main>
 
@@ -45,6 +55,7 @@ const logs = (await getCollection('changelog'))
 </BaseLayout>
 
 <style>
+/* 保持你原本的样式不变 */
 :root {
   --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
   --blue-border: #B8DCF0; --red: #C94040; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
