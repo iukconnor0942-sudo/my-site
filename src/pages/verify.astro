@@ -22,39 +22,22 @@
     <div class="title">欢迎来到<span>康予纳安</span></div>
     <div class="sub">请完成验证后进入网站 🌸</div>
     <div class="turnstile-wrap">
-      <div id="turnstile-container"></div>
+      <div class="cf-turnstile"
+        data-sitekey="0x4AAAAAAC8Ozsq6TZw4T0Og"
+        data-theme="light"
+        data-callback="onVerified">
+      </div>
     </div>
-    <button class="btn" id="enter-btn">进入网站 →</button>
+    <a id="enter-btn" class="btn" href="/">进入网站 →</a>
     <div class="footer-text">© 2026 康予纳安</div>
   </div>
   <script>
-    document.getElementById('enter-btn').addEventListener('click', function() {
-      try {
-        sessionStorage.setItem('verified', 'true');
-        localStorage.setItem('verified', 'true');
-      } catch(e) {}
-      window.location.replace('/');
-    });
-
     function onVerified(token) {
+      localStorage.setItem('verified', 'true');
+      sessionStorage.setItem('verified', 'true');
       var btn = document.getElementById('enter-btn');
       btn.classList.add('active');
     }
-
-    window.addEventListener('load', function() {
-      var tryRender = function() {
-        if (typeof turnstile !== 'undefined') {
-          turnstile.render('#turnstile-container', {
-            sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
-            theme: 'light',
-            callback: onVerified
-          });
-        } else {
-          setTimeout(tryRender, 500);
-        }
-      };
-      tryRender();
-    });
   </script>
 </body>
 </html>
