@@ -14,7 +14,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <section class="hero">
     <div class="hero-side">
-      <img src="/images/avatar.png" alt= />
+      <img src="/images/avatar.png" alt="康纳头像" class="photo-box" />
     </div>
     <div class="hero-center">
       <div class="hero-badges">
@@ -31,7 +31,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
     <div class="hero-side">
-      <img src="/images/band.png" alt= />
+      <img src="/images/band.png" alt="乐队图" class="band-box" />
     </div>
   </section>
 
@@ -119,8 +119,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 }
 .hero::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.72); z-index: 0; }
 .hero-side { position: relative; z-index: 1; flex-shrink: 0; }
-.photo-box { width: 160px; height: 120px; border-radius: 12px; object-fit: cover; object-position: center 40%; display: block; }
-.band-box { width: 160px; height: 160px; border-radius: 12px; object-fit: cover; display: block; }
+.photo-box { width: 160px; height: 120px; border-radius: 12px; object-fit: cover; object-position: center 40%; display: block; border: 0.5px solid var(--border); }
+.band-box { width: 160px; height: 160px; border-radius: 12px; object-fit: cover; display: block; border: 0.5px solid var(--border); }
 .hero-center { position: relative; z-index: 1; flex: 1; text-align: center; max-width: 460px; }
 .hero-badges { display: flex; gap: 6px; margin-bottom: 14px; justify-content: center; }
 .badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
