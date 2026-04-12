@@ -1,3 +1,4 @@
+cat > ~/my-site/src/layouts/BaseLayout.astro << 'ASTROEOF'
 ---
 import '../styles/global.css';
 const { title } = Astro.props;
@@ -12,12 +13,14 @@ const { title } = Astro.props;
   <body>
     <script>
       if (
+        window.location.pathname !== '/verify' &&
         !sessionStorage.getItem('verified') &&
-        window.location.pathname !== '/verify'
+        !localStorage.getItem('verified')
       ) {
-        window.location.href = '/verify';
+        window.location.replace('/verify');
       }
     </script>
     <slot />
   </body>
 </html>
+ASTROEOF

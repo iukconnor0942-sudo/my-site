@@ -24,43 +24,37 @@
     <div class="turnstile-wrap">
       <div id="turnstile-container"></div>
     </div>
-    <button class="btn" id="enter-btn" onclick="enterSite()">进入网站 →</button>
+    <button class="btn" id="enter-btn">进入网站 →</button>
     <div class="footer-text">© 2026 康予纳安</div>
   </div>
   <script>
-    function enterSite() {
-      sessionStorage.setItem('verified', 'true');
-      window.location.href = '/';
-    }
+    document.getElementById('enter-btn').addEventListener('click', function() {
+      try {
+        sessionStorage.setItem('verified', 'true');
+        localStorage.setItem('verified', 'true');
+      } catch(e) {}
+      window.location.replace('/');
+    });
 
     function onVerified(token) {
       var btn = document.getElementById('enter-btn');
       btn.classList.add('active');
     }
 
-    window.onload = function() {
-      if (typeof turnstile !== 'undefined') {
-        turnstile.render('#turnstile-container', {
-          sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
-          theme: 'light',
-          callback: function(token) {
-            onVerified(token);
-          }
-        });
-      } else {
-        setTimeout(function() {
-          if (typeof turnstile !== 'undefined') {
-            turnstile.render('#turnstile-container', {
-              sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
-              theme: 'light',
-              callback: function(token) {
-                onVerified(token);
-              }
-            });
-          }
-        }, 1000);
-      }
-    };
+    window.addEventListener('load', function() {
+      var tryRender = function() {
+        if (typeof turnstile !== 'undefined') {
+          turnstile.render('#turnstile-container', {
+            sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
+            theme: 'light',
+            callback: onVerified
+          });
+        } else {
+          setTimeout(tryRender, 500);
+        }
+      };
+      tryRender();
+    });
   </script>
 </body>
 </html>
