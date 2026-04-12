@@ -21,23 +21,30 @@
     <div class="title">欢迎来到<span>康予纳安</span></div>
     <div class="sub">请完成验证后进入网站 🌸</div>
     <div class="turnstile-wrap">
-      <div class="cf-turnstile"
-        data-sitekey="0x4AAAAAAC8Ozsq6TZw4T0Og"
-        data-theme="light"
-        data-callback="onVerified">
-      </div>
+      <div id="ts"></div>
     </div>
     <div class="hint">验证成功后将自动进入网站</div>
     <div class="footer-text">© 2026 康予纳安</div>
   </div>
   <script>
-    function onVerified(token) {
-      localStorage.setItem('verified', 'true');
-      sessionStorage.setItem('verified', 'true');
-      setTimeout(function() {
-        window.location.replace('/');
-      }, 600);
+    window.onVerified = function(token) {
+      try { localStorage.setItem('verified', 'true'); } catch(e) {}
+      try { sessionStorage.setItem('verified', 'true'); } catch(e) {}
+      window.location.href = 'https://connor-cam4.cc/';
+    };
+
+    function initTurnstile() {
+      if (typeof turnstile !== 'undefined') {
+        turnstile.render('#ts', {
+          sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
+          theme: 'light',
+          callback: window.onVerified
+        });
+      } else {
+        setTimeout(initTurnstile, 300);
+      }
     }
+    initTurnstile();
   </script>
 </body>
 </html>
