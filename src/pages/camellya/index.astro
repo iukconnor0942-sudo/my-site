@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="CamEllya · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-active">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <div class="cam-hero">
+    <img src="/images/logo.png" alt="CamEllya" class="cam-logo" />
+    <p class="cam-intro">CamEllya 是康纳构建的创作宇宙。<br/>四个少年，一支乐队，一个属于他们的世界。</p>
+    <div class="cam-meta">
+      <span class="meta-tag">世界观</span>
+      <span class="meta-tag">角色设定</span>
+      <span class="meta-tag">漫画连载</span>
+    </div>
+  </div>
+
+  <main class="cam-main">
+
+    <section class="cam-section" id="characters">
+      <div class="cam-section-title">角色介绍</div>
+      <div class="char-grid">
+
+        <a href="/camellya/luoxue" class="char-card">
+          <div class="char-cover" style="background:#EDF5F8">
+            <img src="/images/camellya/luoxue.png" alt="络雪" class="char-img" />
+          </div>
+          <div class="char-body">
+            <div class="char-name">络雪</div>
+            <div class="char-role" style="color:#7BBDD4">键盘手 · 布偶猫</div>
+            <div class="char-desc">温柔体贴，知识渊博，优雅文静的学霸。在她身边总有一种安心的感觉。</div>
+          </div>
+        </a>
+
+        <a href="/camellya/baibu" class="char-card">
+          <div class="char-cover" style="background:#F5F0E8">
+            <img src="/images/camellya/baibu.png" alt="百部" class="char-img" />
+          </div>
+          <div class="char-body">
+            <div class="char-name">百部</div>
+            <div class="char-role" style="color:#C4935A">主音吉他 · 小青龙</div>
+            <div class="char-desc">乐观开朗，阳光天真，像小孩子一样，总能治愈身边的人。</div>
+          </div>
+        </a>
+
+        <a href="/camellya/qingshu" class="char-card">
+          <div class="char-cover" style="background:#F2F0E8">
+            <img src="/images/camellya/qingshu.png" alt="晴舒" class="char-img" />
+          </div>
+          <div class="char-body">
+            <div class="char-name">晴舒</div>
+            <div class="char-role" style="color:#B8A86A">架子鼓 · 小金色边牧</div>
+            <div class="char-desc">说话直接，沉稳负责，冷淡外表下是深沉的温柔与安全感。</div>
+          </div>
+        </a>
+
+        <a href="/camellya/richu" class="char-card">
+          <div class="char-cover" style="background:#F8EEEE">
+            <img src="/images/camellya/richu.png" alt="日出" class="char-img" />
+          </div>
+          <div class="char-body">
+            <div class="char-name">日出</div>
+            <div class="char-role" style="color:#C47070">贝斯 · 主唱 · 三花猫</div>
+            <div class="char-desc">古灵精怪，调皮有趣，从悲观中生长出来的乐观者，热爱生活。</div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="cam-section" id="world">
+      <div class="cam-section-title">世界观</div>
+      <div class="world-block">
+        <div class="world-text">世界观设定正在整理中，敬请期待 ✦</div>
+      </div>
+    </section>
+
+    <section class="cam-section" id="comics">
+      <div class="cam-section-title">漫画</div>
+      <div class="comics-grid">
+        <div class="comic-card">
+          <div class="comic-cover">第一话 · 即将上线</div>
+          <div class="comic-title">第一话 · 相遇</div>
+          <div class="comic-date">敬请期待</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安 · CamEllya</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+}
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-active { color: var(--blue) !important; font-weight: 500; }
+
+.cam-hero { background: #FDFCF5; border-bottom: 0.5px solid var(--border); padding: 56px 32px 48px; text-align: center; }
+.cam-logo { height: 80px; object-fit: contain; margin-bottom: 20px; }
+.cam-intro { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
+.cam-meta { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.meta-tag { font-size: 12px; padding: 4px 14px; border-radius: 20px; background: #F5F0E0; color: #8A7A50; border: 0.5px solid #E8E0C8; }
+
+.cam-main { max-width: 1000px; margin: 0 auto; padding: 48px 32px; }
+.cam-section { margin-bottom: 52px; }
+.cam-section-title { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
+
+.char-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.char-card { background: var(--surface); border-radius: 14px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; transition: border-color 0.2s; }
+.char-card:hover { border-color: #C4A882; }
+.char-cover { width: 100%; aspect-ratio: 1/1; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.char-img { width: 100%; height: 100%; object-fit: cover; }
+.char-body { padding: 14px 14px 16px; }
+.char-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.char-role { font-size: 11px; margin-bottom: 8px; }
+.char-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+.world-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); padding: 40px; text-align: center; }
+.world-text { font-size: 14px; color: var(--hint); }
+
+.comics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.comic-card { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
+.comic-cover { width: 100%; aspect-ratio: 3/4; background: #F5F0E0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #8A7A50; }
+.comic-title { font-size: 13px; font-weight: 500; padding: 10px 12px 4px; color: var(--text); }
+.comic-date { font-size: 11px; color: var(--hint); padding: 0 12px 12px; }
+
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 0; }
+.footer-dot { color: var(--blue); }
+</style>

@@ -1,63 +1,115 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<BaseLayout title="关于我 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about" class="nav-active">关于我</a>
+    </div>
+  </nav>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+  <main class="page-main">
+    <div class="about-layout">
+      <div class="about-left">
+        <img src="/images/avatar.png" alt="康纳" class="about-avatar" />
+        <div class="about-name-card">
+          <div class="about-name">康予纳安</div>
+          <div class="about-aka">康纳 · Connor</div>
+        </div>
+        <div class="about-tags">
+          <span class="tag">兽控</span>
+          <span class="tag">电吉他</span>
+          <span class="tag">乐队</span>
+          <span class="tag">FPV</span>
+          <span class="tag">航拍</span>
+          <span class="tag">数码科技</span>
+          <span class="tag">创作</span>
+          <span class="tag">画画</span>
+          <span class="tag">音乐</span>
+          <span class="tag tag-blue">基督徒</span>
+        </div>
+      </div>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+      <div class="about-right">
+        <h1 class="page-title">关于我</h1>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+        <div class="about-section">
+          <div class="section-label">我是谁</div>
+          <p>我是康纳，一名在家教育的高中生，也是一名基督徒。我的世界很大——从兽设到电吉他，从 FPV 穿越机到数码科技，每一样都是我观察和感受这个世界的方式。</p>
+        </div>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+        <div class="about-section">
+          <div class="section-label">我喜欢什么</div>
+          <p>我喜欢一切美好的、有个性有设计感的东西。我着迷于那种「把复杂的东西做得简洁而有力」的设计哲学——无论是一帧画面、一段旋律、还是一个界面。</p>
+        </div>
+
+        <div class="about-section">
+          <div class="section-label">我的理想</div>
+          <p>把脑子里的知识和创意<span class="highlight">可视化、结构化</span>，通过电子渠道整合和实践——我觉得这是个人生命力的体现。</p>
+          <p style="margin-top:12px">我希望可以通过这个网站里的作品帮助到别人，同时也满足了自己记录成长的需求。这里的每一篇文章、每一幅画、每一段视频，都是我留给时间的印记。</p>
+        </div>
+
+        <div class="about-section">
+          <div class="section-label">关于 CamEllya</div>
+          <p>CamEllya 是我构建的一个创作宇宙，里面住着络雪、百部、晴舒、日出四个角色——他们组成了一支乐队，也承载着我对友情、创作和音乐的所有想象。</p>
+          <a href="/camellya" class="cam-link">进入 CamEllya 专区 →</a>
+        </div>
+
+        <div class="about-contact">
+          <div class="section-label">联系我</div>
+          <p style="color:var(--muted);font-size:14px">网站持续更新中，欢迎通过各个板块了解我的创作 🌸</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+}
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-active { color: var(--blue) !important; font-weight: 500; }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
+
+.page-main { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
+.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 32px; }
+
+.about-layout { display: flex; gap: 48px; align-items: flex-start; }
+
+.about-left { flex-shrink: 0; width: 220px; display: flex; flex-direction: column; align-items: center; gap: 16px; position: sticky; top: 32px; }
+.about-avatar { width: 220px; height: 220px; border-radius: 16px; object-fit: cover; border: 0.5px solid var(--border); }
+.about-name-card { text-align: center; }
+.about-name { font-size: 17px; font-weight: 500; color: var(--text); }
+.about-aka { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.about-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--bg); border: 0.5px solid var(--border); color: var(--muted); }
+.tag-blue { background: var(--blue-light); border-color: var(--blue-border); color: #1A7FAD; }
+
+.about-right { flex: 1; }
+.about-section { margin-bottom: 28px; }
+.section-label { font-size: 11px; font-weight: 500; color: #999; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+.about-section p { font-size: 15px; color: var(--muted); line-height: 1.9; }
+.highlight { color: var(--blue); font-weight: 500; }
+.cam-link { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--red); text-decoration: none; }
+.cam-link:hover { text-decoration: underline; }
+.about-contact { margin-top: 8px; }
+
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
+.footer-dot { color: var(--blue); }
+</style>

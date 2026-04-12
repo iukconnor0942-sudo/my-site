@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="络雪 · CamEllya">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-active">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+  <main class="page-main">
+    <a href="/camellya" class="back">← 返回 CamEllya</a>
+    <div class="char-layout">
+      <div class="char-left">
+        <img src="/images/camellya/luoxue.png" alt="络雪" class="char-avatar" />
+        <div class="char-name-card">
+          <div class="char-name">络雪</div>
+          <div class="char-role" style="color:#7BBDD4">键盘手 · 布偶猫</div>
+        </div>
+        <div class="char-tags">
+          <span class="tag">温柔</span>
+          <span class="tag">学霸</span>
+          <span class="tag">优雅</span>
+          <span class="tag">键盘</span>
+        </div>
+      </div>
+      <div class="char-right">
+        <h1 class="page-title">络雪</h1>
+        <div class="char-section">
+          <div class="section-label">基本设定</div>
+          <p>络雪是一只布偶猫，CamEllya 乐队的键盘手。她说话温柔体贴，知识渊博，是公认的学霸。在她身边，总能感受到一种安静而温暖的力量。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">性格特质</div>
+          <p>非常文静，优雅，给人一种亲切贴心的感觉。在该认真的时候会非常认真、严格、客观，像一本活着的百科全书。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">乐器</div>
+          <p>键盘。她的琴声细腻而富有层次，是乐队整体音色的底色与灵魂。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><span>© 2026 CamEllya</span><span class="footer-dot">络雪 ✦</span></footer>
+</BaseLayout>
+<style>
+:root { --bg:#F2F4F6;--surface:#fff;--blue:#4AACDB;--blue-light:#E8F5FC;--blue-border:#B8DCF0;--red:#C94040;--text:#1a1a1a;--muted:#666;--hint:#aaa;--border:#e0e4ea; }
+.nav{background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:0.5px solid var(--border)}
+.nav-logo{font-size:15px;font-weight:500;color:var(--text);text-decoration:none}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none}
+.nav-links a:hover{color:var(--blue)}
+.nav-active{color:var(--blue)!important;font-weight:500}
+.page-main{max-width:960px;margin:0 auto;padding:48px 32px}
+.back{font-size:13px;color:var(--blue);text-decoration:none;display:inline-block;margin-bottom:28px}
+.char-layout{display:flex;gap:48px;align-items:flex-start}
+.char-left{flex-shrink:0;width:220px;display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:32px}
+.char-avatar{width:220px;height:220px;border-radius:16px;object-fit:cover;border:0.5px solid var(--border)}
+.char-name-card{text-align:center}
+.char-name{font-size:18px;font-weight:500;color:var(--text)}
+.char-role{font-size:12px;margin-top:4px}
+.char-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tag{font-size:11px;padding:3px 10px;border-radius:20px;background:#EDF5F8;border:0.5px solid #B8DCF0;color:#7BBDD4}
+.char-right{flex:1}
+.page-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:28px}
+.char-section{margin-bottom:24px}
+.section-label{font-size:11px;font-weight:500;color:#999;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.char-section p{font-size:15px;color:var(--muted);line-height:1.9}
+.footer{background:var(--surface);padding:14px 32px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--hint);margin-top:40px}
+.footer-dot{color:#7BBDD4}
+</style>
