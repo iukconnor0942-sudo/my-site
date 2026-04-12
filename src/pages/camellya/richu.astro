@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="日出 · CamEllya">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-active">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+  <main class="page-main">
+    <a href="/camellya" class="back">← 返回 CamEllya</a>
+    <div class="char-layout">
+      <div class="char-left">
+        <img src="/images/camellya/richu.png" alt="日出" class="char-avatar" />
+        <div class="char-name-card">
+          <div class="char-name">日出</div>
+          <div class="char-role" style="color:#C47070">贝斯 · 主唱 · 三花猫</div>
+        </div>
+        <div class="char-tags">
+          <span class="tag">调皮</span>
+          <span class="tag">乐观</span>
+          <span class="tag">感性</span>
+          <span class="tag">主唱</span>
+        </div>
+      </div>
+      <div class="char-right">
+        <h1 class="page-title">日出</h1>
+        <div class="char-section">
+          <div class="section-label">基本设定</div>
+          <p>日出是一只三花猫，CamEllya 乐队的贝斯手和主唱。调皮、戏精、古灵精怪，总是能搞出各种事情，是乐队里最有生命力的存在。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">性格特质</div>
+          <p>她是那种从悲观主义中诞生的乐观者——因为经历过，所以更热爱生活。既有趣又严肃，有自己的原则，不拘一格，心思细腻，幽默而感性。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">乐器与演出</div>
+          <p>贝斯与主唱。她的声音有独特的质感，台上台下判若两人——台上认真投入，台下调皮捣蛋。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><span>© 2026 CamEllya</span><span class="footer-dot">日出 ✦</span></footer>
+</BaseLayout>
+<style>
+:root{--bg:#F2F4F6;--surface:#fff;--blue:#4AACDB;--text:#1a1a1a;--muted:#666;--hint:#aaa;--border:#e0e4ea}
+.nav{background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:0.5px solid var(--border)}
+.nav-logo{font-size:15px;font-weight:500;color:var(--text);text-decoration:none}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none}
+.nav-links a:hover{color:var(--blue)}
+.nav-active{color:var(--blue)!important;font-weight:500}
+.page-main{max-width:960px;margin:0 auto;padding:48px 32px}
+.back{font-size:13px;color:var(--blue);text-decoration:none;display:inline-block;margin-bottom:28px}
+.char-layout{display:flex;gap:48px;align-items:flex-start}
+.char-left{flex-shrink:0;width:220px;display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:32px}
+.char-avatar{width:220px;height:220px;border-radius:16px;object-fit:cover;border:0.5px solid var(--border)}
+.char-name-card{text-align:center}
+.char-name{font-size:18px;font-weight:500;color:var(--text)}
+.char-role{font-size:12px;margin-top:4px}
+.char-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tag{font-size:11px;padding:3px 10px;border-radius:20px;background:#F8EEEE;border:0.5px solid #E8C8C8;color:#C47070}
+.char-right{flex:1}
+.page-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:28px}
+.char-section{margin-bottom:24px}
+.section-label{font-size:11px;font-weight:500;color:#999;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.char-section p{font-size:15px;color:var(--muted);line-height:1.9}
+.footer{background:var(--surface);padding:14px 32px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--hint);margin-top:40px}
+.footer-dot{color:#C47070}
+</style>

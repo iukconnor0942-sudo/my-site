@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="晴舒 · CamEllya">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-active">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+  <main class="page-main">
+    <a href="/camellya" class="back">← 返回 CamEllya</a>
+    <div class="char-layout">
+      <div class="char-left">
+        <img src="/images/camellya/qingshu.png" alt="晴舒" class="char-avatar" />
+        <div class="char-name-card">
+          <div class="char-name">晴舒</div>
+          <div class="char-role" style="color:#B8A86A">架子鼓 · 小金色边牧</div>
+        </div>
+        <div class="char-tags">
+          <span class="tag">沉稳</span>
+          <span class="tag">负责</span>
+          <span class="tag">温柔</span>
+          <span class="tag">架子鼓</span>
+        </div>
+      </div>
+      <div class="char-right">
+        <h1 class="page-title">晴舒</h1>
+        <div class="char-section">
+          <div class="section-label">基本设定</div>
+          <p>晴舒是一只小金色边牧，CamEllya 乐队的鼓手，也是乐队的队长。说话直接，脸上总是没什么表情，但他是最认真负责的那一个。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">性格特质</div>
+          <p>傲而不骄，冷而不疏。平时对人冷淡，但对自己人极度关心。在他身边会莫名升起一股安全感——他是那种让人觉得「有他在，没问题」的人。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">乐器</div>
+          <p>架子鼓。他的节奏稳如磐石，是乐队的骨架与心跳。</p>
+        </div>
+        <div class="char-section">
+          <div class="section-label">关系</div>
+          <p>百部的兄弟，两人关系深厚，互补而默契。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><span>© 2026 CamEllya</span><span class="footer-dot">晴舒 ✦</span></footer>
+</BaseLayout>
+<style>
+:root{--bg:#F2F4F6;--surface:#fff;--blue:#4AACDB;--text:#1a1a1a;--muted:#666;--hint:#aaa;--border:#e0e4ea}
+.nav{background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:0.5px solid var(--border)}
+.nav-logo{font-size:15px;font-weight:500;color:var(--text);text-decoration:none}
+.nav-links{display:flex;gap:22px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none}
+.nav-links a:hover{color:var(--blue)}
+.nav-active{color:var(--blue)!important;font-weight:500}
+.page-main{max-width:960px;margin:0 auto;padding:48px 32px}
+.back{font-size:13px;color:var(--blue);text-decoration:none;display:inline-block;margin-bottom:28px}
+.char-layout{display:flex;gap:48px;align-items:flex-start}
+.char-left{flex-shrink:0;width:220px;display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:32px}
+.char-avatar{width:220px;height:220px;border-radius:16px;object-fit:cover;border:0.5px solid var(--border)}
+.char-name-card{text-align:center}
+.char-name{font-size:18px;font-weight:500;color:var(--text)}
+.char-role{font-size:12px;margin-top:4px}
+.char-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.tag{font-size:11px;padding:3px 10px;border-radius:20px;background:#F5F2E8;border:0.5px solid #E0D8B8;color:#B8A86A}
+.char-right{flex:1}
+.page-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:28px}
+.char-section{margin-bottom:24px}
+.section-label{font-size:11px;font-weight:500;color:#999;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.char-section p{font-size:15px;color:var(--muted);line-height:1.9}
+.footer{background:var(--surface);padding:14px 32px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--hint);margin-top:40px}
+.footer-dot{color:#B8A86A}
+</style>

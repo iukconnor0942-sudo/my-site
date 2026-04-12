@@ -1,27 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const vlogs = (await getCollection('vlog'))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 1);
-
-const writings = (await getCollection('writing'))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 1);
-
-const galleries = (await getCollection('gallery'))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 1);
 ---
 
 <BaseLayout title="康予纳安">
   <nav class="nav">
     <div class="nav-logo">康予纳安</div>
     <div class="nav-links">
-      <a href="/vlog">视频日记</a>
-      <a href="/writing">文章</a>
-      <a href="/gallery">画集</a>
+      <a href="/explore">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
       <a href="/about">关于我</a>
     </div>
@@ -29,7 +14,7 @@ const galleries = (await getCollection('gallery'))
 
   <section class="hero">
     <div class="hero-side">
-      
+      <img src="/images/avatar.png" alt="自设插图" class="photo-box" />
     </div>
     <div class="hero-center">
       <div class="hero-badges">
@@ -40,46 +25,13 @@ const galleries = (await getCollection('gallery'))
       <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
       <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
       <div class="hero-btns">
-        <a href="/vlog" class="btn-primary">到处看看 →</a>
+        <a href="/explore" class="btn-primary">到处看看 →</a>
         <a href="/about" class="btn-secondary">关于我</a>
         <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
       </div>
     </div>
     <div class="hero-side">
-     
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="section-hd">
-      <span class="section-label">最新内容</span>
-      <a href="#" class="section-more">查看全部 →</a>
-    </div>
-    <div class="cards-grid">
-      {vlogs.map(post => (
-        <a href={`/vlog/${post.id}`} class="card">
-          <div class="thumb thumb-blue">视频封面</div>
-          <span class="ctype ctype-blue">视频日记</span>
-          <div class="card-title">{post.data.title}</div>
-          <div class="card-date">{post.data.date}</div>
-        </a>
-      ))}
-      {writings.map(post => (
-        <a href={`/writing/${post.id}`} class="card">
-          <div class="thumb thumb-gray">文章配图</div>
-          <span class="ctype ctype-gray">文章</span>
-          <div class="card-title">{post.data.title}</div>
-          <div class="card-date">{post.data.date}</div>
-        </a>
-      ))}
-      {galleries.map(post => (
-        <a href={`/gallery/${post.id}`} class="card">
-          <div class="thumb thumb-red">画作预览</div>
-          <span class="ctype ctype-red">画集</span>
-          <div class="card-title">{post.data.title}</div>
-          <div class="card-date">{post.data.date}</div>
-        </a>
-      ))}
+      <img src="/images/band.png" alt="乐队合照" class="band-box" />
     </div>
   </section>
 
@@ -165,15 +117,9 @@ const galleries = (await getCollection('gallery'))
   justify-content: center;
   border-bottom: 0.5px solid var(--border);
 }
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.72);
-  z-index: 0;
-}
+.hero::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.72); z-index: 0; }
 .hero-side { position: relative; z-index: 1; flex-shrink: 0; }
-.photo-box { width: 160px; height: 120px; border-radius: 12px; object-fit: cover; object-position: center 60%; display: block; }
+.photo-box { width: 160px; height: 120px; border-radius: 12px; object-fit: cover; object-position: center 40%; display: block; }
 .band-box { width: 160px; height: 160px; border-radius: 12px; object-fit: cover; display: block; }
 .hero-center { position: relative; z-index: 1; flex: 1; text-align: center; max-width: 460px; }
 .hero-badges { display: flex; gap: 6px; margin-bottom: 14px; justify-content: center; }
@@ -192,19 +138,6 @@ const galleries = (await getCollection('gallery'))
 .section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .section-label { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .05em; }
 .section-more { font-size: 12px; color: var(--blue); text-decoration: none; }
-.cards-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.card { background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); padding: 14px; color: inherit; text-decoration: none; display: block; }
-.card:hover { border-color: var(--blue); }
-.thumb { width: 100%; height: 60px; border-radius: 7px; margin-bottom: 9px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; }
-.thumb-blue { background: var(--blue-light); }
-.thumb-gray { background: var(--bg); }
-.thumb-red { background: var(--red-light); }
-.ctype { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 5px; }
-.ctype-blue { background: var(--blue-light); color: #1A7FAD; }
-.ctype-gray { background: var(--bg); color: #666; }
-.ctype-red { background: var(--red-light); color: var(--red); }
-.card-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; color: var(--text); }
-.card-date { font-size: 11px; color: var(--hint); }
 
 .camellya-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
 .cam-header { background: var(--blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--blue-border); display: flex; align-items: center; justify-content: space-between; }

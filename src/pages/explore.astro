@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="到处看看 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore" class="nav-active">到处看看</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <h1 class="page-title">到处看看</h1>
+    <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
+
+    <div class="explore-grid">
+      <a href="/camellya" class="explore-card card-cam">
+        <div class="card-cover">
+          <img src="/images/logo.png" alt="CamEllya" class="cover-logo" />
+        </div>
+        <div class="card-info">
+          <div class="card-title">CamEllya</div>
+          <div class="card-desc">我的创作宇宙——四个角色、一支乐队、一个完整的世界观与漫画故事。</div>
+          <div class="card-link">进入专区 →</div>
+        </div>
+      </a>
+
+      <a href="/vlog" class="explore-card card-vlog">
+        <div class="card-cover cover-vlog">
+          <div class="cover-icon">🎬</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">视频日记</div>
+          <div class="card-desc">记录日常、排练、创作与生活片段，用镜头留住值得被记住的时刻。</div>
+          <div class="card-link">查看视频 →</div>
+        </div>
+      </a>
+
+      <a href="/gallery" class="explore-card card-gallery">
+        <div class="card-cover cover-gallery">
+          <div class="cover-icon">🎨</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">画集</div>
+          <div class="card-desc">兽设、插画与各种创作，这里是我用画笔构建的视觉世界。</div>
+          <div class="card-link">浏览画集 →</div>
+        </div>
+      </a>
+
+      <a href="/writing" class="explore-card card-writing">
+        <div class="card-cover cover-writing">
+          <div class="cover-icon">✍️</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">文章</div>
+          <div class="card-desc">随笔、思考与观察，把脑子里的想法整理成文字，分享给你。</div>
+          <div class="card-link">阅读文章 →</div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+}
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-active { color: var(--blue) !important; font-weight: 500; }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
+
+.page-main { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
+.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 36px; }
+
+.explore-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+
+.explore-card { background: var(--surface); border-radius: 16px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: border-color 0.2s; }
+.explore-card:hover { border-color: var(--blue); }
+
+.card-cover { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; }
+.card-cam { }
+.cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
+.card-cam .card-cover { background: #FAFAE8; }
+.cover-vlog { background: var(--blue-light); }
+.cover-gallery { background: var(--red-light); }
+.cover-writing { background: #F0EEF8; }
+.cover-icon { font-size: 48px; }
+
+.card-info { padding: 18px 20px 20px; }
+.card-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.card-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+.card-link { font-size: 12px; color: var(--blue); }
+
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
+.footer-dot { color: var(--blue); }
+</style>
