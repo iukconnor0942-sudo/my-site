@@ -1,6 +1,6 @@
 ---
-// 1. 导入 Vercel Analytics 组件
-import { Analytics } from '@vercel/analytics/astro';
+// 1. 修复导入方式：去掉大括号，改为默认导入
+import Analytics from '@vercel/analytics/astro';
 
 // 接收来自页面的 props
 const { title = "康予纳安" } = Astro.props;
@@ -13,8 +13,7 @@ const { title = "康予纳安" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
-    
-    </head>
+  </head>
   <body>
     <slot />
 
@@ -23,7 +22,6 @@ const { title = "康予纳安" } = Astro.props;
 </html>
 
 <style is:global>
-  /* 这里可以放置你的全局基础样式 */
   :root {
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
@@ -36,7 +34,7 @@ const { title = "康予纳安" } = Astro.props;
 
   body {
     font-family: var(--font-main);
-    background-color: #F2F4F6; /* 匹配你之前的背景色 */
+    background-color: #F2F4F6;
     color: #1a1a1a;
     -webkit-font-smoothing: antialiased;
   }
