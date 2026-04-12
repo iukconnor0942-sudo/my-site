@@ -22,23 +22,45 @@
     <div class="title">欢迎来到<span>康予纳安</span></div>
     <div class="sub">请完成验证后进入网站 🌸</div>
     <div class="turnstile-wrap">
-      <div class="cf-turnstile"
-        data-sitekey="0x4AAAAAAC8Ozsq6TZw4T0Og"
-        data-callback="onVerified"
-        data-theme="light">
-      </div>
+      <div id="turnstile-container"></div>
     </div>
     <button class="btn" id="enter-btn" onclick="enterSite()">进入网站 →</button>
     <div class="footer-text">© 2026 康予纳安</div>
   </div>
   <script>
-    function onVerified(token) {
-      document.getElementById('enter-btn').classList.add('active');
-    }
     function enterSite() {
       sessionStorage.setItem('verified', 'true');
       window.location.href = '/';
     }
+
+    function onVerified(token) {
+      var btn = document.getElementById('enter-btn');
+      btn.classList.add('active');
+    }
+
+    window.onload = function() {
+      if (typeof turnstile !== 'undefined') {
+        turnstile.render('#turnstile-container', {
+          sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
+          theme: 'light',
+          callback: function(token) {
+            onVerified(token);
+          }
+        });
+      } else {
+        setTimeout(function() {
+          if (typeof turnstile !== 'undefined') {
+            turnstile.render('#turnstile-container', {
+              sitekey: '0x4AAAAAAC8Ozsq6TZw4T0Og',
+              theme: 'light',
+              callback: function(token) {
+                onVerified(token);
+              }
+            });
+          }
+        }, 1000);
+      }
+    };
   </script>
 </body>
 </html>
