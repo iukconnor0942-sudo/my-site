@@ -150,3 +150,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .footer { background: var(--surface); padding: 16px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); }
 .footer-dot { color: var(--blue); }
 </style>
+@media (max-width: 768px) {
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 12px; }
+  .hero { flex-direction: column; padding: 32px 20px 28px; gap: 16px; }
+  .hero-side { display: none; }
+  .hero-center { max-width: 100%; }
+  .hero-name { font-size: 24px; }
+  .hero-intro { font-size: 13px; }
+  .hero-btns { gap: 8px; }
+  .btn-primary, .btn-secondary, .btn-red { font-size: 12px; padding: 8px 14px; }
+  .content-section { padding: 20px 16px; }
+  .cam-grid { grid-template-columns: 1fr; }
+  .cam-cell { border-right: none; border-bottom: 0.5px solid var(--border); }
+  .cam-cell:last-child { border-bottom: none; }
+  .tags-strip { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
+  .footer { padding: 14px 16px; }
+}

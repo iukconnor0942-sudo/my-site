@@ -71,3 +71,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 .footer{background:var(--surface);padding:14px 32px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:12px;color:var(--hint);margin-top:40px}
 .footer-dot{color:#C47070}
 </style>
+@media (max-width: 768px) {
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 12px; }
+  .page-main { padding: 28px 16px; }
+  .char-layout { flex-direction: column; gap: 20px; }
+  .char-left { width: 100%; position: static; }
+  .char-avatar { width: 160px; height: 160px; }
+  .char-section p { font-size: 14px; }
+}

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const logs = (await getCollection('changelog'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="更新日志 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <h1 class="page-title">更新日志</h1>
+    <p class="page-sub">记录这个网站每一次成长的痕迹 ✦</p>
+
+    <div class="log-list">
+      {logs.map(log => (
+        <div class="log-item">
+          <div class="log-date">{log.data.date}</div>
+          <div class="log-content">
+            <div class="log-title">{log.data.title}</div>
+            <div class="log-tags">
+              {log.data.tags?.map(tag => (
+                <span class="log-tag">{tag}</span>
+              ))}
+            </div>
+            <div class="log-body" set:html={log.body} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+}
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
+
+.page-main { max-width: 720px; margin: 0 auto; padding: 48px 32px; }
+.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+
+.log-list { display: flex; flex-direction: column; gap: 0; }
+.log-item { display: flex; gap: 24px; padding: 24px 0; border-bottom: 0.5px solid var(--border); }
+.log-item:last-child { border-bottom: none; }
+.log-date { flex-shrink: 0; width: 100px; font-size: 12px; color: var(--hint); padding-top: 3px; font-family: var(--font-mono, monospace); }
+.log-content { flex: 1; }
+.log-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.log-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.log-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--blue-light); color: #1A7FAD; border: 0.5px solid var(--blue-border); }
+.log-body { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
+.footer-dot { color: var(--blue); }
+
+@media (max-width: 768px) {
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 12px; }
+  .page-main { padding: 28px 16px; }
+  .log-item { flex-direction: column; gap: 8px; }
+  .log-date { width: auto; }
+}
+</style>
