@@ -12,8 +12,7 @@
     .title span { color: #4AACDB; }
     .sub { font-size: 14px; color: #888; margin-bottom: 32px; line-height: 1.7; }
     .turnstile-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
-    .btn { display: inline-block; padding: 10px 32px; background: #4AACDB; color: #fff; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s; }
-    .btn.active { opacity: 1; pointer-events: auto; }
+    .hint { font-size: 13px; color: #aaa; margin-bottom: 8px; }
     .footer-text { margin-top: 24px; font-size: 12px; color: #bbb; }
   </style>
 </head>
@@ -28,15 +27,16 @@
         data-callback="onVerified">
       </div>
     </div>
-    <a id="enter-btn" class="btn" href="/">进入网站 →</a>
+    <div class="hint">验证成功后将自动进入网站</div>
     <div class="footer-text">© 2026 康予纳安</div>
   </div>
   <script>
     function onVerified(token) {
       localStorage.setItem('verified', 'true');
       sessionStorage.setItem('verified', 'true');
-      var btn = document.getElementById('enter-btn');
-      btn.classList.add('active');
+      setTimeout(function() {
+        window.location.replace('/');
+      }, 800);
     }
   </script>
 </body>
