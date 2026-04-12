@@ -104,7 +104,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   background-size: cover;
   background-position: center 30%;
   position: relative;
-  padding: 80px 32px; /* 增加了间距，让居中文字更透气 */
+  padding: 80px 32px; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,12 +149,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 .footer { background: var(--surface); padding: 16px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); }
 .footer-dot { color: var(--blue); }
-</style>
+
+/* 将媒体查询移到了 style 标签内 */
 @media (max-width: 768px) {
   .nav-links { gap: 12px; }
   .nav-links a { font-size: 12px; }
   .hero { flex-direction: column; padding: 32px 20px 28px; gap: 16px; }
-  .hero-side { display: none; }
   .hero-center { max-width: 100%; }
   .hero-name { font-size: 24px; }
   .hero-intro { font-size: 13px; }
@@ -167,3 +167,4 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .tags-strip { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
   .footer { padding: 14px 16px; }
 }
+</style>
