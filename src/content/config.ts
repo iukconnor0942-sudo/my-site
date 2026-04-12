@@ -20,7 +20,7 @@ const changelog = defineCollection({
   }),
 });
 
-export const collections = { 
-  blog, 
-  changelog,
+export const collections = {
+  blog: blog,
+  changelog: changelog, // 确保这里引用了上面定义的 const changelog
 };
