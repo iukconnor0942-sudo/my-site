@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content'; // 注意这里增加了 render 的导入
 
-const logs = (await getCollection('changelog'))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const allLogs = await getCollection('changelog');
+const logs = allLogs.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
 ---
 
 <BaseLayout title="更新日志 · 康予纳安">
@@ -22,11 +24,11 @@ const logs = (await getCollection('changelog'))
 
     <div class="log-list">
       {logs.map(async (log) => {
-        // 修复点 1: 需要调用 render() 来获取渲染后的组件
-        const { Content } = await log.render();
+        // 使用官方 render 函数，这是最稳妥的写法
+        const { Content } = await render(log); 
+        
         return (
           <div class="log-item">
-            {/* 修复点 2: 确保日期对象能正确转为字符串显示 */}
             <div class="log-date">
               {new Date(log.data.date).toLocaleDateString('zh-CN')}
             </div>
@@ -38,7 +40,6 @@ const logs = (await getCollection('changelog'))
                 ))}
               </div>
               <div class="log-body">
-                {/* 修复点 3: 使用渲染出的 <Content /> 替代 set:html */}
                 <Content />
               </div>
             </div>
@@ -55,7 +56,7 @@ const logs = (await getCollection('changelog'))
 </BaseLayout>
 
 <style>
-/* 保持你原本的样式不变 */
+/* 你的 CSS 样式非常棒，完全不需要修改，保持原样即可 */
 :root {
   --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
   --blue-border: #B8DCF0; --red: #C94040; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
@@ -66,11 +67,9 @@ const logs = (await getCollection('changelog'))
 .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--blue); }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
-
 .page-main { max-width: 720px; margin: 0 auto; padding: 48px 32px; }
 .page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
-
 .log-list { display: flex; flex-direction: column; gap: 0; }
 .log-item { display: flex; gap: 24px; padding: 24px 0; border-bottom: 0.5px solid var(--border); }
 .log-item:last-child { border-bottom: none; }
@@ -80,10 +79,8 @@ const logs = (await getCollection('changelog'))
 .log-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .log-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--blue-light); color: #1A7FAD; border: 0.5px solid var(--blue-border); }
 .log-body { font-size: 14px; color: var(--muted); line-height: 1.8; }
-
 .footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
 .footer-dot { color: var(--blue); }
-
 @media (max-width: 768px) {
   .nav-links { gap: 12px; }
   .nav-links a { font-size: 12px; }
