@@ -3,77 +3,89 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="到处看看 · 康予纳安">
-  <nav class="nav">
-    <a href="/" class="nav-logo">康予纳安</a>
-    <div class="nav-links">
-      <a href="/explore" class="nav-active">到处看看</a>
-      <a href="/camellya" class="nav-accent">CamEllya</a>
-      <a href="/about">关于我</a>
-    </div>
-  </nav>
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore" class="nav-active">到处看看</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
 
-  <main class="page-main">
-    <h1 class="page-title">到处看看</h1>
-    <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
+  <main class="page-main">
+    <h1 class="page-title">到处看看</h1>
+    <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
 
-    <div class="explore-grid">
-      <a href="/camellya" class="explore-card card-cam">
-        <div class="card-cover">
-          <img src="/images/logo.png" alt="CamEllya" class="cover-logo" />
-        </div>
-        <div class="card-info">
-          <div class="card-title">CamEllya</div>
-          <div class="card-desc">我的创作宇宙——四个角色、一支乐队、一个完整的世界观与漫画故事。</div>
-          <div class="card-link">进入专区 →</div>
-        </div>
-      </a>
+    <div class="explore-grid">
+      <a href="/camellya" class="explore-card card-cam">
+        <div class="card-cover">
+          <img src="/images/logo.png" alt="CamEllya" class="cover-logo" />
+        </div>
+        <div class="card-info">
+          <div class="card-title">CamEllya</div>
+          <div class="card-desc">我的创作宇宙——四个角色、一支乐队、一个完整的世界观与漫画故事。</div>
+          <div class="card-link">进入专区 →</div>
+        </div>
+      </a>
 
-      <a href="/vlog" class="explore-card card-vlog">
-        <div class="card-cover cover-vlog">
-          <div class="cover-icon">🎬</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">视频日记</div>
-          <div class="card-desc">记录日常、排练、创作与生活片段，用镜头留住值得被记住的时刻。</div>
-          <div class="card-link">查看视频 →</div>
-        </div>
-      </a>
+      <a href="/vlog" class="explore-card card-vlog">
+        <div class="card-cover cover-vlog">
+          <div class="cover-icon">🎬</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">视频日记</div>
+          <div class="card-desc">记录日常、排练、创作与生活片段，用镜头留住值得被记住的时刻。</div>
+          <div class="card-link">查看视频 →</div>
+        </div>
+      </a>
 
-      <a href="/gallery" class="explore-card card-gallery">
-        <div class="card-cover cover-gallery">
-          <div class="cover-icon">🎨</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">画集</div>
-          <div class="card-desc">兽设、插画与各种创作，这里是我用画笔构建的视觉世界。</div>
-          <div class="card-link">浏览画集 →</div>
-        </div>
-      </a>
+      <a href="/gallery" class="explore-card card-gallery">
+        <div class="card-cover cover-gallery">
+          <div class="cover-icon">🎨</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">画集</div>
+          <div class="card-desc">兽设、插画与各种创作，这里是我用画笔构建的视觉世界。</div>
+          <div class="card-link">浏览画集 →</div>
+        </div>
+      </a>
 
-      <a href="/writing" class="explore-card card-writing">
-        <div class="card-cover cover-writing">
-          <div class="cover-icon">✍️</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">文章</div>
-          <div class="card-desc">随笔、思考与观察，把脑子里的想法整理成文字，分享给你。</div>
-          <div class="card-link">阅读文章 →</div>
-        </div>
-      </a>
-    </div>
-  </main>
+      <a href="/writing" class="explore-card card-writing">
+        <div class="card-cover cover-writing">
+          <div class="cover-icon">✍️</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">文章</div>
+          <div class="card-desc">随笔、思考与观察，把脑子里的想法整理成文字，分享给你。</div>
+          <div class="card-link">阅读文章 →</div>
+        </div>
+      </a>
 
-  <footer class="footer">
-    <span>© 2026 康予纳安</span>
-    <span class="footer-dot">持续更新中 ✦</span>
-  </footer>
+      <a href="/changelog" class="explore-card card-log">
+        <div class="card-cover cover-log">
+          <div class="cover-icon">📜</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">更新日志</div>
+          <div class="card-desc">记录这个网站每一次成长的痕迹，同步最新的功能与内容改动。</div>
+          <div class="card-link">查看日志 →</div>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
 </BaseLayout>
 
 <style>
+/* 保持你原本的样式不变，仅在下方补充新增卡片的背景色 */
 :root {
-  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
-  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
 }
 .nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
 .nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
@@ -93,12 +105,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .explore-card:hover { border-color: var(--blue); }
 
 .card-cover { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; }
-.card-cam { }
 .cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
 .card-cam .card-cover { background: #FAFAE8; }
 .cover-vlog { background: var(--blue-light); }
 .cover-gallery { background: var(--red-light); }
 .cover-writing { background: #F0EEF8; }
+/* 📜 日志卡片的背景色，柔和的青蓝色 */
+.cover-log { background: #E8F8F5; } 
+
 .cover-icon { font-size: 48px; }
 
 .card-info { padding: 18px 20px 20px; }
@@ -110,10 +124,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .footer-dot { color: var(--blue); }
 
 @media (max-width: 768px) {
-  .nav-links { gap: 12px; }
-  .nav-links a { font-size: 12px; }
-  .page-main { padding: 28px 16px; }
-  .explore-grid { grid-template-columns: 1fr; }
-  .card-cover { height: 140px; }
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 12px; }
+  .page-main { padding: 28px 16px; }
+  .explore-grid { grid-template-columns: 1fr; }
+  .card-cover { height: 140px; }
 }
 </style>
