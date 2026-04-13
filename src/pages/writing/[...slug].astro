@@ -2,18 +2,16 @@
 import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// 🔥 必须加这个！不然静态构建会报错
+// 🔥 必须加这个！静态构建专用
 export async function getStaticPaths() {
   const allPosts = await getCollection('writing');
   return allPosts.map((post) => ({
-    params: { 
-      slug: [post.slug]   // 因为你是 [..slug] catch-all，slug 是数组
-    }
+    params: { slug: post.slug }   // 这里是字符串！不是数组
   }));
 }
 
 const { slug } = Astro.params;
-const post = await getEntry('writing', slug?.join('/') || '');
+const post = await getEntry('writing', slug);
 
 if (!post) {
   return Astro.redirect('/404');  // 或者你自己做一个 404 页面也行～
