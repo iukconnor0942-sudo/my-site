@@ -1,10 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content'; // 注意这里增加了 render 的导入
+import { getCollection, render } from 'astro:content';
 
 const allLogs = await getCollection('changelog');
-const logs = allLogs.sort((a, b) => 
-  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+allLogs.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+
+const renderedLogs = await Promise.all(
+  allLogs.map(async (log) => {
+    const { Content } = await render(log);
+    return { ...log, Content };
+  })
 );
 ---
 
@@ -20,33 +25,32 @@ const logs = allLogs.sort((a, b) =>
 
   <main class="page-main">
     <h1 class="page-title">更新日志</h1>
-    <p class="page-sub">记录这个网站每一次成长的痕迹 ✦</p>
+    <p class="page-sub">这里记录着网站每一次小小进步～ 欢迎一起见证成长 ✦</p>
 
-    <div class="log-list">
-      {logs.map(async (log) => {
-        // 使用官方 render 函数，这是最稳妥的写法
-        const { Content } = await render(log); 
-        
-        return (
-          <div class="log-item">
-            <div class="log-date">
-              {new Date(log.data.date).toLocaleDateString('zh-CN')}
-            </div>
-            <div class="log-content">
-              <div class="log-title">{log.data.title}</div>
-              <div class="log-tags">
-                {log.data.tags?.map(tag => (
-                  <span class="log-tag">{tag}</span>
-                ))}
-              </div>
-              <div class="log-body">
-                <Content />
-              </div>
-            </div>
+    <div class="changelog-list">
+      {renderedLogs.map((log) => (
+        <div class="log-entry">
+          <div class="log-header">
+            <span class="log-date">{log.data.date}</span>
+            <h2 class="log-title">{log.data.title}</h2>
           </div>
-        );
-      })}
+          <div class="log-content">
+            <Content />
+          </div>
+          {log.data.tags && log.data.tags.length > 0 && (
+            <div class="log-tags">
+              {log.data.tags.map(tag => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
+
+    {renderedLogs.length === 0 && (
+      <p class="no-logs">暂时还没有更新记录哦～ 敬请期待！</p>
+    )}
   </main>
 
   <footer class="footer">
@@ -56,36 +60,85 @@ const logs = allLogs.sort((a, b) =>
 </BaseLayout>
 
 <style>
-/* 你的 CSS 样式非常棒，完全不需要修改，保持原样即可 */
 :root {
   --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0; --red: #C94040; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
 }
+
 .nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
 .nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
 .nav-links { display: flex; gap: 22px; }
 .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--blue); }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
-.page-main { max-width: 720px; margin: 0 auto; padding: 48px 32px; }
+
+.page-main { max-width: 760px; margin: 0 auto; padding: 48px 32px; }
 .page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
-.log-list { display: flex; flex-direction: column; gap: 0; }
-.log-item { display: flex; gap: 24px; padding: 24px 0; border-bottom: 0.5px solid var(--border); }
-.log-item:last-child { border-bottom: none; }
-.log-date { flex-shrink: 0; width: 100px; font-size: 12px; color: var(--hint); padding-top: 3px; font-family: var(--font-mono, monospace); }
-.log-content { flex: 1; }
-.log-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-.log-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-.log-tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--blue-light); color: #1A7FAD; border: 0.5px solid var(--blue-border); }
-.log-body { font-size: 14px; color: var(--muted); line-height: 1.8; }
-.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
-.footer-dot { color: var(--blue); }
-@media (max-width: 768px) {
-  .nav-links { gap: 12px; }
-  .nav-links a { font-size: 12px; }
-  .page-main { padding: 28px 16px; }
-  .log-item { flex-direction: column; gap: 8px; }
-  .log-date { width: auto; }
+
+.changelog-list { display: flex; flex-direction: column; gap: 32px; }
+.log-entry {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  transition: all 0.2s;
 }
+.log-entry:hover { border-color: var(--blue); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+
+.log-header { margin-bottom: 16px; }
+.log-date {
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--blue-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.log-title { 
+  font-size: 20px; 
+  font-weight: 500; 
+  color: var(--text); 
+  margin: 12px 0 0 0; 
+}
+
+.log-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.log-content p { margin-bottom: 16px; }
+
+.log-tags {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 12px;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.no-logs {
+  text-align: center;
+  color: var(--muted);
+  font-size: 15px;
+  padding: 60px 20px;
+}
+
+.footer { 
+  background: var(--surface); 
+  padding: 14px 32px; 
+  border-top: 0.5px solid var(--border); 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 12px; 
+  color: var(--hint); 
+  margin-top: 60px; 
+}
+.footer-dot { color: var(--blue); }
 </style>
