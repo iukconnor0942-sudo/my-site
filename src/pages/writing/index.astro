@@ -2,85 +2,89 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('writing');
-  return posts.map(entry => ({
-    params: { slug: entry.slug }, 
-    props: { entry },
-  }));
-}
-
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const allPosts = await getCollection('writing');
+allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
 ---
 
-<BaseLayout title={`${entry.data.title} · 康予纳安`}>
-  <article class="reading-room">
-    <header class="post-header">
-      <div class="meta">{entry.data.date}</div>
-      <h1>{entry.data.title}</h1>
+<BaseLayout title="藏书阁 · 康予纳安">
+  <main class="library-hall">
+    <header class="hall-header">
+      <h1>藏书阁</h1>
+      <p>“静谧求索，保持清醒。”</p>
     </header>
-    
-    <div class="prose">
-      <Content />
-    </div>
 
-    <footer class="post-footer">
-      <a href="/downloads/ai-future.pdf" class="download-btn">📥 下载 PDF 存档</a>
-      <a href="/writing" class="back-link">返回大厅</a>
-    </footer>
-  </article>
+    <div class="article-grid">
+      {allPosts.map(post => (
+        <a href={`/writing/${post.slug}`} class="article-card">
+          <div class="cover-wrapper">
+            <img src={post.data.cover} alt={post.data.title} />
+          </div>
+          <div class="card-info">
+            <span class="date">{post.data.date}</span>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <span class="read-more">开启研读 →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
 </BaseLayout>
 
 <style>
-  .reading-room {
-    max-width: 800px;
+  .library-hall {
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 6rem 2rem;
-    background: #fdfbf7;
-    min-height: 100vh;
+    padding: 4rem 2rem;
+    background-color: #fdfbf7;
   }
-  .post-header {
+  .hall-header {
     text-align: center;
     margin-bottom: 4rem;
+    border-bottom: 1px solid #d4c5b0;
+    padding-bottom: 2rem;
   }
-  .post-header h1 {
+  .hall-header h1 {
     font-family: "Noto Serif SC", serif;
+    color: #3d2b1f;
     font-size: 2.5rem;
-    color: #2c1e14;
-    line-height: 1.4;
   }
-  .prose {
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+  }
+  .article-card {
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid #e8e0d5;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(61, 43, 31, 0.1);
+  }
+  .cover-wrapper {
+    height: 200px;
+    overflow: hidden;
+  }
+  .cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card-info {
+    padding: 1.5rem;
+  }
+  .card-info h2 {
     font-family: "Noto Serif SC", serif;
-    font-size: 1.15rem;
-    line-height: 2;
-    color: #333;
-    text-align: justify;
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+    color: #3d2b1f;
   }
-  .prose :global(h2) {
-    border-left: 4px solid #d4af37;
-    padding-left: 1rem;
-    margin-top: 3rem;
-  }
-  .post-footer {
-    margin-top: 5rem;
-    padding-top: 2rem;
-    border-top: 1px double #d4c5b0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .download-btn {
-    background: #3d2b1f;
-    color: #fdfbf7;
-    padding: 0.8rem 1.5rem;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-  .back-link {
-    color: #8d6e63;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
+  .date { font-size: 0.8rem; color: #a69683; }
+  .card-info p { font-size: 0.9rem; color: #666; line-height: 1.6; margin-bottom: 1rem; }
+  .read-more { font-size: 0.85rem; color: #8d6e63; font-weight: bold; }
 </style>
