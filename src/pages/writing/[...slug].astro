@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
+  // 核心修复：确保集合名称与 content 下的文件夹一致
   const posts = await getCollection('writing');
   return posts.map(entry => ({
     params: { slug: entry.slug }, 
