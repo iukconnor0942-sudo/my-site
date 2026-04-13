@@ -10,11 +10,11 @@ allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.date));
   <main class="library-hall">
     <header class="hall-header">
       <h1>藏书阁</h1>
-      <p>“静谧求索，保持清醒。”</p>
+      <p>“静谧求索，康予纳安”</p>
     </header>
     <div class="article-grid">
       {allPosts.map(post => (
-        <a href={`/writing/${post.id}`} class="article-card">  {/* ← 这里改成 post.id！ */}
+        <a href={`/writing/${post.id}`} class="article-card">
           <div class="cover-wrapper">
             <img src={post.data.cover} alt={post.data.title} />
           </div>
@@ -30,7 +30,7 @@ allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.date));
   </main>
 </BaseLayout>
 <style>
-  /* 你原来的 style 全部保留不变，我就不重复贴了～ */
+  /* 你原来的 style 全部保留～ */
   .library-hall { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; background-color: #fdfbf7; }
   .hall-header { text-align: center; margin-bottom: 4rem; border-bottom: 1px solid #d4c5b0; padding-bottom: 2rem; }
   .hall-header h1 { font-family: "Noto Serif SC", serif; color: #3d2b1f; font-size: 2.5rem; }
