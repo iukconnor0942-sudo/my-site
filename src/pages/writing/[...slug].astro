@@ -23,7 +23,7 @@ const { Content } = await render(post);
   <main class="ai-future-cover" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem; background: #fdfbf7;">
     <!-- 🔥 封面在这里！ -->
     <img 
-      src={post.data.cover} 
+      src={post.data.cover && post.data.cover.startsWith('/') ? post.data.cover : `/${post.data.cover}`} 
       alt={post.data.title}
       style="width: 100%; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.1);"
     />
