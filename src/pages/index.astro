@@ -14,7 +14,6 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     <a href="/explore">到处看看</a>
     <a href="/camellya" class="nav-accent">CamEllya</a>
     
-    <!-- 🔥 更新日志 + 自动 NEW 红标 -->
     <a href="/changelog" id="updates-link" class="nav-updates">
       更新日志
       <span id="new-badge" class="new-badge" data-last-date={latestDate}>NEW</span>
@@ -24,7 +23,6 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   </div>
 </nav>
 
-<!-- 你原来的页面内容保持不变 -->
 <section class="hero">
   <div class="hero-center">
     <div class="hero-badges">
@@ -104,7 +102,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   --border: #e0e4ea;
 }
 
-/* ==================== 导航栏优化 ==================== */
+/* ==================== 导航栏 ==================== */
 .nav {
   background: var(--surface);
   display: flex;
@@ -113,16 +111,12 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   padding: 14px 20px;
   border-bottom: 0.5px solid var(--border);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
-.nav-logo { 
-  font-size: 15px; 
-  font-weight: 500; 
-  color: var(--text); 
-}
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); }
 .nav-links { 
   display: flex; 
-  gap: 16px; 
+  gap: 14px; 
   flex-wrap: wrap; 
   justify-content: center;
 }
@@ -135,26 +129,19 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 .nav-links a:hover { color: var(--blue); }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
 
-.nav-updates {
-  position: relative;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 13px;
-  padding-right: 4px;
-}
+.nav-updates { position: relative; color: var(--muted); text-decoration: none; font-size: 13px; padding-right: 4px; }
 .nav-updates:hover { color: var(--blue); }
 
 .new-badge {
   position: absolute;
   top: -6px;
-  right: -12px;
+  right: -11px;
   background: var(--red);
   color: white;
   font-size: 9px;
   font-weight: 700;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 20px;
-  line-height: 1;
   box-shadow: 0 2px 6px rgba(201, 64, 64, 0.4);
   animation: badge-pulse 2s infinite;
   display: none;
@@ -162,36 +149,37 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 
 @keyframes badge-pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  50% { transform: scale(1.15); }
 }
 
-/* ==================== 首页其他区域优化 ==================== */
-.hero { 
-  background-image: url('/images/hero-bg.png'); 
-  background-size: cover; 
-  background-position: center 30%; 
-  position: relative; 
-  padding: 60px 20px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  border-bottom: 0.5px solid var(--border); 
+/* ==================== Hero 区域 ==================== */
+.hero {
+  background-image: url('/images/hero-bg.png');
+  background-size: cover;
+  background-position: center 30%;
+  position: relative;
+  padding: 70px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 0.5px solid var(--border);
+  min-height: 380px;
 }
-.hero::before { 
-  content: ''; 
-  position: absolute; 
-  inset: 0; 
-  background: rgba(255,255,255,0.65); 
-  z-index: 0; 
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.68);
+  z-index: 0;
 }
-.hero-center { 
-  position: relative; 
-  z-index: 1; 
-  text-align: center; 
-  max-width: 580px; 
-  width: 100%; 
+.hero-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 580px;
+  width: 100%;
 }
-.hero-badges { display: flex; gap: 6px; margin-bottom: 18px; justify-content: center; flex-wrap: wrap; }
+.hero-badges { display: flex; gap: 6px; margin-bottom: 16px; justify-content: center; flex-wrap: wrap; }
 .badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
 .badge-blue { background: var(--blue-light); color: #1A7FAD; }
 .badge-red { background: var(--red-light); color: var(--red); }
@@ -200,55 +188,58 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   font-size: 28px; 
   font-weight: 500; 
   line-height: 1.3; 
-  margin-bottom: 16px; 
+  margin-bottom: 14px; 
   color: var(--text); 
 }
 .hero-name span { color: var(--blue); }
 
 .hero-intro { 
-  font-size: 15px; 
+  font-size: 14.5px; 
   color: var(--muted); 
-  line-height: 1.85; 
-  margin-bottom: 28px; 
+  line-height: 1.8; 
+  margin-bottom: 26px; 
 }
 
 .hero-btns { 
   display: flex; 
-  gap: 12px; 
+  gap: 10px; 
   flex-wrap: wrap; 
   justify-content: center; 
 }
 
-.btn-primary, .btn-secondary, .btn-red { 
-  font-size: 14px; 
-  padding: 10px 24px; 
-  border-radius: 10px; 
-  text-decoration: none; 
-  transition: 0.2s; 
-}
-.btn-primary { background: var(--blue); color: #fff; }
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-secondary { background: #fff; color: #555; border: 0.5px solid var(--border); }
-.btn-red { background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); }
-
+/* ==================== CamEllya 专区 ==================== */
 .content-section { padding: 32px 20px; border-bottom: 0.5px solid var(--border); }
-.section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
-.section-label { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .05em; }
-.section-more { font-size: 12px; color: var(--blue); text-decoration: none; }
-
+.section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.camellya-block { 
+  background: var(--surface); 
+  border-radius: 12px; 
+  border: 0.5px solid var(--border); 
+  overflow: hidden; 
+}
+.cam-header { 
+  background: var(--blue-light); 
+  padding: 16px 20px; 
+  border-bottom: 0.5px solid var(--blue-border); 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
 .cam-grid { 
   display: grid; 
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
   gap: 12px; 
+  padding: 20px; 
 }
 .cam-cell { 
-  padding: 20px; 
+  padding: 18px; 
   border: 0.5px solid var(--border); 
   border-radius: 12px; 
-  background: var(--surface); 
+  background: white; 
+  transition: all 0.2s; 
 }
-.cam-cell:hover { background: #F8FBFE; }
+.cam-cell:hover { background: #F8FBFE; border-color: var(--blue); }
 
+/* ==================== Tags & Footer ==================== */
 .tags-strip { 
   padding: 20px; 
   display: flex; 
@@ -273,14 +264,14 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 
 /* ==================== 手机端重点优化 ==================== */
 @media (max-width: 768px) {
-  .nav { padding: 12px 16px; }
-  .nav-links { gap: 12px; font-size: 12.5px; }
-  .nav-logo { font-size: 14px; }
+  .nav { padding: 12px 16px; gap: 8px; }
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 12.8px; }
 
-  .hero { padding: 50px 16px; }
+  .hero { padding: 55px 16px; min-height: 340px; }
   .hero-name { font-size: 24px; }
   .hero-intro { font-size: 14px; }
-  .hero-btns { gap: 10px; }
+  .hero-btns { gap: 8px; }
 
   .btn-primary, .btn-secondary, .btn-red { 
     font-size: 13px; 
@@ -288,26 +279,17 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   }
 
   .content-section { padding: 24px 16px; }
-  .cam-grid { grid-template-columns: 1fr; gap: 16px; }
+  .cam-grid { grid-template-columns: 1fr; gap: 14px; }
   
-  .tags-strip { 
-    flex-direction: column; 
-    align-items: flex-start; 
-    padding: 16px; 
-  }
+  .tags-strip { flex-direction: column; align-items: flex-start; padding: 16px; }
   
   .footer { 
     padding: 14px 16px; 
-    text-align: center; 
     justify-content: center; 
+    text-align: center; 
   }
 
-  .new-badge { 
-    top: -4px; 
-    right: -9px; 
-    font-size: 8px; 
-    padding: 1px 5px; 
-  }
+  .new-badge { top: -4px; right: -8px; font-size: 8px; padding: 1px 5px; }
 }
 </style>
 
