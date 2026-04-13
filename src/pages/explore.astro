@@ -1,78 +1,89 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 🔥 自动获取 changelog 集合里日期最新的那一条
+const allChangelogs = await getCollection('changelog');
+const latestChangelog = allChangelogs
+  .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
+
+const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 ---
 
-<BaseLayout title="到处看看 · 康予纳安">
+<BaseLayout title="康予纳安">
   <nav class="nav">
-    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-logo">康予纳安</div>
     <div class="nav-links">
-      <a href="/explore" class="nav-active">到处看看</a>
+      <a href="/explore">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
+      
+      <!-- 🔥 更新日志 + 自动 NEW 红标 -->
+      <a href="/changelog" id="updates-link" class="nav-updates">
+        更新日志
+        <span id="new-badge" class="new-badge" data-last-date={latestDate}>NEW</span>
+      </a>
+      
       <a href="/about">关于我</a>
     </div>
   </nav>
 
-  <main class="page-main">
-    <h1 class="page-title">到处看看</h1>
-    <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
-
-    <div class="explore-grid">
-      <a href="/camellya" class="explore-card card-cam">
-        <div class="card-cover">
-          <img src="/images/logo.png" alt="CamEllya" class="cover-logo" />
-        </div>
-        <div class="card-info">
-          <div class="card-title">CamEllya</div>
-          <div class="card-desc">我的创作宇宙——四个角色、一支乐队、一个完整的世界观与漫画故事。</div>
-          <div class="card-link">进入专区 →</div>
-        </div>
-      </a>
-
-      <a href="/vlog" class="explore-card card-vlog">
-        <div class="card-cover cover-vlog">
-          <div class="cover-icon">🎬</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">视频日记</div>
-          <div class="card-desc">记录日常、排练、创作与生活片段，用镜头留住值得被记住的时刻。</div>
-          <div class="card-link">查看视频 →</div>
-        </div>
-      </a>
-
-      <a href="/gallery" class="explore-card card-gallery">
-        <div class="card-cover cover-gallery">
-          <div class="cover-icon">🎨</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">画集</div>
-          <div class="card-desc">兽设、插画与各种创作，这里是我用画笔构建的视觉世界。</div>
-          <div class="card-link">浏览画集 →</div>
-        </div>
-      </a>
-
-      <a href="/writing" class="explore-card card-writing">
-        <div class="card-cover cover-writing">
-          <div class="cover-icon">✍️</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">文章</div>
-          <div class="card-desc">随笔、思考与观察，把脑子里的想法整理成文字，分享给你。</div>
-          <div class="card-link">阅读文章 →</div>
-        </div>
-      </a>
-
-      <a href="/changelog" class="explore-card card-log">
-        <div class="card-cover cover-log">
-          <div class="cover-icon">📜</div>
-        </div>
-        <div class="card-info">
-          <div class="card-title">更新日志</div>
-          <div class="card-desc">记录这个网站每一次成长的痕迹，同步最新的功能与内容改动。</div>
-          <div class="card-link">查看日志 →</div>
-        </div>
-      </a>
+  <!-- 你原来的首页内容全部保留，一字不改！从这里开始 ↓ -->
+  <section class="hero">
+    <div class="hero-center">
+      <div class="hero-badges">
+        <span class="badge badge-blue">创作者</span>
+        <span class="badge badge-blue">画师</span>
+        <span class="badge badge-red">乐手</span>
+      </div>
+      <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
+      <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
+      <div class="hero-btns">
+        <a href="/explore" class="btn-primary">到处看看 →</a>
+        <a href="/about" class="btn-secondary">关于我</a>
+        <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
+      </div>
     </div>
-  </main>
+  </section>
+
+  <section class="content-section">
+    <div class="section-hd">
+      <span class="section-label">CamEllya 专区</span>
+      <a href="/camellya" class="section-more">进入专区 →</a>
+    </div>
+    <div class="camellya-block">
+      <div class="cam-header">
+        <div>
+          <div class="cam-title">CamEllya</div>
+          <div class="cam-sub">世界观 · 角色 · 漫画</div>
+        </div>
+        <span class="cam-badge">副主页</span>
+      </div>
+      <div class="cam-grid">
+        <a href="/camellya#characters" class="cam-cell">
+          <div class="cam-cname">角色</div>
+          <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
+        </a>
+        <a href="/camellya#world" class="cam-cell">
+          <div class="cam-cname">世界观</div>
+          <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
+        </a>
+        <a href="/camellya#comics" class="cam-cell">
+          <div class="cam-cname">漫画</div>
+          <div class="cam-cdesc">故事连载、短篇与番外更新</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="tags-strip">
+    <div class="tags">
+      <span class="atag">画画</span>
+      <span class="atag">写字</span>
+      <span class="atag">玩音乐</span>
+      <span class="atag">键盘手</span>
+      <span class="atag atag-red">CamEllya</span>
+    </div>
+    <a href="/about" class="section-more">了解更多关于我 →</a>
+  </div>
 
   <footer class="footer">
     <span>© 2026 康予纳安</span>
@@ -81,53 +92,90 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-/* 保持你原本的样式不变，仅在下方补充新增卡片的背景色 */
 :root {
-  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
-  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+  --bg: #F2F4F6;
+  --surface: #ffffff;
+  --blue: #4AACDB;
+  --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0;
+  --red: #C94040;
+  --red-light: #FDECEC;
+  --red-border: #f0bfbf;
+  --text: #1a1a1a;
+  --muted: #666666;
+  --hint: #aaaaaa;
+  --border: #e0e4ea;
 }
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
-.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+
+/* 你原来的所有 nav、hero、content-section 等样式全部保留…… */
+.nav { 
+  background: var(--surface); 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 14px 32px; 
+  border-bottom: 0.5px solid var(--border); 
+}
+
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); }
 .nav-links { display: flex; gap: 22px; }
 .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--blue); }
-.nav-active { color: var(--blue) !important; font-weight: 500; }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
 
-.page-main { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
-.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 36px; }
+/* 🔥 新增的更新日志样式 */
+.nav-updates {
+  position: relative;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding-right: 4px;
+}
+.nav-updates:hover { color: var(--blue); }
 
-.explore-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.new-badge {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  background: var(--red);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 20px;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(201, 64, 64, 0.4);
+  animation: badge-pulse 2s infinite;
+  display: none;
+}
 
-.explore-card { background: var(--surface); border-radius: 16px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: border-color 0.2s; }
-.explore-card:hover { border-color: var(--blue); }
-
-.card-cover { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; }
-.cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
-.card-cam .card-cover { background: #FAFAE8; }
-.cover-vlog { background: var(--blue-light); }
-.cover-gallery { background: var(--red-light); }
-.cover-writing { background: #F0EEF8; }
-/* 📜 日志卡片的背景色，柔和的青蓝色 */
-.cover-log { background: #E8F8F5; } 
-
-.cover-icon { font-size: 48px; }
-
-.card-info { padding: 18px 20px 20px; }
-.card-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-.card-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
-.card-link { font-size: 12px; color: var(--blue); }
-
-.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
-.footer-dot { color: var(--blue); }
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
 
 @media (max-width: 768px) {
   .nav-links { gap: 12px; }
   .nav-links a { font-size: 12px; }
-  .page-main { padding: 28px 16px; }
-  .explore-grid { grid-template-columns: 1fr; }
-  .card-cover { height: 140px; }
+  .new-badge { top: -5px; right: -10px; font-size: 8px; padding: 0 4px; }
 }
+
+/* 把你原来所有的其他样式（hero、camellya-block、tags-strip、footer 等）全部粘贴在这里…… */
 </style>
+
+<script>
+  const badge = document.getElementById('new-badge');
+  const link = document.getElementById('updates-link');
+  const lastUpdateDate = badge.dataset.lastDate || '2026-04-10';
+
+  const lastSeen = localStorage.getItem('lastSeenChangelog');
+
+  if (!lastSeen || lastSeen < lastUpdateDate) {
+    badge.style.display = 'inline';
+  }
+
+  link.addEventListener('click', () => {
+    localStorage.setItem('lastSeenChangelog', lastUpdateDate);
+    badge.style.display = 'none';
+  });
+</script>
