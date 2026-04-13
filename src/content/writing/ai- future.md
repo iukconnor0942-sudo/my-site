@@ -2,7 +2,7 @@
 title: "人工智能的未来必将成为我们不可或缺的工具"
 date: "2026-04-13"
 description: "探讨AI如何从单纯的算法演变为人类智慧的延伸，以及在这个求索过程中我们应持有的态度。"
-cover: "../../assets/ai-cover.jpg" 
+cover: "../../assets/ai-future-cover.png" 
 tags: ["人工智能", "深度思考"]
 ---
 
