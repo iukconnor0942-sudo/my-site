@@ -21,7 +21,7 @@ const { Content } = await render(post);
 
 <BaseLayout  title={`${post.data.title} · 藏书阁`}>
   <main class="ai-future-cover" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem; background: #fdfbf7;">
-    <!-- 🔥 封面在这里！ -->
+    <!cover: public/writing/ai-future-cover.png>
     <img 
       src={post.data.cover && post.data.cover.startsWith('/') ? post.data.cover : `/${post.data.cover}`} 
       alt={post.data.title}
