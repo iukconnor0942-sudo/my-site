@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={`${entry.data.title} · 康予纳安`}>
+  <article class="reading-room">
+    <header class="post-header">
+      <div class="meta">{entry.data.date}</div>
+      <h1>{entry.data.title}</h1>
+    </header>
+    
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="post-footer">
+      <a href="/downloads/ai-future.pdf" class="download-btn">📥 下载 PDF 存档</a>
+      <a href="/posts" class="back-link">返回大厅</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .reading-room {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    background: #fdfbf7;
+    min-height: 100vh;
+  }
+  .post-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .post-header h1 {
+    font-family: "Noto Serif SC", serif;
+    font-size: 2.5rem;
+    color: #2c1e14;
+    line-height: 1.4;
+  }
+  /* 文章正文样式：营造图书馆阅读感 */
+  .prose {
+    font-family: "Noto Serif SC", serif;
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #333;
+    text-align: justify; /* 两端对齐更像书籍 */
+  }
+  .prose :global(h2) {
+    border-left: 4px solid #d4af37; /* 黄金分割色装饰 */
+    padding-left: 1rem;
+    margin-top: 3rem;
+  }
+  .post-footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px double #d4c5b0;
+    display: flex;
+    justify-content: space-between;
+  }
+  .download-btn {
+    background: #3d2b1f;
+    color: #fdfbf7;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+</style>

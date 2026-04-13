@@ -1,26 +1,15 @@
 import { defineCollection, z } from 'astro:content';
+const changelog = defineCollection({ /* 你之前的配置 */ });
 
-const blog = defineCollection({
-    type: 'content',
-    schema: z.object({
-        title: z.string(),
-        description: z.string(),
-        pubDate: z.coerce.date(),
-        updatedDate: z.coerce.date().optional(),
-        heroImage: z.string().optional(),
-    }),
-});
-
-const changelog = defineCollection({
+const writing = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
-    date: z.coerce.date(),
+    date: z.string(),
+    description: z.string(),
+    cover: image(), 
     tags: z.array(z.string()).optional(),
   }),
 });
 
-export const collections = {
-  blog: blog,
-  changelog: changelog, // 确保这里引用了上面定义的 const changelog
-};
+export const collections = { changelog, writing };
