@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const allLogs = await getCollection('changelog');
+allLogs.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+
+const renderedLogs = await Promise.all(
+  allLogs.map(async (log) => {
+    const { Content } = await render(log);
+    return { ...log, Content };
+  })
+);
+---
+
+<BaseLayout title="更新日志 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/explore">到处看看</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <h1 class="page-title">更新日志</h1>
+    <p class="page-sub">这里记录着网站每一次小小进步～ 欢迎一起见证成长 ✦</p>
+
+    <div class="changelog-list">
+      {renderedLogs.map((log) => (
+        <div class="log-entry">
+          <div class="log-header">
+            <span class="log-date">{log.data.date}</span>
+            <h2 class="log-title">{log.data.title}</h2>
+          </div>
+          <div class="log-content">
+            <Content />
+          </div>
+          {log.data.tags && (
+            <div class="log-tags">
+              {log.data.tags.map(tag => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {renderedLogs.length === 0 && (
+      <p class="no-logs">暂时还没有更新记录哦～ 敬请期待！</p>
+    )}
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 康予纳安</span>
+    <span class="footer-dot">持续更新中 ✦</span>
+  </footer>
+</BaseLayout>
+
+<style>
+:root {
+  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
+  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
+  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+}
+
+.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
+.nav-links a:hover { color: var(--blue); }
+.nav-accent { color: var(--red) !important; font-weight: 500; }
+
+.page-main { max-width: 760px; margin: 0 auto; padding: 48px 32px; }
+.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+
+.changelog-list { display: flex; flex-direction: column; gap: 32px; }
+.log-entry {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  transition: all 0.2s;
+}
+.log-entry:hover { border-color: var(--blue); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+
+.log-header { margin-bottom: 16px; }
+.log-date {
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--blue-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.log-title { 
+  font-size: 20px; 
+  font-weight: 500; 
+  color: var(--text); 
+  margin: 12px 0 0 0; 
+}
+
+.log-content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.log-content p { margin-bottom: 16px; }
+
+.log-tags {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 12px;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.no-logs {
+  text-align: center;
+  color: var(--muted);
+  font-size: 15px;
+  padding: 60px 20px;
+}
+
+.footer { 
+  background: var(--surface); 
+  padding: 14px 32px; 
+  border-top: 0.5px solid var(--border); 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 12px; 
+  color: var(--hint); 
+  margin-top: 60px; 
+}
+.footer-dot { color: var(--blue); }
+</style>

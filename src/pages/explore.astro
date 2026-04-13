@@ -1,5 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 🔥 自动获取 changelog 最新日期，让 NEW 标能正常工作
+const allChangelogs = await getCollection('changelog');
+const latestChangelog = allChangelogs
+  .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
+
+const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 ---
 
 <BaseLayout title="到处看看 · 康予纳安">
@@ -8,6 +16,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="nav-links">
       <a href="/explore" class="nav-active">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
+      
+      <!-- 🔥 新增：更新日志 + 自动 NEW 红标 -->
+      <a href="/changelog" id="updates-link" class="nav-updates">
+        更新日志
+        <span id="new-badge" class="new-badge" data-last-date={latestDate}>NEW</span>
+      </a>
+      
       <a href="/about">关于我</a>
     </div>
   </nav>
@@ -15,7 +30,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <main class="page-main">
     <h1 class="page-title">到处看看</h1>
     <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
-
     <div class="explore-grid">
       <a href="/camellya" class="explore-card card-cam">
         <div class="card-cover">
@@ -27,7 +41,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="card-link">进入专区 →</div>
         </div>
       </a>
-
       <a href="/gallery" class="explore-card card-gallery">
         <div class="card-cover cover-gallery">
           <div class="cover-icon">🎨</div>
@@ -38,7 +51,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="card-link">浏览画集 →</div>
         </div>
       </a>
-
       <a href="/writing" class="explore-card card-writing">
         <div class="card-cover cover-writing">
           <div class="cover-icon">✍️</div>
@@ -72,29 +84,77 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .nav-active { color: var(--blue) !important; font-weight: 500; }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
 
+/* 🔥 新增的更新日志样式 */
+.nav-updates {
+  position: relative;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding-right: 4px;
+}
+.nav-updates:hover { color: var(--blue); }
+
+.new-badge {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  background: var(--red);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 20px;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(201, 64, 64, 0.4);
+  animation: badge-pulse 2s infinite;
+  display: none;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
 .page-main { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
 .page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 36px; }
-
 .explore-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-
 .explore-card { background: var(--surface); border-radius: 16px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: border-color 0.2s; }
 .explore-card:hover { border-color: var(--blue); }
-
 .card-cover { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; }
-.card-cam { }
-.cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
 .card-cam .card-cover { background: #FAFAE8; }
-.cover-vlog { background: var(--blue-light); }
+.cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
 .cover-gallery { background: var(--red-light); }
 .cover-writing { background: #F0EEF8; }
 .cover-icon { font-size: 48px; }
-
 .card-info { padding: 18px 20px 20px; }
 .card-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .card-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
 .card-link { font-size: 12px; color: var(--blue); }
-
 .footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
 .footer-dot { color: var(--blue); }
+
+@media (max-width: 768px) {
+  .new-badge { top: -5px; right: -10px; font-size: 8px; padding: 0 4px; }
+}
 </style>
+
+<script>
+  // 🔥 NEW 标自动显示逻辑
+  const badge = document.getElementById('new-badge');
+  const link = document.getElementById('updates-link');
+  const lastUpdateDate = badge ? badge.dataset.lastDate : '2026-04-10';
+
+  const lastSeen = localStorage.getItem('lastSeenChangelog');
+
+  if (badge && (!lastSeen || lastSeen < lastUpdateDate)) {
+    badge.style.display = 'inline';
+  }
+
+  if (link) {
+    link.addEventListener('click', () => {
+      localStorage.setItem('lastSeenChangelog', lastUpdateDate);
+      if (badge) badge.style.display = 'none';
+    });
+  }
+</script>
