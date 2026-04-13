@@ -1,8 +1,8 @@
 ---
 title: 人工智能的未来必将成为我们不可或缺的工具
-date: '2026-04-13'   # ← 关键！必须加单引号！！
+date: '2026-04-13'
+cover: /writing/ai-future-cover.png   # ←←← 我在这里加的！必须带斜杠 /
 description: 探讨AI如何从单纯的算法演变为人类智慧的延伸，以及它将如何深刻改变我们的生活与工作。
-cover: public/writing/ai-future-cover.png
 ---
 
 **作者：Connor Zhang**  

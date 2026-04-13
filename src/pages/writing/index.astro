@@ -17,9 +17,9 @@ allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.date));
       {allPosts.map(post => (
         <a href={`/writing/${post.id}`} class="article-card">
           <div class="cover-wrapper">
-            <!-- 终极保险路径写法 -->
+            <!-- 🔥 最保险的封面写法（专门为你加的） -->
             <img 
-              src={post.data.cover?.startsWith('/') ? post.data.cover : `/writing/${post.data.cover?.split('/').pop() || ''}`}
+              src={post.data.cover?.startsWith('/') ? post.data.cover : `/writing/ai-future-cover.png`}
               alt={post.data.title || '文章封面'}
               loading="lazy"
               width="300"
@@ -74,6 +74,7 @@ allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.date));
     overflow: hidden;
     border-radius: 12px;
   }
+  
   .article-card:hover { 
     transform: translateY(-8px); 
     box-shadow: 0 16px 32px rgba(61, 43, 31, 0.12); 
@@ -82,27 +83,33 @@ allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.date));
   .cover-wrapper { 
     height: 220px; 
     overflow: hidden; 
-    background: #f5f0e8;     /* 没加载出来时有个暖色底，不会白花花 */
-    position: relative;
+    background: #f5f0e8; 
   }
+  
   .cover-wrapper img { 
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
     transition: transform 0.4s ease;
   }
+  
   .article-card:hover .cover-wrapper img {
     transform: scale(1.06);
   }
 
-  .card-info { padding: 1.5rem; }
+  .card-info { 
+    padding: 1.5rem; 
+  }
   .card-info h2 { 
     font-family: "Noto Serif SC", serif; 
     font-size: 1.25rem; 
     margin: 0.5rem 0; 
     color: #3d2b1f; 
   }
-  .date { font-size: 0.8rem; color: #a69683; }
+  .date { 
+    font-size: 0.8rem; 
+    color: #a69683; 
+  }
   .card-info p { 
     font-size: 0.9rem; 
     color: #666; 
