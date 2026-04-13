@@ -1,47 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('writing');
-  return posts.map(entry => ({
-    params: { slug: entry.slug }, 
-    props: { entry },
-  }));
+const { slug } = Astro.params;  // [..slug] 的参数其实是数组，但我们先简单取第一个
+const post = await getEntry('writing', slug?.[0] || slug);
+
+if (!post) {
+  return Astro.redirect('/404');  // 或者你自己弄个 404 页面
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
-// 假设 PDF 文件名和文章 Slug 一致，比如 ai-future.pdf
-const pdfPath = `/downloads/${entry.slug}.pdf`; 
+const { Content } = await post.render();
 ---
 
-<BaseLayout title={`${entry.data.title} · 康予纳安`}>
-  <article class="reading-room">
-    <header class="post-header">
-      <div class="meta">{entry.data.date}</div>
-      <h1>{entry.data.title}</h1>
-    </header>
+<BaseLayout title={`${post.data.title} · 藏书阁`}>
+  <main class="post-page" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem; background: #fdfbf7;">
+    <img 
+      src={post.data.cover} 
+      alt={post.data.title}
+      style="width: 100%; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.1);"
+    />
+    <h1 style="font-family: 'Noto Serif SC', serif; color: #3d2b1f; text-align: center;">{post.data.title}</h1>
+    <p style="text-align: center; color: #a69683; margin-bottom: 3rem;">{post.data.date}</p>
     
-    <div class="prose">
+    <article class="prose">
       <Content />
-    </div>
-
-    <footer class="post-footer">
-      <a href={pdfPath} class="download-btn" download>📥 下载 PDF 讲义</a>
-      <a href="/writing" class="back-link">← 返回藏书阁大厅</a>
-    </footer>
-  </article>
+    </article>
+  </main>
 </BaseLayout>
-
-<style>
-  /* 在原有样式基础上加上按钮样式 */
-  .download-btn { display: inline-block; margin-right: 2rem; color: #d4a373; text-decoration: none; font-weight: bold; border: 1px solid #d4a373; padding: 0.5rem 1rem; border-radius: 4px; }
-  .download-btn:hover { background: #d4a373; color: white; }
-  .reading-room { max-width: 800px; margin: 0 auto; padding: 6rem 2rem; background: #fdfbf7; min-height: 100vh; }
-  .post-header { text-align: center; margin-bottom: 4rem; }
-  .post-header h1 { font-family: "Noto Serif SC", serif; font-size: 2.5rem; color: #2c1e14; }
-  .prose { font-family: "Noto Serif SC", serif; font-size: 1.15rem; line-height: 2; color: #333; }
-  .post-footer { margin-top: 5rem; padding-top: 2rem; border-top: 1px double #d4c5b0; }
-  .back-link { color: #8d6e63; text-decoration: none; font-weight: bold; }
-</style>
