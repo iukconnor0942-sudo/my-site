@@ -1,11 +1,12 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';  // ← 这里加了 render！
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// 🔥 静态构建必备
 export async function getStaticPaths() {
   const allPosts = await getCollection('writing');
   return allPosts.map((post) => ({
-    params: { slug: post.id }   // ← 改成 post.id！
+    params: { slug: post.id }   // 用 post.id 最稳
   }));
 }
 
@@ -16,7 +17,8 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-const { Content } = await post.render();
+// 🔥 关键修复：改成 render(post)！
+const { Content } = await render(post);
 ---
 
 <BaseLayout title={`${post.data.title} · 藏书阁`}>
@@ -28,6 +30,7 @@ const { Content } = await post.render();
     />
     <h1 style="font-family: 'Noto Serif SC', serif; color: #3d2b1f; text-align: center; margin-bottom: 0.5rem;">{post.data.title}</h1>
     <p style="text-align: center; color: #a69683; margin-bottom: 3rem;">{post.data.date}</p>
+    
     <article class="prose" style="line-height: 1.8; font-size: 1.05rem;">
       <Content />
     </article>
