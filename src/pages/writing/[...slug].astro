@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
-  // 核心：从正确的 'writing' 集合获取数据
   const posts = await getCollection('writing');
   return posts.map(entry => ({
     params: { slug: entry.slug }, 
@@ -13,6 +12,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+// 假设 PDF 文件名和文章 Slug 一致，比如 ai-future.pdf
+const pdfPath = `/downloads/${entry.slug}.pdf`; 
 ---
 
 <BaseLayout title={`${entry.data.title} · 康予纳安`}>
@@ -27,12 +28,16 @@ const { Content } = await entry.render();
     </div>
 
     <footer class="post-footer">
+      <a href={pdfPath} class="download-btn" download>📥 下载 PDF 讲义</a>
       <a href="/writing" class="back-link">← 返回藏书阁大厅</a>
     </footer>
   </article>
 </BaseLayout>
 
 <style>
+  /* 在原有样式基础上加上按钮样式 */
+  .download-btn { display: inline-block; margin-right: 2rem; color: #d4a373; text-decoration: none; font-weight: bold; border: 1px solid #d4a373; padding: 0.5rem 1rem; border-radius: 4px; }
+  .download-btn:hover { background: #d4a373; color: white; }
   .reading-room { max-width: 800px; margin: 0 auto; padding: 6rem 2rem; background: #fdfbf7; min-height: 100vh; }
   .post-header { text-align: center; margin-bottom: 4rem; }
   .post-header h1 { font-family: "Noto Serif SC", serif; font-size: 2.5rem; color: #2c1e14; }
