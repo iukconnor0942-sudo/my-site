@@ -11,7 +11,7 @@ const writing = defineCollection({
     title: z.string(),
     date: z.string(),
     description: z.string(),
-    cover: z.string(), // 统一用字符串，避免 image() 校验失败
+    cover: z.string(), // 使用字符串以兼容 public 文件夹路径
     tags: z.array(z.string()).optional(),
   }),
 });

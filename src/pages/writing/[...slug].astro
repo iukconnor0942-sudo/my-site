@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
-  // 核心修复：确保集合名称与 content 下的文件夹一致
+  // 核心：从正确的 'writing' 集合获取数据
   const posts = await getCollection('writing');
   return posts.map(entry => ({
     params: { slug: entry.slug }, 
@@ -27,61 +27,16 @@ const { Content } = await entry.render();
     </div>
 
     <footer class="post-footer">
-      <a href="/downloads/ai-future.pdf" class="download-btn">📥 下载 PDF 存档</a>
-      <a href="/writing" class="back-link">返回大厅</a>
+      <a href="/writing" class="back-link">← 返回藏书阁大厅</a>
     </footer>
   </article>
 </BaseLayout>
 
 <style>
-  .reading-room {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 6rem 2rem;
-    background: #fdfbf7;
-    min-height: 100vh;
-  }
-  .post-header {
-    text-align: center;
-    margin-bottom: 4rem;
-  }
-  .post-header h1 {
-    font-family: "Noto Serif SC", serif;
-    font-size: 2.5rem;
-    color: #2c1e14;
-    line-height: 1.4;
-  }
-  .prose {
-    font-family: "Noto Serif SC", serif;
-    font-size: 1.15rem;
-    line-height: 2;
-    color: #333;
-    text-align: justify;
-  }
-  .prose :global(h2) {
-    border-left: 4px solid #d4af37;
-    padding-left: 1rem;
-    margin-top: 3rem;
-  }
-  .post-footer {
-    margin-top: 5rem;
-    padding-top: 2rem;
-    border-top: 1px double #d4c5b0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .download-btn {
-    background: #3d2b1f;
-    color: #fdfbf7;
-    padding: 0.8rem 1.5rem;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-  .back-link {
-    color: #8d6e63;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
+  .reading-room { max-width: 800px; margin: 0 auto; padding: 6rem 2rem; background: #fdfbf7; min-height: 100vh; }
+  .post-header { text-align: center; margin-bottom: 4rem; }
+  .post-header h1 { font-family: "Noto Serif SC", serif; font-size: 2.5rem; color: #2c1e14; }
+  .prose { font-family: "Noto Serif SC", serif; font-size: 1.15rem; line-height: 2; color: #333; }
+  .post-footer { margin-top: 5rem; padding-top: 2rem; border-top: 1px double #d4c5b0; }
+  .back-link { color: #8d6e63; text-decoration: none; font-weight: bold; }
 </style>
