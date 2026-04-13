@@ -2,11 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 🔥 自动获取 changelog 最新日期，让 NEW 标能正常工作
+// 🔥 自动获取 changelog 最新日期，让 NEW 标正常工作
 const allChangelogs = await getCollection('changelog');
 const latestChangelog = allChangelogs
   .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
-
 const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 ---
 
@@ -17,7 +16,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
       <a href="/explore" class="nav-active">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
       
-      <!-- 🔥 新增：更新日志 + 自动 NEW 红标 -->
+      <!-- 更新日志链接（带 NEW 标） -->
       <a href="/changelog" id="updates-link" class="nav-updates">
         更新日志
         <span id="new-badge" class="new-badge" data-last-date={latestDate}>NEW</span>
@@ -30,7 +29,9 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   <main class="page-main">
     <h1 class="page-title">到处看看</h1>
     <p class="page-sub">这里是康纳的创作宇宙，选一个你感兴趣的方向探索吧 🌸</p>
+    
     <div class="explore-grid">
+      <!-- CamEllya 卡片 -->
       <a href="/camellya" class="explore-card card-cam">
         <div class="card-cover">
           <img src="/images/logo.png" alt="CamEllya" class="cover-logo" />
@@ -41,6 +42,8 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
           <div class="card-link">进入专区 →</div>
         </div>
       </a>
+
+      <!-- 画集 卡片 -->
       <a href="/gallery" class="explore-card card-gallery">
         <div class="card-cover cover-gallery">
           <div class="cover-icon">🎨</div>
@@ -51,6 +54,8 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
           <div class="card-link">浏览画集 →</div>
         </div>
       </a>
+
+      <!-- 文章 卡片 -->
       <a href="/writing" class="explore-card card-writing">
         <div class="card-cover cover-writing">
           <div class="cover-icon">✍️</div>
@@ -59,6 +64,18 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
           <div class="card-title">文章</div>
           <div class="card-desc">随笔、思考与观察，把脑子里的想法整理成文字，分享给你。</div>
           <div class="card-link">阅读文章 →</div>
+        </div>
+      </a>
+
+      <!-- 🔥 新增：更新日志 卡片（风格完全一致） -->
+      <a href="/changelog" class="explore-card card-changelog">
+        <div class="card-cover cover-changelog">
+          <div class="cover-icon">📜</div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">更新日志</div>
+          <div class="card-desc">网站每次小小进步的记录～ 欢迎一起见证成长！</div>
+          <div class="card-link">查看记录 →</div>
         </div>
       </a>
     </div>
@@ -76,6 +93,8 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
   --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
 }
+
+/* 导航栏样式（保持不变） */
 .nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
 .nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
 .nav-links { display: flex; gap: 22px; }
@@ -84,7 +103,6 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 .nav-active { color: var(--blue) !important; font-weight: 500; }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
 
-/* 🔥 新增的更新日志样式 */
 .nav-updates {
   position: relative;
   color: var(--muted);
@@ -115,27 +133,66 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   50% { transform: scale(1.2); }
 }
 
+/* 卡片通用样式 */
 .page-main { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
 .page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 36px; }
-.explore-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.explore-card { background: var(--surface); border-radius: 16px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: border-color 0.2s; }
+
+.explore-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+  gap: 16px; 
+}
+
+.explore-card { 
+  background: var(--surface); 
+  border-radius: 16px; 
+  border: 0.5px solid var(--border); 
+  overflow: hidden; 
+  text-decoration: none; 
+  color: inherit; 
+  display: flex; 
+  flex-direction: column; 
+  transition: border-color 0.2s; 
+}
 .explore-card:hover { border-color: var(--blue); }
-.card-cover { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; }
-.card-cam .card-cover { background: #FAFAE8; }
+
+.card-cover { 
+  width: 100%; 
+  height: 180px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
 .cover-logo { width: 60%; max-height: 120px; object-fit: contain; }
+
+.card-cam .card-cover { background: #FAFAE8; }
 .cover-gallery { background: var(--red-light); }
 .cover-writing { background: #F0EEF8; }
+.cover-changelog { background: #F0F4FF; }   /* 新增的更新日志卡片颜色 */
+
 .cover-icon { font-size: 48px; }
+
 .card-info { padding: 18px 20px 20px; }
 .card-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 .card-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
 .card-link { font-size: 12px; color: var(--blue); }
-.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
+
+.footer { 
+  background: var(--surface); 
+  padding: 14px 32px; 
+  border-top: 0.5px solid var(--border); 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 12px; 
+  color: var(--hint); 
+  margin-top: 40px; 
+}
 .footer-dot { color: var(--blue); }
 
 @media (max-width: 768px) {
   .new-badge { top: -5px; right: -10px; font-size: 8px; padding: 0 4px; }
+  .explore-grid { grid-template-columns: 1fr; }
 }
 </style>
 
@@ -144,13 +201,11 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   const badge = document.getElementById('new-badge');
   const link = document.getElementById('updates-link');
   const lastUpdateDate = badge ? badge.dataset.lastDate : '2026-04-10';
-
   const lastSeen = localStorage.getItem('lastSeenChangelog');
 
   if (badge && (!lastSeen || lastSeen < lastUpdateDate)) {
     badge.style.display = 'inline';
   }
-
   if (link) {
     link.addEventListener('click', () => {
       localStorage.setItem('lastSeenChangelog', lastUpdateDate);
