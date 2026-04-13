@@ -34,12 +34,14 @@ const renderedLogs = await Promise.all(
             <span class="log-date">{log.data.date}</span>
             <h2 class="log-title">{log.data.title}</h2>
           </div>
+          
           <div class="log-content">
-            <Content />
+            <log.Content />
           </div>
+
           {log.data.tags && log.data.tags.length > 0 && (
             <div class="log-tags">
-              {log.data.tags.map(tag => (
+              {log.data.tags.map((tag) => (
                 <span class="tag">#{tag}</span>
               ))}
             </div>
