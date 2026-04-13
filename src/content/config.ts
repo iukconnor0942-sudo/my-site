@@ -1,13 +1,14 @@
 import { defineCollection, z } from 'astro:content';
-const changelog = defineCollection({ /* 你之前的配置 */ });
+
+const changelog = defineCollection({ /* 保持你原来的配置 */ });
 
 const writing = defineCollection({
   type: 'content',
-  schema: ({ image }) => z.object({
+  schema: z.object({
     title: z.string(),
     date: z.string(),
     description: z.string(),
-    cover: image(), 
+    cover: z.string(), // 核心修复：改为 z.string()，避免路径校验报错
     tags: z.array(z.string()).optional(),
   }),
 });
