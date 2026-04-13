@@ -3,9 +3,10 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
+  const posts = await getCollection('writing');
   return posts.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
+    params: { slug: entry.slug }, 
+    props: { entry },
   }));
 }
 
@@ -26,7 +27,7 @@ const { Content } = await entry.render();
 
     <footer class="post-footer">
       <a href="/downloads/ai-future.pdf" class="download-btn">📥 下载 PDF 存档</a>
-      <a href="/posts" class="back-link">返回大厅</a>
+      <a href="/writing" class="back-link">返回大厅</a>
     </footer>
   </article>
 </BaseLayout>
@@ -49,16 +50,15 @@ const { Content } = await entry.render();
     color: #2c1e14;
     line-height: 1.4;
   }
-  /* 文章正文样式：营造图书馆阅读感 */
   .prose {
     font-family: "Noto Serif SC", serif;
     font-size: 1.15rem;
     line-height: 2;
     color: #333;
-    text-align: justify; /* 两端对齐更像书籍 */
+    text-align: justify;
   }
   .prose :global(h2) {
-    border-left: 4px solid #d4af37; /* 黄金分割色装饰 */
+    border-left: 4px solid #d4af37;
     padding-left: 1rem;
     margin-top: 3rem;
   }
@@ -68,6 +68,7 @@ const { Content } = await entry.render();
     border-top: 1px double #d4c5b0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .download-btn {
     background: #3d2b1f;
@@ -75,6 +76,11 @@ const { Content } = await entry.render();
     padding: 0.8rem 1.5rem;
     text-decoration: none;
     border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  .back-link {
+    color: #8d6e63;
+    text-decoration: none;
     font-size: 0.9rem;
   }
 </style>
