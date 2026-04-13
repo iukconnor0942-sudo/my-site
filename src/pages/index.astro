@@ -1,80 +1,93 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 🔥 自动获取 changelog 集合里最新的日期
+const allChangelogs = await getCollection('changelog');
+const latestChangelog = allChangelogs
+  .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
+
+const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 ---
 
-<BaseLayout title="康予纳安">
-  <nav class="nav">
-    <div class="nav-logo">康予纳安</div>
-    <div class="nav-links">
-      <a href="/explore">到处看看</a>
-      <a href="/camellya" class="nav-accent">CamEllya</a>
-      <a href="/about">关于我</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-center">
-      <div class="hero-badges">
-        <span class="badge badge-blue">创作者</span>
-        <span class="badge badge-blue">画师</span>
-        <span class="badge badge-red">乐手</span>
-      </div>
-      <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
-      <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
-      <div class="hero-btns">
-        <a href="/explore" class="btn-primary">到处看看 →</a>
-        <a href="/about" class="btn-secondary">关于我</a>
-        <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="content-section">
-    <div class="section-hd">
-      <span class="section-label">CamEllya 专区</span>
-      <a href="/camellya" class="section-more">进入专区 →</a>
-    </div>
-    <div class="camellya-block">
-      <div class="cam-header">
-        <div>
-          <div class="cam-title">CamEllya</div>
-          <div class="cam-sub">世界观 · 角色 · 漫画</div>
-        </div>
-        <span class="cam-badge">副主页</span>
-      </div>
-      <div class="cam-grid">
-        <a href="/camellya#characters" class="cam-cell">
-          <div class="cam-cname">角色</div>
-          <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
-        </a>
-        <a href="/camellya#world" class="cam-cell">
-          <div class="cam-cname">世界观</div>
-          <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
-        </a>
-        <a href="/camellya#comics" class="cam-cell">
-          <div class="cam-cname">漫画</div>
-          <div class="cam-cdesc">故事连载、短篇与番外更新</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <div class="tags-strip">
-    <div class="tags">
-      <span class="atag">画画</span>
-      <span class="atag">写字</span>
-      <span class="atag">玩音乐</span>
-      <span class="atag">键盘手</span>
-      <span class="atag atag-red">CamEllya</span>
-    </div>
-    <a href="/about" class="section-more">了解更多关于我 →</a>
+<nav class="nav">
+  <div class="nav-logo">康予纳安</div>
+  <div class="nav-links">
+    <a href="/explore">到处看看</a>
+    <a href="/camellya" class="nav-accent">CamEllya</a>
+    
+    <!-- 🔥 更新日志 + 自动 NEW 红标 -->
+    <a href="/changelog" id="updates-link" class="nav-updates">
+      更新日志
+      <span id="new-badge" class="new-badge" data-last-date={latestDate}>NEW</span>
+    </a>
+    
+    <a href="/about">关于我</a>
   </div>
+</nav>
 
-  <footer class="footer">
-    <span>© 2026 康予纳安</span>
-    <span class="footer-dot">持续更新中 ✦</span>
-  </footer>
-</BaseLayout>
+<!-- 这里开始是你原来的页面内容（hero、CamEllya专区等） -->
+<section class="hero">
+  <div class="hero-center">
+    <div class="hero-badges">
+      <span class="badge badge-blue">创作者</span>
+      <span class="badge badge-blue">画师</span>
+      <span class="badge badge-red">乐手</span>
+    </div>
+    <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
+    <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
+    <div class="hero-btns">
+      <a href="/explore" class="btn-primary">到处看看 →</a>
+      <a href="/about" class="btn-secondary">关于我</a>
+      <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-hd">
+    <span class="section-label">CamEllya 专区</span>
+    <a href="/camellya" class="section-more">进入专区 →</a>
+  </div>
+  <div class="camellya-block">
+    <div class="cam-header">
+      <div>
+        <div class="cam-title">CamEllya</div>
+        <div class="cam-sub">世界观 · 角色 · 漫画</div>
+      </div>
+      <span class="cam-badge">副主页</span>
+    </div>
+    <div class="cam-grid">
+      <a href="/camellya#characters" class="cam-cell">
+        <div class="cam-cname">角色</div>
+        <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
+      </a>
+      <a href="/camellya#world" class="cam-cell">
+        <div class="cam-cname">世界观</div>
+        <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
+      </a>
+      <a href="/camellya#comics" class="cam-cell">
+        <div class="cam-cname">漫画</div>
+        <div class="cam-cdesc">故事连载、短篇与番外更新</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="tags-strip">
+  <div class="tags">
+    <span class="atag">画画</span>
+    <span class="atag">写字</span>
+    <span class="atag">玩音乐</span>
+    <span class="atag">键盘手</span>
+    <span class="atag atag-red">CamEllya</span>
+  </div>
+  <a href="/about" class="section-more">了解更多关于我 →</a>
+</div>
+
+<footer class="footer">
+  <span>© 2026 康予纳安</span>
+  <span class="footer-dot">持续更新中 ✦</span>
+</footer>
 
 <style>
 :root {
@@ -92,24 +105,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   --border: #e0e4ea;
 }
 
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
+.nav { 
+  background: var(--surface); 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 14px 32px; 
+  border-bottom: 0.5px solid var(--border); 
+}
 .nav-logo { font-size: 15px; font-weight: 500; color: var(--text); }
 .nav-links { display: flex; gap: 22px; }
 .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
 .nav-links a:hover { color: var(--blue); }
 .nav-accent { color: var(--red) !important; font-weight: 500; }
 
-.hero {
-  background-image: url('/images/hero-bg.png');
-  background-size: cover;
-  background-position: center 30%;
+.nav-updates {
   position: relative;
-  padding: 80px 32px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 0.5px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding-right: 4px;
 }
+.nav-updates:hover { color: var(--blue); }
+
+.new-badge {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  background: var(--red);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 20px;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(201, 64, 64, 0.4);
+  animation: badge-pulse 2s infinite;
+  display: none;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.hero { background-image: url('/images/hero-bg.png'); background-size: cover; background-position: center 30%; position: relative; padding: 80px 32px; display: flex; align-items: center; justify-content: center; border-bottom: 0.5px solid var(--border); }
 .hero::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.65); z-index: 0; }
 .hero-center { position: relative; z-index: 1; flex: 1; text-align: center; max-width: 580px; }
 .hero-badges { display: flex; gap: 6px; margin-bottom: 18px; justify-content: center; }
@@ -129,7 +169,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .section-label { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .05em; }
 .section-more { font-size: 12px; color: var(--blue); text-decoration: none; }
-
 .camellya-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
 .cam-header { background: var(--blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--blue-border); display: flex; align-items: center; justify-content: space-between; }
 .cam-title { font-size: 16px; font-weight: 500; color: #1A7FAD; }
@@ -141,16 +180,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .cam-cell:hover { background: #F8FBFE; }
 .cam-cname { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
 .cam-cdesc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-
 .tags-strip { padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
 .tags { display: flex; gap: 8px; flex-wrap: wrap; }
 .atag { font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--surface); border: 0.5px solid var(--border); color: var(--muted); }
 .atag-red { background: var(--red-light); border-color: var(--red-border); color: var(--red); }
-
 .footer { background: var(--surface); padding: 16px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); }
 .footer-dot { color: var(--blue); }
 
-/* 将媒体查询移到了 style 标签内 */
 @media (max-width: 768px) {
   .nav-links { gap: 12px; }
   .nav-links a { font-size: 12px; }
@@ -166,5 +202,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .cam-cell:last-child { border-bottom: none; }
   .tags-strip { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
   .footer { padding: 14px 16px; }
+  .new-badge { top: -5px; right: -10px; font-size: 8px; padding: 0 4px; }
 }
 </style>
+
+<script>
+  const badge = document.getElementById('new-badge');
+  const link = document.getElementById('updates-link');
+  const lastUpdateDate = badge ? badge.dataset.lastDate : '2026-04-10';
+
+  const lastSeen = localStorage.getItem('lastSeenChangelog');
+
+  if (badge && (!lastSeen || lastSeen < lastUpdateDate)) {
+    badge.style.display = 'inline';
+  }
+
+  if (link) {
+    link.addEventListener('click', () => {
+      localStorage.setItem('lastSeenChangelog', lastUpdateDate);
+      if (badge) badge.style.display = 'none';
+    });
+  }
+</script>
