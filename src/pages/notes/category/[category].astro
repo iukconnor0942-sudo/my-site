@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 1. 动态生成路径：告诉 Astro 有哪些分类页面需要生成
+export async function getStaticPaths() {
+  const allNotes = await getCollection('notes');
+  
+  // 找出所有唯一的分类名
+  const uniqueCategories = [...new Set(allNotes.map((note) => note.data.category))];
+
+  return uniqueCategories.map((cat) => {
+    // 这里的 params.category 就是 URL 里的名称
+    // 建议在 MD 里统一使用这种格式，或者在这里做个转换
+    return {
+      params: { category: cat.toLowerCase().replace(/\s+/g, '-') },
+      props: { categoryName: cat, notes: allNotes.filter(n => n.data.category === cat) },
+    };
+  });
+}
+
+const { categoryName, notes } = Astro.props;
+---
+
+<BaseLayout title={`${categoryName} · 笔记列表`}>
+  <main class="category-page">
+    <header class="category-header">
+      <div class="header-content">
+        <nav class="breadcrumb">
+          <a href="/notes">KNOWLEDGE BASE</a> / {categoryName.toUpperCase()}
+        </nav>
+        <h1>{categoryName}<span>.</span></h1>
+        <p class="count">共归档了 {notes.length} 篇笔记</p>
+      </div>
+    </header>
+
+    <section class="notes-grid">
+      {notes.map((note) => (
+        <a href={`/notes/${note.slug}`} class="note-card">
+          <div class="card-image">
+            <img src={note.data.cover} alt={note.data.title} loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="date-tag">CHAPTER {note.data.order || '·'}</span>
+            <h3>{note.data.title}</h3>
+            <p>{note.data.description}</p>
+            <div class="card-footer">
+              <span>READ MORE</span>
+              <span class="arrow">→</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </section>
+
+    {notes.length === 0 && (
+      <div class="empty-state">
+        <p>该分类下暂无内容，笔记正在构思中...</p>
+      </div>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .category-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 140px 40px;
+    min-height: 100vh;
+  }
+
+  .category-header {
+    margin-bottom: 80px;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  .breadcrumb a {
+    color: #666;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  .breadcrumb a:hover { color: #fff; }
+
+  h1 { font-size: 56px; margin: 0; font-weight: 700; }
+  h1 span { color: #333; }
+  .count { color: #444; margin-top: 10px; font-size: 14px; }
+
+  /* 笔记卡片网格 */
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+  }
+
+  .note-card {
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 20px;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .note-card:hover {
+    transform: translateY(-8px);
+    border-color: #333;
+    background: #141414;
+  }
+
+  .card-image {
+    height: 200px;
+    overflow: hidden;
+    background: #111;
+  }
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: 0.6s;
+  }
+  .note-card:hover .card-image img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .card-body { padding: 28px; }
+  .date-tag { font-size: 10px; color: #666; font-weight: 700; letter-spacing: 1px; }
+  h3 { font-size: 22px; margin: 12px 0; font-weight: 600; }
+  p { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 24px; }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #666;
+  }
+  .arrow { transition: 0.3s; }
+  .note-card:hover .arrow { transform: translateX(5px); color: #fff; }
+  .note-card:hover .card-footer { color: #fff; }
+
+  @media (max-width: 768px) {
+    .category-page { padding: 100px 24px; }
+    h1 { font-size: 40px; }
+    .notes-grid { grid-template-columns: 1fr; }
+  }
+</style>
