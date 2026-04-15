@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 1. 动态生成路径：告诉 Astro 有哪些分类页面需要生成
+// 1. 动态生成路径与 props
 export async function getStaticPaths() {
   const allNotes = await getCollection('notes');
   
@@ -10,16 +10,24 @@ export async function getStaticPaths() {
   const uniqueCategories = [...new Set(allNotes.map((note) => note.data.category))];
 
   return uniqueCategories.map((cat) => {
-    // 这里的 params.category 就是 URL 里的名称
-    // 建议在 MD 里统一使用这种格式，或者在这里做个转换
+    // 🔥 核心补丁：在这里自动生成该分类对应的封面路径
+    // 原理：分类是 "BJU PRESS"，对应的图就是 "/images/notes/covers/bju-press.jpg"
+    const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
+    const computedCoverPath = `/images/notes/covers/${catSlug}.jpg`;
+
     return {
-      params: { category: cat.toLowerCase().replace(/\s+/g, '-') },
-      props: { categoryName: cat, notes: allNotes.filter(n => n.data.category === cat) },
+      params: { category: catSlug },
+      props: { 
+        categoryName: cat, 
+        notes: allNotes.filter(n => n.data.category === cat),
+        categoryCover: computedCoverPath // 将图片路径通过 prop 传下去
+      },
     };
   });
 }
 
-const { categoryName, notes } = Astro.props;
+// 接收 props
+const { categoryName, notes, categoryCover } = Astro.props;
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
@@ -30,7 +38,7 @@ const { categoryName, notes } = Astro.props;
           <a href="/notes">KNOWLEDGE BASE</a> / {categoryName.toUpperCase()}
         </nav>
         <h1>{categoryName}<span>.</span></h1>
-        <p class="count">共归档了 {notes.length} 篇笔记</p>
+        <p class="count">共归档了 {notes.length} 篇理科笔记，正在进行秩序重组。</p>
       </div>
     </header>
 
@@ -38,14 +46,15 @@ const { categoryName, notes } = Astro.props;
       {notes.map((note) => (
         <a href={`/notes/${note.slug}`} class="note-card">
           <div class="card-image">
-            <img src={note.data.cover} alt={note.data.title} loading="lazy" />
+            {/* 优先检查图片路径，如果没填就用灰色占位 */}
+            <img src={note.data.cover || "/images/notes/placeholder.jpg"} alt={note.data.title} loading="lazy" />
           </div>
           <div class="card-body">
-            <span class="date-tag">CHAPTER {note.data.order || '·'}</span>
+            <span class="date-tag">ORDER {note.data.order || '·'}</span>
             <h3>{note.data.title}</h3>
             <p>{note.data.description}</p>
             <div class="card-footer">
-              <span>READ MORE</span>
+              <span>进入阅读</span>
               <span class="arrow">→</span>
             </div>
           </div>
@@ -55,13 +64,22 @@ const { categoryName, notes } = Astro.props;
 
     {notes.length === 0 && (
       <div class="empty-state">
-        <p>该分类下暂无内容，笔记正在构思中...</p>
+        <p>该分类下暂无内容，知识网络正在编织中...</p>
       </div>
     )}
   </main>
 </BaseLayout>
 
 <style>
+  :root {
+    --bg: #F2F4F6;
+    --surface: #ffffff;
+    --blue: #4AACDB;
+    --text-main: #1a1a1a;
+    --text-dim: #666;
+    --border: #e0e4ea;
+  }
+
   .category-page {
     max-width: 1200px;
     margin: 0 auto;
@@ -76,19 +94,19 @@ const { categoryName, notes } = Astro.props;
   .breadcrumb {
     font-size: 11px;
     letter-spacing: 2px;
-    color: #666;
+    color: var(--text-dim);
     margin-bottom: 20px;
   }
   .breadcrumb a {
-    color: #666;
+    color: var(--text-dim);
     text-decoration: none;
     transition: 0.3s;
   }
-  .breadcrumb a:hover { color: #fff; }
+  .breadcrumb a:hover { color: var(--blue); }
 
-  h1 { font-size: 56px; margin: 0; font-weight: 700; }
-  h1 span { color: #333; }
-  .count { color: #444; margin-top: 10px; font-size: 14px; }
+  h1 { font-size: 56px; margin: 0; font-weight: 700; color: var(--text-main); }
+  h1 span { color: #ccc; }
+  .count { color: #888; margin-top: 10px; font-size: 14px; }
 
   /* 笔记卡片网格 */
   .notes-grid {
@@ -98,9 +116,9 @@ const { categoryName, notes } = Astro.props;
   }
 
   .note-card {
-    background: #0f0f0f;
-    border: 1px solid #1a1a1a;
-    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
     text-decoration: none;
     color: inherit;
     overflow: hidden;
@@ -109,8 +127,8 @@ const { categoryName, notes } = Astro.props;
 
   .note-card:hover {
     transform: translateY(-8px);
-    border-color: #333;
-    background: #141414;
+    border-color: #ccc;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
   }
 
   .card-image {
@@ -133,9 +151,9 @@ const { categoryName, notes } = Astro.props;
   }
 
   .card-body { padding: 28px; }
-  .date-tag { font-size: 10px; color: #666; font-weight: 700; letter-spacing: 1px; }
-  h3 { font-size: 22px; margin: 12px 0; font-weight: 600; }
-  p { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 24px; }
+  .date-tag { font-size: 10px; color: var(--text-dim); font-weight: 700; letter-spacing: 1px; }
+  h3 { font-size: 22px; margin: 12px 0; font-weight: 600; color: var(--text-main); }
+  p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; height: 44px; overflow: hidden; }
 
   .card-footer {
     display: flex;
@@ -143,11 +161,11 @@ const { categoryName, notes } = Astro.props;
     align-items: center;
     font-size: 11px;
     font-weight: 700;
-    color: #666;
+    color: var(--text-dim);
   }
-  .arrow { transition: 0.3s; }
-  .note-card:hover .arrow { transform: translateX(5px); color: #fff; }
-  .note-card:hover .card-footer { color: #fff; }
+  .arrow { transition: 0.3s; color: var(--blue); }
+  .note-card:hover .arrow { transform: translateX(5px); color: var(--blue); }
+  .note-card:hover .card-footer { color: var(--blue); }
 
   @media (max-width: 768px) {
     .category-page { padding: 100px 24px; }
