@@ -1,14 +1,12 @@
 ---
 title: "Pre-Algebra"
 description: "关于代数基础逻辑、负数运算与方程推导的深度笔记。"
-category: "bju-press"
+category: "BJU PRESS"
 cover: "/images/notes-cover-1.jpg"
 order: 1
 ---
-
 **Chapter1**
 **加法 (Addition)**
-
 1.  - 使用数轴表示加法。
     - 计算两个整数的和。
     - 运算规则：同号相加取同号，异号相加取较大的绝对值，符号为较大数的符号。
