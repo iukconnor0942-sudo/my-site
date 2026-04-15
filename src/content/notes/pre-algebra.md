@@ -1,13 +1,12 @@
 ---
 title: "Pre-Algebra"
 description: "关于代数基础逻辑、负数运算与方程推导的深度笔记。"
-category: "BJU PRESS"
+category:"BJU PRESS"
 cover: "/images/notes-cover-1.jpg"
 order: 1
 ---
 
 **Chapter1**
-
 **加法 (Addition)**
 
 1.  - 使用数轴表示加法。
