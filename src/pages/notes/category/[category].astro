@@ -12,19 +12,22 @@ export async function getStaticPaths() {
     { slug: 'coding', name: 'AI 使用' } 
   ];
 
-  return fixedCategories.map(cat => {
+    return fixedCategories.map(cat => {
     // 过滤出属于该分类的笔记
     const filteredNotes = allNotes.filter(n => 
       n.data.category === cat.name || 
       n.data.category.toLowerCase().replace(/\s+/g, '-') === cat.slug
     );
-    
+
+    // 将 collection entry 转换为可序列化的简单对象，避免跨构建传递复杂引用导致的问题
+    const serializableNotes = filteredNotes.map(n => ({ slug: n.slug, data: n.data }));
+
     return {
       params: { category: cat.slug },
       props: { 
         categoryName: cat.name,
         categorySlug: cat.slug,
-        notes: filteredNotes
+        notes: serializableNotes
       },
     };
   });
