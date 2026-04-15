@@ -3,20 +3,28 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  // 1. 尝试获取集合
   const allNotes = await getCollection('notes');
   
-  // 1. 获取所有分类并去重
+  // 2. 调试逻辑：如果集合为空，手动返回一个基础路径防止 404
+  if (!allNotes || allNotes.length === 0) {
+    console.warn("⚠️ Astro Collection 'notes' is empty!");
+    return [
+      {
+        params: { category: 'bju-press' },
+        props: { categoryName: 'BJU PRESS', notes: [] }
+      }
+    ];
+  }
+
   const categories = [...new Set(allNotes.map(note => note.data.category))];
 
   return categories.map(cat => {
-    // 2. 这里的 slug 必须和你在 index.astro 里链接的 href 完全一致
     const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-    
     return {
       params: { category: catSlug },
       props: { 
         categoryName: cat,
-        // 3. 过滤出属于该分类的笔记
         notes: allNotes.filter(n => n.data.category === cat) 
       },
     };
@@ -36,25 +44,37 @@ const { categoryName, notes } = Astro.props;
     </header>
 
     <section class="notes-grid">
-      {notes.map((note) => (
-        <a href={`/notes/${note.slug}`} class="note-card">
-          <div class="card-image">
-            <img src={note.data.cover} alt={note.data.title} />
-          </div>
-          <div class="card-body">
-            <h3>{note.data.title}</h3>
-            <p>{note.data.description}</p>
-          </div>
-        </a>
-      ))}
+      {notes.length > 0 ? (
+        notes.map((note) => (
+          <a href={`/notes/${note.slug}`} class="note-card">
+            <div class="card-image">
+              {/* 这里使用 note.data.cover，确保 MD 里的路径是 /images/ 开头 */}
+              <img src={note.data.cover} alt={note.data.title} />
+            </div>
+            <div class="card-body">
+              <h3>{note.data.title}</h3>
+              <p>{note.data.description}</p>
+            </div>
+          </a>
+        ))
+      ) : (
+        <div class="empty-state">
+          <p>正在读取笔记数据，请稍后刷新...</p>
+        </div>
+      )}
     </section>
   </main>
 </BaseLayout>
 
 <style>
-  /* 保持之前的样式不变 */
-  .category-page { max-width: 1200px; margin: 0 auto; padding: 80px 40px; }
-  .note-card { display: block; background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; }
+  .category-page { max-width: 1200px; margin: 0 auto; padding: 140px 40px; }
+  .category-header { margin-bottom: 60px; }
+  .breadcrumb { font-size: 12px; color: #888; margin-bottom: 10px; }
+  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+  .note-card { background: #fff; border: 1px solid #eee; border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; }
+  .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
   .card-image img { width: 100%; height: 200px; object-fit: cover; }
-  .card-body { padding: 20px; }
+  .card-body { padding: 25px; }
+  h3 { margin: 0 0 10px 0; font-size: 20px; }
+  p { font-size: 14px; color: #666; line-height: 1.6; }
 </style>
