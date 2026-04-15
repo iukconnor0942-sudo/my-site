@@ -13,14 +13,30 @@ export async function getStaticPaths() {
   ];
 
     return fixedCategories.map(cat => {
-    // 过滤出属于该分类的笔记
-    const filteredNotes = allNotes.filter(n => 
-      n.data.category === cat.name || 
-      n.data.category.toLowerCase().replace(/\s+/g, '-') === cat.slug
-    );
+    // 过滤出属于该分类的笔记（使用归一化字符串匹配，提升容错率）
+    const normalize = (s) => (s || '').toString().trim().toLowerCase();
+    const toSlug = (s) => normalize(s).replace(/\s+/g, '-');
 
-    // 将 collection entry 转换为可序列化的简单对象，避免跨构建传递复杂引用导致的问题
-    const serializableNotes = filteredNotes.map(n => ({ slug: n.slug, data: n.data }));
+    const filteredNotes = allNotes.filter(n => {
+      const catField = n.data?.category;
+      if (!catField) return false;
+      // 直接比较原始名称（大小写无关）
+      if (normalize(catField) === normalize(cat.name)) return true;
+      // 比较 slug 形式
+      if (toSlug(catField) === cat.slug) return true;
+      // 额外容错：如果字段内包含分类的关键字
+      if (normalize(catField).includes(normalize(cat.name))) return true;
+      return false;
+    });
+
+    // 只传需要的字段，避免跨运行时传递原始引用
+    const serializableNotes = filteredNotes.map(n => ({
+      slug: n.slug,
+      title: n.data.title,
+      description: n.data.description,
+      cover: n.data.cover,
+      order: n.data.order
+    }));
 
     return {
       params: { category: cat.slug },
