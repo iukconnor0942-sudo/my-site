@@ -10,24 +10,22 @@ export async function getStaticPaths() {
   const uniqueCategories = [...new Set(allNotes.map((note) => note.data.category))];
 
   return uniqueCategories.map((cat) => {
-    // 🔥 核心补丁：在这里自动生成该分类对应的封面路径
-    // 原理：分类是 "BJU PRESS"，对应的图就是 "/images/notes/covers/bju-press.jpg"
+    // 转换分类名为 URL 友好的格式 (例如 "BJU PRESS" -> "bju-press")
     const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-    const computedCoverPath = `/images/notes/covers/${catSlug}.jpg`;
-
+    
     return {
       params: { category: catSlug },
       props: { 
         categoryName: cat, 
-        notes: allNotes.filter(n => n.data.category === cat),
-        categoryCover: computedCoverPath // 将图片路径通过 prop 传下去
+        // 这里的过滤逻辑要确保 catSlug 转换前后都能对应上
+        notes: allNotes.filter(n => n.data.category === cat)
       },
     };
   });
 }
 
 // 接收 props
-const { categoryName, notes, categoryCover } = Astro.props;
+const { categoryName, notes } = Astro.props;
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
@@ -46,8 +44,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
       {notes.map((note) => (
         <a href={`/notes/${note.slug}`} class="note-card">
           <div class="card-image">
-            {/* 优先检查图片路径，如果没填就用灰色占位 */}
-            <img src={note.data.cover || "/images/notes/placeholder.jpg"} alt={note.data.title} loading="lazy" />
+            <img src={note.data.cover || "/images/notes-placeholder.jpg"} alt={note.data.title} loading="lazy" />
           </div>
           <div class="card-body">
             <span class="date-tag">ORDER {note.data.order || '·'}</span>
@@ -71,6 +68,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* 保持你喜欢的 Grok 风格变量 */
   :root {
     --bg: #F2F4F6;
     --surface: #ffffff;
@@ -87,9 +85,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
     min-height: 100vh;
   }
 
-  .category-header {
-    margin-bottom: 80px;
-  }
+  .category-header { margin-bottom: 80px; }
 
   .breadcrumb {
     font-size: 11px;
@@ -97,18 +93,13 @@ const { categoryName, notes, categoryCover } = Astro.props;
     color: var(--text-dim);
     margin-bottom: 20px;
   }
-  .breadcrumb a {
-    color: var(--text-dim);
-    text-decoration: none;
-    transition: 0.3s;
-  }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; transition: 0.3s; }
   .breadcrumb a:hover { color: var(--blue); }
 
   h1 { font-size: 56px; margin: 0; font-weight: 700; color: var(--text-main); }
   h1 span { color: #ccc; }
   .count { color: #888; margin-top: 10px; font-size: 14px; }
 
-  /* 笔记卡片网格 */
   .notes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -131,11 +122,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
     box-shadow: 0 20px 40px rgba(0,0,0,0.05);
   }
 
-  .card-image {
-    height: 200px;
-    overflow: hidden;
-    background: #111;
-  }
+  .card-image { height: 200px; overflow: hidden; background: #111; }
   .card-image img {
     width: 100%;
     height: 100%;
@@ -144,11 +131,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
     opacity: 0.7;
     transition: 0.6s;
   }
-  .note-card:hover .card-image img {
-    filter: grayscale(0%);
-    opacity: 1;
-    transform: scale(1.05);
-  }
+  .note-card:hover .card-image img { filter: grayscale(0%); opacity: 1; transform: scale(1.05); }
 
   .card-body { padding: 28px; }
   .date-tag { font-size: 10px; color: var(--text-dim); font-weight: 700; letter-spacing: 1px; }
@@ -164,7 +147,7 @@ const { categoryName, notes, categoryCover } = Astro.props;
     color: var(--text-dim);
   }
   .arrow { transition: 0.3s; color: var(--blue); }
-  .note-card:hover .arrow { transform: translateX(5px); color: var(--blue); }
+  .note-card:hover .arrow { transform: translateX(5px); }
   .note-card:hover .card-footer { color: var(--blue); }
 
   @media (max-width: 768px) {
