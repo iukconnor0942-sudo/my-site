@@ -5,34 +5,35 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const allNotes = await getCollection('notes');
   
-  // 1. 定义你想要手动生成的分类（即使目前没笔记）
-  const manualCategories = [
+  // 1. 在这里硬编码你的专区。Slug 必须和 index.astro 里的链接一致！
+  // 根据你的截图 21.01.54.jpg，你的链接似乎是 /notes/category/coding
+  const fixedCategories = [
     { slug: 'bju-press', name: 'BJU PRESS' },
-    { slug: 'ai-practice', name: 'AI 使用' } // 这里的 slug 必须和 index.astro 的链接一致
+    { slug: 'coding', name: 'AI 使用' } 
   ];
 
-  // 2. 结合 MD 文件里实际存在的分类
-  const foundCategories = allNotes ? [...new Set(allNotes.map(n => n.data.category))] : [];
-  
-  // 3. 统一生成路径
-  const paths = manualCategories.map(cat => {
+  return fixedCategories.map(cat => {
+    // 过滤出属于该分类的笔记
+    const filteredNotes = allNotes.filter(n => 
+      n.data.category === cat.name || 
+      n.data.category.toLowerCase().replace(/\s+/g, '-') === cat.slug
+    );
+    
     return {
       params: { category: cat.slug },
       props: { 
         categoryName: cat.name,
         categorySlug: cat.slug,
-        notes: allNotes ? allNotes.filter(n => n.data.category.toLowerCase().replace(/\s+/g, '-') === cat.slug || n.data.category === cat.name) : []
-      }
+        notes: filteredNotes
+      },
     };
   });
-
-  return paths;
 }
 
 const { categoryName, categorySlug, notes } = Astro.props;
 
-// 专门为 AI 使用专区准备的文案
-const aiEmptyMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...";
+// 你的 AI 专属文案
+const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...";
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
@@ -44,15 +45,16 @@ const aiEmptyMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
       <h1>{categoryName}<span>.</span></h1>
     </header>
 
-    <section class="content-container">
-      {/* 逻辑：如果是 AI 专区且没笔记，显示文案；否则正常显示笔记列表 */}
-      {categorySlug === 'ai-practice' && notes.length === 0 ? (
+    <section class="content-view">
+      {categorySlug === 'coding' && notes.length === 0 ? (
+        /* AI 专区的优雅留白 */
         <div class="empty-state">
           <div class="empty-icon">⌘</div>
-          <p class="empty-text">{aiEmptyMessage}</p>
-          <a href="/notes" class="back-btn">返回知识库</a>
+          <p class="empty-text">{emptyAiMessage}</p>
+          <a href="/notes" class="back-link">← 返回知识库</a>
         </div>
       ) : (
+        /* BJU PRESS 或其他有内容的专区 */
         <div class="notes-grid">
           {notes.map((note) => (
             <a href={`/notes/${note.slug}`} class="note-card">
@@ -60,15 +62,15 @@ const aiEmptyMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
                 <img src={note.data.cover} alt={note.data.title} />
               </div>
               <div class="card-body">
-                <div class="order-tag">STEP {note.data.order}</div>
+                <div class="order-tag">STEP {note.data.order || '·'}</div>
                 <h3>{note.data.title}</h3>
                 <p>{note.data.description}</p>
               </div>
             </a>
           ))}
-          {/* 如果 BJU 也没笔记，给个简单的提示 */}
-          {notes.length === 0 && (
-            <p style="color: #888;">笔记正在同步中...</p>
+          
+          {notes.length === 0 && categorySlug !== 'coding' && (
+            <p class="sync-msg">笔记同步中...</p>
           )}
         </div>
       )}
@@ -79,21 +81,24 @@ const aiEmptyMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
 <style>
   .category-page { max-width: 1100px; margin: 0 auto; padding: 120px 40px; }
   .category-header { margin-bottom: 60px; }
-  .breadcrumb { font-size: 11px; letter-spacing: 2px; color: #888; margin-bottom: 15px; }
-  h1 { font-size: 42px; margin: 0; }
+  .breadcrumb { font-size: 11px; letter-spacing: 2px; color: #888; margin-bottom: 15px; text-decoration: none; }
+  .breadcrumb a { color: inherit; text-decoration: none; }
+  h1 { font-size: 42px; margin: 0; font-weight: 700; }
   h1 span { color: #4AACDB; }
 
-  /* 笔记网格 */
+  /* 笔记展示 */
   .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
   .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; }
   .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
   .card-image img { width: 100%; height: 200px; object-fit: cover; }
   .card-body { padding: 24px; }
-  .order-tag { font-size: 10px; color: #4AACDB; font-weight: bold; margin-bottom: 8px; }
+  .order-tag { font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px; }
+  h3 { margin: 0 0 10px 0; font-size: 20px; }
+  .sync-msg { color: #888; font-style: italic; }
 
-  /* AI 专区专属空状态样式 */
-  .empty-state { text-align: center; padding: 80px 40px; background: #fbfbfb; border-radius: 20px; border: 1px dashed #ddd; }
-  .empty-icon { font-size: 40px; margin-bottom: 20px; color: #ccc; }
-  .empty-text { font-size: 16px; line-height: 1.8; color: #666; max-width: 450px; margin: 0 auto 30px; }
-  .back-btn { font-size: 13px; color: #4AACDB; text-decoration: none; font-weight: bold; }
+  /* AI 专区特殊文案样式 */
+  .empty-state { text-align: center; padding: 100px 40px; background: #fbfbfb; border: 1px dashed #ddd; border-radius: 20px; }
+  .empty-icon { font-size: 40px; color: #ccc; margin-bottom: 20px; }
+  .empty-text { font-size: 16px; color: #666; line-height: 1.8; max-width: 460px; margin: 0 auto 30px; }
+  .back-link { font-size: 13px; color: #4AACDB; font-weight: 600; text-decoration: none; }
 </style>
