@@ -2,7 +2,9 @@ import { defineCollection, z } from 'astro:content';
 
 const changelog = defineCollection({
   type: 'content',
-  schema: z.object({ title: z.string() }),
+  schema: z.object({
+    title: z.string(),
+  }),
 });
 
 const writing = defineCollection({
@@ -11,9 +13,21 @@ const writing = defineCollection({
     title: z.string(),
     date: z.string(),
     description: z.string(),
-    cover: z.string(), // 使用字符串以兼容 public 文件夹路径
+    cover: z.string(),
     tags: z.array(z.string()).optional(),
   }),
 });
 
-export const collections = { writing, changelog };
+// 重点：必须定义并导出 notes
+const notes = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    cover: z.string(),
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = { changelog, writing, notes };
