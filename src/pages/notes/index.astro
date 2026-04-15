@@ -2,16 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 1. 获取所有笔记数据
+// 获取所有笔记并按分类分组
 const allNotes = await getCollection('notes');
+const categories = ['BJU PRESS', '知识可视化', '编程实践']; // 你的预设分类
 
-// 2. 定义你想展示的分类顺序（必须和内容文件里的 category 对应）
-const categories = ['BJU PRESS', '知识可视化', '编程实践'];
-
-// 3. 过滤函数的安全实现
-function getNotesByCategory(categoryName: string) {
-  return allNotes.filter(item => item.data.category === categoryName);
-}
+const getNotesByCategory = (cat: string) => allNotes.filter(n => n.data.category === cat);
 ---
 
 <BaseLayout title="笔记专区 · 康予纳安">
@@ -33,39 +28,34 @@ function getNotesByCategory(categoryName: string) {
     </header>
 
     <div class="content-wrapper">
-      {categories.map(cat => {
-        const categoryNotes = getNotesByCategory(cat);
-        // 只有当该分类下有笔记时才渲染该区域
-        return categoryNotes.length > 0 ? (
-          <section class="cat-section">
-            <div class="cat-header">
-              <span class="cat-dot"></span>
-              <h2>{cat}</h2>
-            </div>
-            
-            <div class="note-grid">
-              {categoryNotes.map(note => (
-                <a href={`/notes/${note.slug}`} class="note-card">
-                  <div class="card-img-wrapper">
-                    {/* 优先检查图片路径，如果没填就用灰色占位 */}
-                    <img src={note.data.cover || "/images/placeholder.jpg"} alt={note.data.title} loading="lazy" />
-                    <div class="overlay"></div>
+      {categories.map(cat => (
+        <section class="cat-section">
+          <div class="cat-header">
+            <span class="cat-dot"></span>
+            <h2>{cat}</h2>
+          </div>
+          
+          <div class="note-grid">
+            {getNotesByCategory(cat).map(note => (
+              <a href={`/notes/${note.slug}`} class="note-card">
+                <div class="card-img-wrapper">
+                  <img src={note.data.cover} alt={note.data.title} loading="lazy" />
+                  <div class="overlay"></div>
+                </div>
+                <div class="card-content">
+                  <span class="card-type">NOTE</span>
+                  <h3>{note.data.title}</h3>
+                  <p>{note.data.description}</p>
+                  <div class="card-footer">
+                    <span>进入阅读</span>
+                    <span class="arrow">→</span>
                   </div>
-                  <div class="card-content">
-                    <span class="card-type">NOTE</span>
-                    <h3>{note.data.title}</h3>
-                    <p>{note.data.description}</p>
-                    <div class="card-footer">
-                      <span>进入阅读</span>
-                      <span class="arrow">→</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
-        ) : null;
-      })}
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
 
     <section class="formula-footer">
@@ -94,9 +84,10 @@ function getNotesByCategory(categoryName: string) {
     background: var(--bg);
     color: var(--text-main);
     min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
+  /* Hero Section */
   .note-hero {
     padding: 140px 40px 80px;
     max-width: 1200px;
@@ -115,7 +106,7 @@ function getNotesByCategory(categoryName: string) {
     margin: 0 0 24px;
     letter-spacing: -2px;
   }
-  .note-hero h1 span { color: #333; }
+  .note-hero h1 span { color: #444; }
   .manifesto {
     font-size: 18px;
     line-height: 1.6;
@@ -123,6 +114,7 @@ function getNotesByCategory(categoryName: string) {
     max-width: 600px;
   }
 
+  /* Categories & Grid */
   .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -143,14 +135,15 @@ function getNotesByCategory(categoryName: string) {
     background: var(--accent);
     border-radius: 50%;
   }
-  .cat-header h2 { font-size: 14px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+  .cat-header h2 { font-size: 14px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; }
 
   .note-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 32px;
   }
 
+  /* Card Style: Apple/Grok High-End */
   .note-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -163,35 +156,76 @@ function getNotesByCategory(categoryName: string) {
   .note-card:hover {
     transform: translateY(-8px);
     border-color: #444;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
 
-  .card-img-wrapper { height: 180px; position: relative; background: #111; overflow: hidden; }
+  .card-img-wrapper {
+    height: 180px;
+    position: relative;
+    background: #111;
+  }
   .card-img-wrapper img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     filter: grayscale(100%) brightness(0.6);
     transition: 0.6s;
   }
-  .note-card:hover .card-img-wrapper img { filter: grayscale(0%) brightness(0.8); transform: scale(1.05); }
-  .overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--surface)); }
+  .note-card:hover .card-img-wrapper img {
+    filter: grayscale(0%) brightness(0.8);
+    transform: scale(1.05);
+  }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+  }
 
   .card-content { padding: 24px; }
-  .card-type { font-size: 9px; background: #222; padding: 2px 8px; border-radius: 4px; color: #888; margin-bottom: 12px; display: inline-block; }
+  .card-type {
+    font-size: 9px;
+    background: #222;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #888;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
   .card-content h3 { font-size: 22px; margin: 0 0 12px; }
-  .card-content p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; }
+  .card-content p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; height: 44px; overflow: hidden; }
 
   .card-footer {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px; font-weight: 600; color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    transition: 0.3s;
   }
   .note-card:hover .card-footer { color: var(--accent); }
 
-  .formula-footer { padding: 120px 40px; text-align: center; }
-  .formula-box { max-width: 800px; margin: 0 auto; border-top: 1px solid var(--border); padding-top: 60px; }
-  .math { font-size: 24px; color: #444; margin: 32px 0; }
-  .quote { color: #333; font-size: 14px; font-style: italic; }
+  /* Formula Footer Decor */
+  .formula-footer {
+    padding: 120px 40px;
+    text-align: center;
+    background: linear-gradient(to bottom, var(--bg), #000);
+  }
+  .formula-box {
+    max-width: 800px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding-top: 60px;
+  }
+  .formula-box .tag { font-family: monospace; color: #333; font-size: 12px; margin-bottom: 24px; }
+  .math { font-size: 24px; color: #ccc; margin-bottom: 32px; }
+  .quote { font-style: italic; color: #444; font-size: 14px; }
 
   @media (max-width: 768px) {
+    .note-hero { padding: 100px 24px 60px; }
     .note-hero h1 { font-size: 40px; }
+    .content-wrapper { padding: 0 24px; }
     .note-grid { grid-template-columns: 1fr; }
+    .math { font-size: 16px; overflow-x: auto; }
   }
 </style>
