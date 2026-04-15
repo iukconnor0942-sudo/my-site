@@ -1,7 +1,7 @@
 ---
 title: "Pre-Algebra"
 description: "关于代数基础逻辑、负数运算与方程推导的深度笔记。"
-category: "BJU PRESS"
+category: "bju-press"
 cover: "/images/notes-cover-1.jpg"
 order: 1
 ---

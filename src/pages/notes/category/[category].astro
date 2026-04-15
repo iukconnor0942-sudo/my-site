@@ -5,31 +5,31 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const allNotes = await getCollection('notes');
   
-  // 1. 在这里硬编码你的专区。Slug 必须和 index.astro 里的链接一致！
-  // 根据你的截图 21.01.54.jpg，你的链接似乎是 /notes/category/coding
+  // 1. 硬编码专区配置
   const fixedCategories = [
     { slug: 'bju-press', name: 'BJU PRESS' },
     { slug: 'coding', name: 'AI 使用' } 
   ];
 
-    return fixedCategories.map(cat => {
-    // 过滤出属于该分类的笔记（使用归一化字符串匹配，提升容错率）
+  return fixedCategories.map(cat => {
+    // 归一化处理函数
     const normalize = (s) => (s || '').toString().trim().toLowerCase();
     const toSlug = (s) => normalize(s).replace(/\s+/g, '-');
 
     const filteredNotes = allNotes.filter(n => {
       const catField = n.data?.category;
       if (!catField) return false;
-      // 直接比较原始名称（大小写无关）
-      if (normalize(catField) === normalize(cat.name)) return true;
-      // 比较 slug 形式
-      if (toSlug(catField) === cat.slug) return true;
-      // 额外容错：如果字段内包含分类的关键字
-      if (normalize(catField).includes(normalize(cat.name))) return true;
-      return false;
+      
+      // 多重容错匹配
+      return (
+        normalize(catField) === normalize(cat.name) || 
+        toSlug(catField) === cat.slug ||
+        normalize(catField).includes(normalize(cat.name))
+      );
     });
 
-    // 只传需要的字段，避免跨运行时传递原始引用
+    // 2. 【关键修复】映射数据结构
+    // 这里的对象直接展开了 data 里的内容，方便下方模板调用
     const serializableNotes = filteredNotes.map(n => ({
       slug: n.slug,
       title: n.data.title,
@@ -51,7 +51,7 @@ export async function getStaticPaths() {
 
 const { categoryName, categorySlug, notes } = Astro.props;
 
-// 你的 AI 专属文案
+// AI 专属文案
 const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...";
 ---
 
@@ -73,23 +73,29 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
           <a href="/notes" class="back-link">← 返回知识库</a>
         </div>
       ) : (
-        /* BJU PRESS 或其他有内容的专区 */
+        /* 笔记网格展示 */
         <div class="notes-grid">
           {notes.map((note) => (
+            /* 【注意】这里不再使用 note.data，直接访问属性 */
             <a href={`/notes/${note.slug}`} class="note-card">
               <div class="card-image">
-                <img src={note.data.cover} alt={note.data.title} />
+                <img src={note.cover} alt={note.title} />
               </div>
               <div class="card-body">
-                <div class="order-tag">STEP {note.data.order || '·'}</div>
-                <h3>{note.data.title}</h3>
-                <p>{note.data.description}</p>
+                <div class="order-tag">STEP {note.order || '·'}</div>
+                <h3>{note.title}</h3>
+                <p>{note.description}</p>
               </div>
             </a>
           ))}
           
           {notes.length === 0 && categorySlug !== 'coding' && (
-            <p class="sync-msg">笔记同步中...</p>
+             <div class="empty-state">
+                <p class="sync-msg">笔记正在同步到 {categoryName}...</p>
+                <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
+                  提示：请检查 MD 文件的 category 字段是否为 "{categoryName}"
+                </p>
+             </div>
           )}
         </div>
       )}
@@ -105,18 +111,19 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
   h1 { font-size: 42px; margin: 0; font-weight: 700; }
   h1 span { color: #4AACDB; }
 
-  /* 笔记展示 */
+  /* 笔记展示网格 */
   .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-  .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; }
+  .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; display: flex; flex-direction: column; }
   .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-  .card-image img { width: 100%; height: 200px; object-fit: cover; }
-  .card-body { padding: 24px; }
+  .card-image img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #f5f5f5; }
+  .card-body { padding: 24px; flex-grow: 1; }
   .order-tag { font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px; }
-  h3 { margin: 0 0 10px 0; font-size: 20px; }
+  h3 { margin: 0 0 10px 0; font-size: 20px; line-height: 1.4; }
+  p { font-size: 14px; color: #666; line-height: 1.6; margin: 0; }
   .sync-msg { color: #888; font-style: italic; }
 
-  /* AI 专区特殊文案样式 */
-  .empty-state { text-align: center; padding: 100px 40px; background: #fbfbfb; border: 1px dashed #ddd; border-radius: 20px; }
+  /* 空状态样式 */
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 40px; background: #fbfbfb; border: 1px dashed #ddd; border-radius: 20px; }
   .empty-icon { font-size: 40px; color: #ccc; margin-bottom: 20px; }
   .empty-text { font-size: 16px; color: #666; line-height: 1.8; max-width: 460px; margin: 0 auto 30px; }
   .back-link { font-size: 13px; color: #4AACDB; font-weight: 600; text-decoration: none; }
