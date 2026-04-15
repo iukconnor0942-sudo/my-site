@@ -3,63 +3,75 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  // 1. 尝试获取集合
   const allNotes = await getCollection('notes');
   
-  // 2. 调试逻辑：如果集合为空，手动返回一个基础路径防止 404
-  if (!allNotes || allNotes.length === 0) {
-    console.warn("⚠️ Astro Collection 'notes' is empty!");
-    return [
-      {
-        params: { category: 'bju-press' },
-        props: { categoryName: 'BJU PRESS', notes: [] }
-      }
-    ];
-  }
+  // 定义已知的分类，确保即使文件夹是空的也能生成路径
+  const defaultCategories = ['bju-press', 'ai-practice'];
+  const foundCategories = allNotes ? [...new Set(allNotes.map(note => note.data.category.toLowerCase().replace(/\s+/g, '-')))] : [];
+  
+  // 合并所有需要生成的路径
+  const uniqueSlugs = [...new Set([...defaultCategories, ...foundCategories])];
 
-  const categories = [...new Set(allNotes.map(note => note.data.category))];
-
-  return categories.map(cat => {
-    const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
+  return uniqueSlugs.map(slug => {
+    // 还原显示名称的逻辑
+    const displayName = slug === 'ai-practice' ? 'AI 实践' : (slug === 'bju-press' ? 'BJU PRESS' : slug.toUpperCase());
+    
     return {
-      params: { category: catSlug },
+      params: { category: slug },
       props: { 
-        categoryName: cat,
-        notes: allNotes.filter(n => n.data.category === cat) 
+        categoryName: displayName,
+        categorySlug: slug,
+        notes: allNotes ? allNotes.filter(n => n.data.category.toLowerCase().replace(/\s+/g, '-') === slug) : []
       },
     };
   });
 }
 
-const { categoryName, notes } = Astro.props;
+const { categoryName, categorySlug, notes } = Astro.props;
+
+// 根据分类定制“空状态”文案
+const emptyStates = {
+  'ai-practice': "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...",
+  'bju-press': "理科逻辑正在重构。BJU 教材的深度自学笔记正在编织中，每一道习题都是通往真理的阶梯。",
+  'default': "知识网络正在编织中。这里暂时还没有内容，但思维的触角从未停止生长。"
+};
+
+const currentEmptyMsg = emptyStates[categorySlug] || emptyStates.default;
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
   <main class="category-page">
     <header class="category-header">
-      <nav class="breadcrumb">
-        <a href="/notes">KNOWLEDGE BASE</a> / {categoryName.toUpperCase()}
-      </nav>
-      <h1>{categoryName}<span>.</span></h1>
+      <div class="header-inner">
+        <nav class="breadcrumb">
+          <a href="/notes">KNOWLEDGE BASE</a> / {categoryName.toUpperCase()}
+        </nav>
+        <h1>{categoryName}<span>.</span></h1>
+        {notes.length > 0 && <p class="count">发现 {notes.length} 篇结构化文档</p>}
+      </div>
     </header>
 
-    <section class="notes-grid">
+    <section class="content-area">
       {notes.length > 0 ? (
-        notes.map((note) => (
-          <a href={`/notes/${note.slug}`} class="note-card">
-            <div class="card-image">
-              {/* 这里使用 note.data.cover，确保 MD 里的路径是 /images/ 开头 */}
-              <img src={note.data.cover} alt={note.data.title} />
-            </div>
-            <div class="card-body">
-              <h3>{note.data.title}</h3>
-              <p>{note.data.description}</p>
-            </div>
-          </a>
-        ))
+        <div class="notes-grid">
+          {notes.map((note) => (
+            <a href={`/notes/${note.slug}`} class="note-card">
+              <div class="card-image">
+                <img src={note.data.cover || "/images/notes-placeholder.jpg"} alt={note.data.title} />
+              </div>
+              <div class="card-body">
+                <div class="order-tag">ORDER {note.data.order || '·'}</div>
+                <h3>{note.data.title}</h3>
+                <p>{note.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
       ) : (
-        <div class="empty-state">
-          <p>正在读取笔记数据，请稍后刷新...</p>
+        <div class="empty-container">
+          <div class="empty-icon">⌘</div>
+          <p class="empty-text">{currentEmptyMsg}</p>
+          <a href="/notes" class="back-link">返回知识库首页</a>
         </div>
       )}
     </section>
@@ -67,14 +79,52 @@ const { categoryName, notes } = Astro.props;
 </BaseLayout>
 
 <style>
-  .category-page { max-width: 1200px; margin: 0 auto; padding: 140px 40px; }
-  .category-header { margin-bottom: 60px; }
-  .breadcrumb { font-size: 12px; color: #888; margin-bottom: 10px; }
-  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-  .note-card { background: #fff; border: 1px solid #eee; border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; }
-  .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-  .card-image img { width: 100%; height: 200px; object-fit: cover; }
-  .card-body { padding: 25px; }
+  :root {
+    --accent: #4AACDB;
+    --text-main: #1a1a1a;
+    --text-dim: #888;
+    --bg-soft: #f9f9f9;
+  }
+
+  .category-page { max-width: 1100px; margin: 0 auto; padding: 120px 40px; }
+  
+  .category-header { margin-bottom: 80px; }
+  .breadcrumb { font-size: 11px; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 16px; }
+  .breadcrumb a { text-decoration: none; color: inherit; transition: 0.3s; }
+  .breadcrumb a:hover { color: var(--accent); }
+  
+  h1 { font-size: 48px; font-weight: 700; margin: 0; }
+  h1 span { color: #eee; }
+  .count { font-size: 13px; color: var(--text-dim); margin-top: 12px; }
+
+  /* 卡片网格 */
+  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; }
+  .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; text-decoration: none; color: inherit; transition: 0.4s; overflow: hidden; }
+  .note-card:hover { transform: translateY(-6px); border-color: #ddd; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+  
+  .card-image { height: 180px; background: #f0f0f0; overflow: hidden; }
+  .card-image img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .card-body { padding: 24px; }
+  .order-tag { font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; }
   h3 { margin: 0 0 10px 0; font-size: 20px; }
-  p { font-size: 14px; color: #666; line-height: 1.6; }
+  p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin: 0; }
+
+  /* 空状态设计 */
+  .empty-container { 
+    text-align: center; 
+    padding: 100px 20px; 
+    background: var(--bg-soft); 
+    border-radius: 20px;
+    border: 1px dashed #ddd;
+  }
+  .empty-icon { font-size: 40px; color: #ccc; margin-bottom: 20px; }
+  .empty-text { font-size: 16px; color: #666; max-width: 400px; margin: 0 auto 30px; line-height: 1.8; }
+  .back-link { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s; }
+  .back-link:hover { border-bottom-color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .category-page { padding: 80px 24px; }
+    h1 { font-size: 32px; }
+  }
 </style>
