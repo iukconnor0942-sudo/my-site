@@ -1,58 +1,76 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
 
-// 1. 安全获取数据，如果集合不存在则返回空数组
-let allNotes = [];
-try {
-  allNotes = await getCollection('notes');
-} catch (e) {
-  console.log("Notes collection not found yet");
-}
-
-const categories = ['BJU PRESS', '知识可视化', '编程实践'];
-
-// 2. 预先处理好数据结构，避免在下方模板中使用复杂的箭头函数
-const displayGroups = categories.map(catName => {
-  return {
-    name: catName,
-    items: allNotes.filter(n => n.data.category === catName)
-  };
-});
+// 定义分类的封面和介绍
+const noteCategories = [
+  {
+    id: "bju-press",
+    title: "BJU PRESS",
+    desc: "美国 BJU 教材体系的深度自学笔记，涵盖代数、科学等逻辑构建。",
+    cover: "/images/bju-cover.jpg", // 记得在 public/images/ 放这张图
+    color: "#E8F6F3"
+  },
+  {
+    id: "coding",
+    title: "编程实践",
+    desc: "Python 自动化、Astro 建站与 AI 集成的实战记录。",
+    cover: "/images/code-cover.jpg",
+    color: "#F0F4FF"
+  }
+];
 ---
 
 <BaseLayout title="笔记专区 · 康予纳安">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+  <main class="notes-portal">
+    <header class="portal-header">
+      <nav class="breadcrumb">EXPLORE / NOTES</nav>
+      <h1>知识库<span>.</span></h1>
+      <p>知识不是碎片的堆积，而是结构的生长。</p>
+    </header>
 
-  <main style="background: #050505; color: white; min-height: 100vh; padding: 120px 40px;">
-    <section style="max-width: 1000px; margin: 0 auto;">
-      <nav style="font-size: 11px; color: #666; letter-spacing: 2px; margin-bottom: 20px;">EXPLORE / NOTES</nav>
-      <h1 style="font-size: 48px; margin-bottom: 40px;">知识库<span style="color: #333;">.</span></h1>
-
-      {displayGroups.map(group => (
-        group.items.length > 0 && (
-          <div style="margin-bottom: 60px;">
-            <h2 style="font-size: 14px; color: #666; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 24px;">{group.name}</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
-              {group.items.map(note => (
-                <a href={`/notes/${note.slug}`} style="text-decoration: none; color: inherit; background: #0f0f0f; border: 1px solid #1f1f1f; border-radius: 12px; overflow: hidden; display: block;">
-                  <div style="height: 160px; background: #111;">
-                    <img src={note.data.cover} style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); opacity: 0.6;" />
-                  </div>
-                  <div style="padding: 20px;">
-                    <h3 style="font-size: 20px; margin: 0 0 10px 0;">{note.data.title}</h3>
-                    <p style="font-size: 14px; color: #666; line-height: 1.5;">{note.data.description}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
+    <div class="category-grid">
+      {noteCategories.map(cat => (
+        <a href={`/notes/category/${cat.id}`} class="category-window">
+          <div class="window-cover" style={`background-image: url(${cat.cover});`}>
+            <div class="window-overlay"></div>
           </div>
-        )
+          <div class="window-info">
+            <span class="type-tag">COLLECTION</span>
+            <h2>{cat.title}</h2>
+            <p>{cat.desc}</p>
+            <div class="enter-link">进入专区 →</div>
+          </div>
+        </a>
       ))}
-      
-      {allNotes.length === 0 && (
-        <p style="color: #444; font-style: italic;">暂无笔记，请在 src/content/notes 下添加 Markdown 文件。</p>
-      )}
-    </section>
+    </div>
   </main>
 </BaseLayout>
+
+<style>
+  /* 这里的样式模仿 Apple 的窗口化设计 */
+  .notes-portal { max-width: 1100px; margin: 0 auto; padding: 120px 40px; }
+  .portal-header { margin-bottom: 60px; }
+  .breadcrumb { font-size: 11px; color: #666; letter-spacing: 2px; }
+  .portal-header h1 { font-size: 48px; margin: 16px 0; }
+  .portal-header h1 span { color: #333; }
+  
+  .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  
+  .category-window { 
+    position: relative; height: 450px; border-radius: 24px; overflow: hidden;
+    text-decoration: none; color: white; display: flex; align-items: flex-end;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #1a1a1a;
+  }
+  .category-window:hover { transform: scale(1.02); }
+  
+  .window-cover { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.6s; }
+  .category-window:hover .window-cover { transform: scale(1.1); }
+  .window-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
+  
+  .window-info { position: relative; z-index: 2; padding: 40px; }
+  .type-tag { font-size: 10px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 6px; color: #aaa; }
+  .window-info h2 { font-size: 32px; margin: 12px 0; }
+  .window-info p { font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 24px; max-width: 300px; }
+  .enter-link { font-size: 13px; font-weight: 600; }
+</style>
