@@ -1,71 +1,80 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
-// 模拟笔记区数据（以后你可以改为 getCollection 获取）
-const noteCollections = [
-  {
-    id: 'bju-press',
-    title: 'BJU PRESS',
-    desc: '系统化的全科学习笔记，涵盖理科逻辑与文科修辞。',
-    cover: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1000&auto=format&fit=crop', // 建议换成你的质感图
-    items: ['Pre-Algebra', 'Writing & Grammar 9', 'Earth Science']
-  },
-  {
-    id: 'personal-creative',
-    title: '知识可视化与创意',
-    desc: '如何将脑子里的想法结构化，通过设计与代码实践。',
-    cover: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000&auto=format&fit=crop',
-    items: ['Digital Illustration', 'Astro Framework', 'UI Design']
-  }
-];
+// 1. 获取所有笔记数据
+const allNotes = await getCollection('notes');
+
+// 2. 定义你想展示的分类顺序（必须和内容文件里的 category 对应）
+const categories = ['BJU PRESS', '知识可视化', '编程实践'];
+
+// 3. 过滤函数的安全实现
+function getNotesByCategory(categoryName: string) {
+  return allNotes.filter(item => item.data.category === categoryName);
+}
 ---
 
-<BaseLayout title="学习笔记 · 康予纳安">
+<BaseLayout title="笔记专区 · 康予纳安">
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
   />
 
-  <main class="note-page">
-    <header class="note-header">
-      <div class="header-content">
-        <span class="breadcrumb">EXPLORE / NOTES</span>
+  <main class="note-container">
+    <header class="note-hero">
+      <div class="header-inner">
+        <nav class="breadcrumb">EXPLORE / KNOWLEDGE BASE</nav>
         <h1>知识库<span>.</span></h1>
-        <p class="subtitle">在这里，知识被解构、重组，并最终可视化。这是我对世界逻辑的探索欲望。</p>
+        <p class="manifesto">
+          在这里，知识被解构、重组，并最终可视化。
+          <br />这是我对世界逻辑的探索，也是我思维的数字孪生。
+        </p>
       </div>
     </header>
 
-    <section class="collections-grid">
-      {noteCollections.map(collection => (
-        <div class="collection-card">
-          <div class="card-image">
-            <img src={collection.cover} alt={collection.title} />
-            <div class="image-overlay"></div>
-          </div>
-          <div class="card-body">
-            <div class="card-tag">COLLECTION</div>
-            <h2>{collection.title}</h2>
-            <p>{collection.desc}</p>
+    <div class="content-wrapper">
+      {categories.map(cat => {
+        const categoryNotes = getNotesByCategory(cat);
+        // 只有当该分类下有笔记时才渲染该区域
+        return categoryNotes.length > 0 ? (
+          <section class="cat-section">
+            <div class="cat-header">
+              <span class="cat-dot"></span>
+              <h2>{cat}</h2>
+            </div>
             
-            <div class="items-list">
-              {collection.items.map(item => (
-                <a href={`/notes/${collection.id}`} class="note-link">
-                  {item} <span class="arrow">→</span>
+            <div class="note-grid">
+              {categoryNotes.map(note => (
+                <a href={`/notes/${note.slug}`} class="note-card">
+                  <div class="card-img-wrapper">
+                    {/* 优先检查图片路径，如果没填就用灰色占位 */}
+                    <img src={note.data.cover || "/images/placeholder.jpg"} alt={note.data.title} loading="lazy" />
+                    <div class="overlay"></div>
+                  </div>
+                  <div class="card-content">
+                    <span class="card-type">NOTE</span>
+                    <h3>{note.data.title}</h3>
+                    <p>{note.data.description}</p>
+                    <div class="card-footer">
+                      <span>进入阅读</span>
+                      <span class="arrow">→</span>
+                    </div>
+                  </div>
                 </a>
               ))}
             </div>
-          </div>
-        </div>
-      ))}
-    </section>
+          </section>
+        ) : null;
+      })}
+    </div>
 
-    <section class="formula-preview">
-      <div class="formula-inner">
-        <p class="formula-label">// 理性逻辑预览</p>
-        <div class="math-block">
-          $$ c = \sqrt{a^2 + b^2} $$
-          <p>“每一行笔记，都是对秩序的构建。”</p>
+    <section class="formula-footer">
+      <div class="formula-box">
+        <p class="tag">// LOGICAL_AESTHETICS</p>
+        <div class="math">
+          $$ \oint_C \mathbf{B} \cdot d\mathbf{l} = \mu_0 \left( I_{\text{enc}} + \epsilon_0 \frac{d\Phi_E}{dt} \right) $$
         </div>
+        <p class="quote">“每一行笔记，都是对秩序的构建。”</p>
       </div>
     </section>
   </main>
@@ -73,161 +82,116 @@ const noteCollections = [
 
 <style>
   :root {
-    --note-bg: #0a0a0a;
-    --note-surface: #141414;
-    --note-border: #262626;
-    --note-text: #ffffff;
-    --note-muted: #888888;
-    --note-accent: #ffffff;
+    --bg: #050505;
+    --surface: #0f0f0f;
+    --border: #1f1f1f;
+    --text-main: #ffffff;
+    --text-dim: #888888;
+    --accent: #ffffff;
   }
 
-  .note-page {
-    background: var(--note-bg);
+  .note-container {
+    background: var(--bg);
+    color: var(--text-main);
     min-height: 100vh;
-    color: var(--note-text);
-    padding-bottom: 80px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  /* Header 风格：Apple 式简洁 */
-  .note-header {
-    padding: 120px 32px 60px;
-    max-width: 1100px;
+  .note-hero {
+    padding: 140px 40px 80px;
+    max-width: 1200px;
     margin: 0 auto;
   }
   .breadcrumb {
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--note-muted);
-    font-weight: 600;
-  }
-  .note-header h1 {
-    font-size: 48px;
-    font-weight: 600;
-    margin: 16px 0;
-  }
-  .note-header h1 span { color: var(--note-muted); }
-  .subtitle {
-    font-size: 18px;
-    color: var(--note-muted);
-    max-width: 600px;
-    line-height: 1.6;
-  }
-
-  /* 卡片网格：Grok 式利索 */
-  .collections-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 32px;
-    padding: 0 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .collection-card {
-    background: var(--note-surface);
-    border: 1px solid var(--note-border);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-  .collection-card:hover {
-    border-color: #444;
-    transform: translateY(-4px);
-  }
-
-  .card-image {
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-  }
-  .card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%) brightness(0.7);
-    transition: 0.5s;
-  }
-  .collection-card:hover .card-image img {
-    filter: grayscale(0%) brightness(0.8);
-    transform: scale(1.05);
-  }
-  .image-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent, var(--note-surface));
-  }
-
-  .card-body { padding: 24px; }
-  .card-tag {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--note-muted);
-    border: 1px solid var(--note-border);
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-  }
-  .card-body h2 { font-size: 24px; margin-bottom: 12px; }
-  .card-body p { color: var(--note-muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
-
-  /* 笔记项列表 */
-  .items-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .note-link {
-    text-decoration: none;
-    color: var(--note-text);
-    font-size: 14px;
-    padding: 12px 16px;
-    background: var(--note-bg);
-    border-radius: 8px;
-    border: 1px solid var(--note-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.2s;
-  }
-  .note-link:hover {
-    background: #1a1a1a;
-    border-color: #555;
-    padding-left: 20px;
-  }
-  .arrow { color: var(--note-muted); font-size: 12px; }
-
-  /* 公式预览区域 */
-  .formula-preview {
-    margin-top: 100px;
-    padding: 60px 32px;
-    background: linear-gradient(to bottom, var(--note-bg), #000);
-    text-align: center;
-  }
-  .formula-inner {
-    max-width: 800px;
-    margin: 0 auto;
-    border-top: 1px solid var(--note-border);
-    padding-top: 40px;
-  }
-  .formula-label {
-    font-family: monospace;
-    color: var(--note-muted);
-    font-size: 13px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
     margin-bottom: 20px;
+    font-weight: 700;
   }
-  .math-block {
-    font-size: 28px;
-    margin: 30px 0;
-    color: #eee;
+  .note-hero h1 {
+    font-size: 56px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    letter-spacing: -2px;
   }
-  .math-block p { font-size: 14px; color: var(--note-muted); margin-top: 20px; font-style: italic; }
+  .note-hero h1 span { color: #333; }
+  .manifesto {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    max-width: 600px;
+  }
 
-  /* 手机端优化 */
+  .content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .cat-section { margin-bottom: 100px; }
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .cat-header h2 { font-size: 14px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+
+  .note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+  }
+
+  .note-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .note-card:hover {
+    transform: translateY(-8px);
+    border-color: #444;
+  }
+
+  .card-img-wrapper { height: 180px; position: relative; background: #111; overflow: hidden; }
+  .card-img-wrapper img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(100%) brightness(0.6);
+    transition: 0.6s;
+  }
+  .note-card:hover .card-img-wrapper img { filter: grayscale(0%) brightness(0.8); transform: scale(1.05); }
+  .overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--surface)); }
+
+  .card-content { padding: 24px; }
+  .card-type { font-size: 9px; background: #222; padding: 2px 8px; border-radius: 4px; color: #888; margin-bottom: 12px; display: inline-block; }
+  .card-content h3 { font-size: 22px; margin: 0 0 12px; }
+  .card-content p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; }
+
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; font-weight: 600; color: var(--text-dim);
+  }
+  .note-card:hover .card-footer { color: var(--accent); }
+
+  .formula-footer { padding: 120px 40px; text-align: center; }
+  .formula-box { max-width: 800px; margin: 0 auto; border-top: 1px solid var(--border); padding-top: 60px; }
+  .math { font-size: 24px; color: #444; margin: 32px 0; }
+  .quote { color: #333; font-size: 14px; font-style: italic; }
+
   @media (max-width: 768px) {
-    .note-header { padding: 80px 20px 40px; }
-    .note-header h1 { font-size: 32px; }
-    .collections-grid { grid-template-columns: 1fr; padding: 0 20px; }
-    .math-block { font-size: 20px; }
+    .note-hero h1 { font-size: 40px; }
+    .note-grid { grid-template-columns: 1fr; }
   }
 </style>
