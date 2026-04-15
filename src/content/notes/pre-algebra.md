@@ -1,10 +1,11 @@
 ---
 title: "Pre-Algebra"
-description: "关于代数基础逻辑、负数运算与方程推导的系统笔记。"
+description: "关于代数基础逻辑、负数运算与方程推导的深度笔记。"
 category: "BJU PRESS"
 cover: "/images/notes-cover-1.jpg"
 order: 1
 ---
+
 **Chapter1**
 
 **加法 (Addition)**
@@ -25,7 +26,7 @@ order: 1
     - 计算整数的乘积。
         
     - 运算规则：
-        
+        s
         - 同号相乘得正，异号相乘得负。
         - 乘法是交换律和结合律的。
 4.  **除法 (Division)**
