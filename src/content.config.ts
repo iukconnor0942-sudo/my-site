@@ -2,6 +2,18 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// 1. 定义笔记集合 (Notes Collection) - 这是你漏掉的关键！
+const notes = defineCollection({
+  loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    cover: z.string(),
+    order: z.number().optional(),
+  }),
+});
+
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
   schema: ({ image }) =>
@@ -55,4 +67,12 @@ const changelog = defineCollection({
   }),
 });
 
-export const collections = { blog, vlog, writing, gallery, changelog };
+// 2. 统一导出 - 记得把 notes 加进去
+export const collections = { 
+  blog, 
+  vlog, 
+  writing, 
+  gallery, 
+  changelog, 
+  notes // <--- 必须有它，getCollection('notes') 才有效！
+};
