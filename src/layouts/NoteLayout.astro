@@ -56,13 +56,7 @@ const { Content } = await render(post);
     padding-bottom: 0.6rem;
   }
 
-  .note-content h3 {
-    margin-top: 2.2rem;
-    font-size: 1.5rem;
-    color: #2c3e50;
-  }
-
-  /* 你最喜欢的 KaTeX 公式样式 */
+  /* KaTeX 公式块美化 - 你最喜欢的样式 */
   .katex-display {
     background: #f8f9fa;
     padding: 2rem 1.8rem;
@@ -77,11 +71,12 @@ const { Content } = await render(post);
   }
 </style>
 
-<!-- 🔥 KaTeX 自动渲染 - 最终版 -->
+<!-- 🔥 最简单粗暴的 KaTeX 渲染方式 -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  // 等页面完全加载后再渲染
+  window.addEventListener('load', () => {
     if (typeof renderMathInElement !== 'undefined') {
       renderMathInElement(document.body, {
         delimiters: [
