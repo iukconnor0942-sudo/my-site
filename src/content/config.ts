@@ -1,20 +1,24 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders'; // 确保使用最新的 glob loader
+import { z } from 'astro/zod';
 
 // 1. 定义笔记集合 (Notes Collection)
 const notes = defineCollection({
-  type: 'content',
+  // 使用最新的 loader 模式，适配你的项目结构
+  loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     category: z.string(),
-    cover: z.string(),
+    // 【关键修复】将 cover 设置为可选，并允许空字符串，防止因为路径解析导致的编译中断
+    cover: z.string().optional().or(z.literal('')), 
     order: z.number().optional(),
   }),
 });
 
-// 2. 如果你还有之前的 blog 或其他集合，也要一并在这里定义
+// 2. 博客集合
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -24,8 +28,7 @@ const blog = defineCollection({
   }),
 });
 
-// 3. 统一导出所有集合
-// 注意：这里的 key 名 'notes' 必须和 getCollection('notes') 里的字符串完全一致
+// 3. 统一导出
 export const collections = {
   'notes': notes,
   'blog': blog,
