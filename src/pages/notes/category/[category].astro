@@ -5,22 +5,19 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const allNotes = await getCollection('notes');
   
-  // 1. 硬编码专区配置
+  // 1. 硬编码配置
   const fixedCategories = [
     { slug: 'bju-press', name: 'BJU PRESS' },
     { slug: 'coding', name: 'AI 使用' } 
   ];
 
   return fixedCategories.map(cat => {
-    // 归一化处理函数
     const normalize = (s) => (s || '').toString().trim().toLowerCase();
     const toSlug = (s) => normalize(s).replace(/\s+/g, '-');
 
     const filteredNotes = allNotes.filter(n => {
       const catField = n.data?.category;
       if (!catField) return false;
-      
-      // 多重容错匹配
       return (
         normalize(catField) === normalize(cat.name) || 
         toSlug(catField) === cat.slug ||
@@ -28,10 +25,9 @@ export async function getStaticPaths() {
       );
     });
 
-    // 2. 【关键修复】映射数据结构
-    // 这里的对象直接展开了 data 里的内容，方便下方模板调用
+    // 2. 映射数据：确保拿到 id，它是跳转的关键
     const serializableNotes = filteredNotes.map(n => ({
-      slug: n.slug,
+      id: n.id, // Astro Content Layer 默认文件名作为 id
       title: n.data.title,
       description: n.data.description,
       cover: n.data.cover,
@@ -51,7 +47,6 @@ export async function getStaticPaths() {
 
 const { categoryName, categorySlug, notes } = Astro.props;
 
-// AI 专属文案
 const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...";
 ---
 
@@ -66,18 +61,17 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
 
     <section class="content-view">
       {categorySlug === 'coding' && notes.length === 0 ? (
-        /* AI 专区的优雅留白 */
         <div class="empty-state">
           <div class="empty-icon">⌘</div>
           <p class="empty-text">{emptyAiMessage}</p>
           <a href="/notes" class="back-link">← 返回知识库</a>
         </div>
       ) : (
-        /* 笔记网格展示 */
         <div class="notes-grid">
           {notes.map((note) => (
-            /* 【注意】这里不再使用 note.data，直接访问属性 */
-            <a href={`/notes/${note.slug}`} class="note-card">
+            /* 【核心修改】链接地址改为 /notes/${note.id} */
+            /* 这里的 id 对应的就是文件名 'pre-algebra' */
+            <a href={`/notes/${note.id}`} class="note-card">
               <div class="card-image">
                 <img src={note.cover} alt={note.title} />
               </div>
@@ -92,9 +86,6 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
           {notes.length === 0 && categorySlug !== 'coding' && (
              <div class="empty-state">
                 <p class="sync-msg">笔记正在同步到 {categoryName}...</p>
-                <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
-                  提示：请检查 MD 文件的 category 字段是否为 "{categoryName}"
-                </p>
              </div>
           )}
         </div>
@@ -110,8 +101,6 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
   .breadcrumb a { color: inherit; text-decoration: none; }
   h1 { font-size: 42px; margin: 0; font-weight: 700; }
   h1 span { color: #4AACDB; }
-
-  /* 笔记展示网格 */
   .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
   .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; display: flex; flex-direction: column; }
   .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
@@ -120,9 +109,6 @@ const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，�
   .order-tag { font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px; }
   h3 { margin: 0 0 10px 0; font-size: 20px; line-height: 1.4; }
   p { font-size: 14px; color: #666; line-height: 1.6; margin: 0; }
-  .sync-msg { color: #888; font-style: italic; }
-
-  /* 空状态样式 */
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 40px; background: #fbfbfb; border: 1px dashed #ddd; border-radius: 20px; }
   .empty-icon { font-size: 40px; color: #ccc; margin-bottom: 20px; }
   .empty-text { font-size: 16px; color: #666; line-height: 1.8; max-width: 460px; margin: 0 auto 30px; }
