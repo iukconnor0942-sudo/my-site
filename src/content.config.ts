@@ -1,16 +1,16 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { z } from 'astro/zod';
 
-// 1. 定义笔记集合 (Notes Collection) - 这是你漏掉的关键！
+// 1. 定义笔记集合 (Notes Collection)
 const notes = defineCollection({
   loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
-    category: z.string(),
-    cover: z.string(),
-    order: z.number().optional(),
+    // 使用 .optional().default() 确保字段缺失时有保底，不再报 Required 错误
+    description: z.string().optional().default('暂无描述'),
+    category: z.string().optional().default('BJU PRESS'),
+    cover: z.string().optional().default('/images/notes-cover-1.jpg'),
+    order: z.number().optional().default(1),
   }),
 });
 
@@ -67,12 +67,12 @@ const changelog = defineCollection({
   }),
 });
 
-// 2. 统一导出 - 记得把 notes 加进去
+// 2. 统一导出
 export const collections = { 
   blog, 
   vlog, 
   writing, 
   gallery, 
   changelog, 
-  notes // <--- 必须有它，getCollection('notes') 才有效！
+  notes 
 };
