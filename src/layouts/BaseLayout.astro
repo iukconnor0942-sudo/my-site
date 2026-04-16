@@ -1,5 +1,5 @@
 ---
-// 1. 修复导入方式：去掉大括号，改为默认导入
+// 1. 修复导入方式
 import Analytics from '@vercel/analytics/astro';
 
 // 接收来自页面的 props
@@ -16,13 +16,15 @@ const { title = "康予纳安" } = Astro.props;
 
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
-      integrity="sha384-GvrOXuhMATgEsSwCs4sm5uE9lXNVqu9GVGo33OkS9Ic/+ku8v7ZQHfe7n74wA69o"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+      integrity="sha384-n8MVd8M5bezhhgVSIdW6A7wGNF7fCqnH076xe21qL2TwH6ux9nbp0i67Ywc67Nf3"
       crossorigin="anonymous"
     />
   </head>
   <body>
-    <slot />
+    <main class="content-container">
+      <slot />
+    </main>
 
     <Analytics />
   </body>
@@ -31,6 +33,7 @@ const { title = "康予纳安" } = Astro.props;
 <style is:global>
   :root {
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --primary-color: #2563eb;
   }
   
   * {
@@ -41,15 +44,49 @@ const { title = "康予纳安" } = Astro.props;
 
   body {
     font-family: var(--font-main);
-    background-color: #F2F4F6;
+    background-color: #F8FAFC; /* 稍微亮一点的背景，更有设计感 */
     color: #1a1a1a;
     -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
   }
 
-  /* 额外小优化：给数学公式一点呼吸空间 */
+  /* 💡 康纳看这里：这是让内容变整洁的关键排版 */
+  .content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    background: transparent;
+  }
+
+  /* 优化 Markdown 标题 */
+  h1, h2, h3 {
+    color: #0f172a;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+  }
+
+  /* 修复公式乱码后的视觉美化 */
   .katex-display {
-    margin: 1.5em 0;
+    margin: 1.5em 0 !important;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     overflow-x: auto;
     overflow-y: hidden;
+  }
+
+  .katex {
+    font-size: 1.1em; /* 让行内公式稍微大一点，更好看 */
+  }
+
+  /* 让引用块（Tips）更好看 */
+  blockquote {
+    border-left: 4px solid var(--primary-color);
+    background: #eff6ff;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
   }
 </style>
