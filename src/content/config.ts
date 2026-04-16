@@ -5,9 +5,9 @@ const notes = defineCollection({
   loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
-    description: z.string().default('暂无描述'),
-    category: z.string(),
-    // 关键修复：如果缺失字段，默认指向一张占位图或空字符串，并允许可选
+    // 全部改为可选并提供默认值，消除 "Required" 报错
+    description: z.string().optional().default('暂无描述'),
+    category: z.string().optional().default('BJU PRESS'),
     cover: z.string().optional().default('/images/notes-cover-1.jpg'),
     order: z.number().optional().default(1),
   }),
