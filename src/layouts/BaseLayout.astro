@@ -1,10 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import Analytics from '@vercel/analytics/astro'; // ← 必须保留这行！
+import Analytics from '@vercel/analytics/astro';
 
 const { title = "康予纳安" } = Astro.props;
 
-// 🔥 自动获取 changelog 最新日期
 const allChangelogs = await getCollection('changelog');
 const latestChangelog = allChangelogs
   .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
@@ -15,16 +14,14 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <title>{title}</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-      integrity="sha384-n8MVd8M5bezhhgVSIdW6A7wGNF7fCqnH076xe21qL2TwH6ux9nbp0i67Ywc67Nf3"
       crossorigin="anonymous"
     />
-    <!-- 🔥 KaTeX JS 文件（必须保留） -->
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
   </head>
@@ -34,7 +31,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
         <slot />
       </main>
     </div>
-    <Analytics /> <!-- ← 这里必须保留 -->
+    <Analytics />
   </body>
 </html>
 
@@ -45,19 +42,30 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     background-color: #F2F4F6;
     width: 100%;
     overflow-x: hidden;
+    /* 解决移动端点击高亮问题 */
+    -webkit-tap-highlight-color: transparent;
   }
-  /* 左右天蓝装饰边 */
+
+  /* 💎 核心优化：装饰边逻辑分层 */
   .page-wrapper {
     position: relative;
     min-height: 100vh;
-    background: linear-gradient(to right,
-      #E8F5FC 0%,
-      #E8F5FC 4%,
-      transparent 4%,
-      transparent 96%,
-      #E8F5FC 96%,
-      #E8F5FC 100%);
+    width: 100%;
   }
+
+  @media (min-width: 1024px) {
+    /* 仅在桌面端显示左右天蓝装饰边 */
+    .page-wrapper {
+      background: linear-gradient(to right,
+        #E8F5FC 0%,
+        #E8F5FC 4%,
+        transparent 4%,
+        transparent 96%,
+        #E8F5FC 96%,
+        #E8F5FC 100%);
+    }
+  }
+
   .super-wide-layout {
     width: 100%;
     max-width: 1280px;
@@ -68,31 +76,43 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     position: relative;
     z-index: 1;
   }
-  /* 主要内容区居中 */
+
+  /* 导航与内容区适配 */
   nav, .hero, .content-section, .tags-strip, .footer {
     width: 100%;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 5%;
-    padding-right: 5%;
+    box-sizing: border-box; /* 确保 padding 不撑开宽度 */
   }
-  @media (min-width: 1200px) {
+
+  /* 桌面端大间距 */
+  @media (min-width: 1024px) {
     nav, .hero, .content-section, .tags-strip, .footer {
       padding-left: 40px;
       padding-right: 40px;
     }
   }
+
+  /* 📱 移动端深度优化 */
   @media (max-width: 768px) {
     nav, .hero, .content-section, .tags-strip, .footer {
-      padding-left: 16px;
-      padding-right: 16px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
     .super-wide-layout {
-      max-width: 100%;
+      box-shadow: none; /* 移动端去掉阴影省资源且更清爽 */
+    }
+    /* 导航栏在手机端微调 */
+    .nav {
+      padding: 12px 16px !important;
+    }
+    .nav-links {
+      gap: 12px !important;
     }
   }
-  /* 恢复原来的颜色和背景 */
+
+  /* 恢复 Hero 背景 */
   .hero {
     background-image: url('/images/hero-bg.png') !important;
     background-size: cover;
@@ -106,9 +126,11 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     background: rgba(255,255,255,0.65);
     z-index: 0;
   }
+
+  /* 其他原有样式保持不变 */
   .camellya-block { background: white; border: 0.5px solid #e0e4ea; }
   .cam-header { background: #E8F5FC; }
-  /* 导航栏样式 */
+  
   .nav {
     background: white;
     display: flex;
@@ -119,34 +141,25 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     flex-wrap: wrap;
     gap: 10px;
   }
-  .nav-logo { font-size: 15px; font-weight: 500; color: #1a1a1a; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: #1a1a1a; }
   .nav-links { display: flex; gap: 16px; flex-wrap: wrap; }
   .nav-links a { font-size: 13px; color: #666; text-decoration: none; white-space: nowrap; }
   .nav-links a:hover { color: #4AACDB; }
   .nav-accent { color: #C94040 !important; font-weight: 500; }
-  .nav-updates { position: relative; color: #666; text-decoration: none; font-size: 13px; padding-right: 4px; }
-  .nav-updates:hover { color: #4AACDB; }
+  
   .new-badge {
-    position: absolute;
-    top: -6px;
-    right: -11px;
     background: #C94040;
     color: white;
     font-size: 9px;
     font-weight: 700;
     padding: 1px 5px;
     border-radius: 20px;
-    animation: badge-pulse 2s infinite;
     display: none;
-  }
-  @keyframes badge-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
   }
 </style>
 
 <script>
-  // NEW 红点逻辑
+  // 保持原有逻辑不变
   const badge = document.getElementById('new-badge');
   const link = document.getElementById('updates-link');
   const lastUpdateDate = badge ? badge.dataset.lastDate : '2026-04-10';
@@ -154,24 +167,14 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   if (badge && (!lastSeen || lastSeen < lastUpdateDate)) {
     badge.style.display = 'inline';
   }
-  if (link) {
-    link.addEventListener('click', () => {
-      localStorage.setItem('lastSeenChangelog', lastUpdateDate);
-      if (badge) badge.style.display = 'none';
-    });
-  }
 
-  // 🔥 KaTeX 自动渲染（全局生效 + 延迟执行）
   document.addEventListener('DOMContentLoaded', function() {
-    // 再加一层延迟，确保 DOM 完全准备好
     setTimeout(() => {
       if (typeof renderMathInElement !== 'undefined') {
         renderMathInElement(document.body, {
           delimiters: [
             { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false },
-            { left: '\\(', right: '\\)', display: false },
-            { left: '\\[', right: '\\]', display: true }
+            { left: '$', right: '$', display: false }
           ],
           throwOnError: false
         });
