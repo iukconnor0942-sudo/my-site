@@ -19,86 +19,88 @@ const { Content } = await render(post);
   </article>
 </BaseLayout>
 
-<style>
+<style is:global>
+  /* 🚀 核心修复：使用 is:global 确保样式能抓到 Markdown 生成的内容 */
+  
   .note-page {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem;
-    line-height: 1.9;
-    font-size: 1.06rem;
+    /* 桌面端全屏化优化：去掉 860px 限制 */
+    width: 100% !important;
+    max-width: 100% !important; 
+    margin: 0;
+    padding: 3rem 6%; /* 留 6% 的侧边距，既填满了屏幕又有呼吸感 */
+    line-height: 1.8;
     color: #1a1a1a;
+    background-color: #F2F4F6;
   }
 
   .note-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
+    text-align: left; /* 桌面端左对齐更有专业感 */
+    margin-bottom: 4rem;
     padding-bottom: 2rem;
-    border-bottom: 2px solid #e0e4ea;
+    border-bottom: 2px solid #cbd5e1;
   }
 
   .note-header h1 {
-    font-size: 2.65rem;
-    margin-bottom: 0.8rem;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
   }
 
   .note-description {
-    font-size: 1.12rem;
-    color: #666;
-    line-height: 1.7;
+    font-size: 1.2rem;
+    color: #475569;
   }
 
-  .note-content h2 {
-    margin-top: 3rem;
-    margin-bottom: 1.2rem;
-    font-size: 1.9rem;
-    color: #1a1a1a;
-    border-bottom: 2px solid #cbd5e1;
-    padding-bottom: 0.6rem;
-  }
-
-  .note-content h3 {
-    margin-top: 2.2rem;
-    font-size: 1.5rem;
-    color: #2c3e50;
-  }
-
-  /* 你最喜欢的 KaTeX 公式样式 */
+  /* 桌面端大宽屏下的公式样式 */
   .katex-display {
-    background: #f8f9fa;
-    padding: 2rem 1.8rem;
-    border-radius: 12px;
-    margin: 2.5rem 0;
+    background: white !important; /* 纯白背景在浅灰底色上更醒目 */
+    padding: 2.5rem !important;
+    border-radius: 16px !important;
+    margin: 3rem 0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
     overflow-x: auto;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    width: 100%;
   }
 
   .katex {
-    font-size: 1.09em;
+    font-size: 1.2em !important; /* 桌面端稍微调大一点，看着不费劲 */
   }
 
-  .note-content ul, .note-content ol {
-    padding-left: 1.8rem;
-    margin: 1.4rem 0;
+  /* 优化 Markdown 里的标题 */
+  .note-content h2 {
+    font-size: 2.2rem;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
   }
 
-  .note-content li {
-    margin-bottom: 0.6rem;
+  .note-content h3 {
+    font-size: 1.7rem;
+    margin-top: 2.5rem;
+    color: #1e293b;
+  }
+
+  .note-content p, .note-content li {
+    font-size: 1.15rem;
+    margin-bottom: 1.2rem;
   }
 </style>
 
-<!-- 🔥 KaTeX 自动渲染（你喜欢的版本） -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
+  // 使用 pnpm 或 npm 安装了的话其实不需要这一步，但加上可以作为双重保险
   document.addEventListener('DOMContentLoaded', function() {
-    renderMathInElement(document.body, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
-      ],
-      throwOnError: false
-    });
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      });
+    }
   });
 </script>
