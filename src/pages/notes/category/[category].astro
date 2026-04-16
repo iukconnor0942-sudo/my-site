@@ -4,8 +4,6 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const allNotes = await getCollection('notes');
-  
-  // 1. 硬编码配置
   const fixedCategories = [
     { slug: 'bju-press', name: 'BJU PRESS' },
     { slug: 'coding', name: 'AI 使用' } 
@@ -17,17 +15,11 @@ export async function getStaticPaths() {
 
     const filteredNotes = allNotes.filter(n => {
       const catField = n.data?.category;
-      if (!catField) return false;
-      return (
-        normalize(catField) === normalize(cat.name) || 
-        toSlug(catField) === cat.slug ||
-        normalize(catField).includes(normalize(cat.name))
-      );
+      return catField && (normalize(catField) === normalize(cat.name) || toSlug(catField) === cat.slug);
     });
 
-    // 2. 映射数据：确保拿到 id，它是跳转的关键
     const serializableNotes = filteredNotes.map(n => ({
-      id: n.id, // Astro Content Layer 默认文件名作为 id
+      id: n.id, // 重要：使用 id 替代 slug
       title: n.data.title,
       description: n.data.description,
       cover: n.data.cover,
@@ -36,81 +28,34 @@ export async function getStaticPaths() {
 
     return {
       params: { category: cat.slug },
-      props: { 
-        categoryName: cat.name,
-        categorySlug: cat.slug,
-        notes: serializableNotes
-      },
+      props: { categoryName: cat.name, categorySlug: cat.slug, notes: serializableNotes },
     };
   });
 }
 
-const { categoryName, categorySlug, notes } = Astro.props;
-
-const emptyAiMessage = "秩序正在涌现。这里是 AI 浪潮的实验室，目前还在整理实战笔记中，请耐心等待灵感的结构化...";
+const { categoryName, notes } = Astro.props;
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
-  <main class="category-page">
-    <header class="category-header">
-      <nav class="breadcrumb">
-        <a href="/notes">KNOWLEDGE BASE</a> / {categoryName.toUpperCase()}
-      </nav>
-      <h1>{categoryName}<span>.</span></h1>
+  <main style="max-width: 1100px; margin: 0 auto; padding: 120px 40px;">
+    <header style="margin-bottom: 60px;">
+      <h1 style="font-size: 42px;">{categoryName}<span style="color: #4AACDB;">.</span></h1>
     </header>
 
-    <section class="content-view">
-      {categorySlug === 'coding' && notes.length === 0 ? (
-        <div class="empty-state">
-          <div class="empty-icon">⌘</div>
-          <p class="empty-text">{emptyAiMessage}</p>
-          <a href="/notes" class="back-link">← 返回知识库</a>
-        </div>
-      ) : (
-        <div class="notes-grid">
-          {notes.map((note) => (
-            /* 【核心修改】链接地址改为 /notes/${note.id} */
-            /* 这里的 id 对应的就是文件名 'pre-algebra' */
-            <a href={`/notes/${note.id}`} class="note-card">
-              <div class="card-image">
-                <img src={note.cover} alt={note.title} />
-              </div>
-              <div class="card-body">
-                <div class="order-tag">STEP {note.order || '·'}</div>
-                <h3>{note.title}</h3>
-                <p>{note.description}</p>
-              </div>
-            </a>
-          ))}
-          
-          {notes.length === 0 && categorySlug !== 'coding' && (
-             <div class="empty-state">
-                <p class="sync-msg">笔记正在同步到 {categoryName}...</p>
-             </div>
-          )}
-        </div>
-      )}
-    </section>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
+      {notes.map((note) => (
+        /* 核心修复：链接指向 note.id */
+        <a href={`/notes/${note.id}`} style="text-decoration: none; color: inherit;">
+          <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+            <img src={note.cover} style="width: 100%; height: 200px; object-fit: cover;" />
+            <div style="padding: 24px;">
+              <div style="font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px;">STEP {note.order}</div>
+              <h3 style="margin: 0;">{note.title}</h3>
+              <p style="font-size: 14px; color: #666;">{note.description}</p>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
   </main>
 </BaseLayout>
-
-<style>
-  .category-page { max-width: 1100px; margin: 0 auto; padding: 120px 40px; }
-  .category-header { margin-bottom: 60px; }
-  .breadcrumb { font-size: 11px; letter-spacing: 2px; color: #888; margin-bottom: 15px; text-decoration: none; }
-  .breadcrumb a { color: inherit; text-decoration: none; }
-  h1 { font-size: 42px; margin: 0; font-weight: 700; }
-  h1 span { color: #4AACDB; }
-  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-  .note-card { background: #fff; border: 1px solid #eee; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: 0.3s; display: flex; flex-direction: column; }
-  .note-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-  .card-image img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #f5f5f5; }
-  .card-body { padding: 24px; flex-grow: 1; }
-  .order-tag { font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px; }
-  h3 { margin: 0 0 10px 0; font-size: 20px; line-height: 1.4; }
-  p { font-size: 14px; color: #666; line-height: 1.6; margin: 0; }
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 40px; background: #fbfbfb; border: 1px dashed #ddd; border-radius: 20px; }
-  .empty-icon { font-size: 40px; color: #ccc; margin-bottom: 20px; }
-  .empty-text { font-size: 16px; color: #666; line-height: 1.8; max-width: 460px; margin: 0 auto 30px; }
-  .back-link { font-size: 13px; color: #4AACDB; font-weight: 600; text-decoration: none; }
-</style>
