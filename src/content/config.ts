@@ -2,15 +2,14 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const notes = defineCollection({
-  // 使用最新的 glob loader
   loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
-    description: z.string().optional(), // 设为可选提高容错率
+    description: z.string().default('暂无描述'),
     category: z.string(),
-    // 允许 cover 缺失或为空字符串，彻底解决 Required 报错
-    cover: z.string().optional().or(z.literal('')), 
-    order: z.number().optional(),
+    // 关键修复：如果缺失字段，默认指向一张占位图或空字符串，并允许可选
+    cover: z.string().optional().default('/images/notes-cover-1.jpg'),
+    order: z.number().optional().default(1),
   }),
 });
 
