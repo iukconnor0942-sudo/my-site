@@ -2,7 +2,6 @@
 title: "Pre-Algebra"
 description: "BJU Press Pre-Algebra 核心知识点与代数基础结构化汇总"
 category: "BJU PRESS"
-cover: "/images/notes-cover-1.jpg"
 order: 1
 ---
 
