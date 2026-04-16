@@ -22,7 +22,7 @@ const { title = "康予纳安" } = Astro.props;
     />
   </head>
   <body>
-    <main class="content-container">
+    <main class="desktop-fluid-layout">
       <slot />
     </main>
 
@@ -44,49 +44,54 @@ const { title = "康予纳安" } = Astro.props;
 
   body {
     font-family: var(--font-main);
-    background-color: #F8FAFC; /* 稍微亮一点的背景，更有设计感 */
+    background-color: #F2F4F6;
     color: #1a1a1a;
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
+    min-height: 100vh;
   }
 
-  /* 💡 康纳看这里：这是让内容变整洁的关键排版 */
-  .content-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
+  /* 🚀 桌面端铺满逻辑修复 */
+  .desktop-fluid-layout {
+    width: 100%;           /* 宽度强制 100% */
+    max-width: 100%;       /* 移除任何 max-width 限制 */
+    margin: 0;             /* 移除水平居中的 auto 边距 */
+    padding: 3rem 4%;      /* 仅保留 4% 的呼吸空隙，让内容最大化利用屏幕 */
     background: transparent;
   }
 
-  /* 优化 Markdown 标题 */
-  h1, h2, h3 {
-    color: #0f172a;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-    font-weight: 700;
-  }
+  /* 优化：在大屏下，标题和正文会自动调整大小 */
+  h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  h2 { font-size: 1.8rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3em; }
 
-  /* 修复公式乱码后的视觉美化 */
+  /* 公式渲染：在大屏幕下更显大气 */
   .katex-display {
-    margin: 1.5em 0 !important;
-    padding: 1rem;
+    margin: 2rem 0 !important;
+    padding: 2rem;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    /* 允许长公式在超大屏上也能完美展示 */
     overflow-x: auto;
-    overflow-y: hidden;
   }
 
   .katex {
-    font-size: 1.1em; /* 让行内公式稍微大一点，更好看 */
+    font-size: 1.15em; 
   }
 
-  /* 让引用块（Tips）更好看 */
+  /* 引用块样式优化 */
   blockquote {
-    border-left: 4px solid var(--primary-color);
+    border-left: 5px solid var(--primary-color);
     background: #eff6ff;
-    padding: 1rem;
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 0 12px 12px 0;
+  }
+
+  /* 适配移动端：如果用手机看，会自动收缩回来 */
+  @media (max-width: 768px) {
+    .desktop-fluid-layout {
+      padding: 2rem 1rem;
+    }
   }
 </style>
