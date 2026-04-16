@@ -19,7 +19,7 @@ const { title = "康予纳安" } = Astro.props;
     />
   </head>
   <body>
-    <main class="full-screen-layout">
+    <main class="content-container">
       <slot />
     </main>
 
@@ -31,6 +31,8 @@ const { title = "康予纳安" } = Astro.props;
   :root {
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --primary-color: #2563eb;
+    --text-color: #1f2937;
+    --bg-color: #f8fafc;
   }
   
   * {
@@ -41,42 +43,58 @@ const { title = "康予纳安" } = Astro.props;
 
   body {
     font-family: var(--font-main);
-    background-color: #F2F4F6;
-    color: #1a1a1a;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     -webkit-font-smoothing: antialiased;
-    /* 确保背景颜色铺满全屏 */
-    min-height: 100vh;
+    line-height: 1.7;
   }
 
-  /* 🚀 康纳看这里：彻底填充屏幕的配置 */
-  .full-screen-layout {
-    width: 100%;       /* 宽度直接占满 100% */
-    max-width: none;   /* 彻底去掉最大宽度限制 */
-    margin: 0;         /* 去掉自动居中产生的边距 */
-    padding: 4rem 8%;  /* 留 8% 的边间距防止文字撞墙，其他全部填充 */
-    min-height: 100vh;
-    background-color: #F2F4F6;
+  /* 居中容器，让阅读更有美感 */
+  .content-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
   }
 
-  /* 优化：大屏幕下的标题也要霸气一点 */
-  h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-  h2 { font-size: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+  /* 标题美化 */
+  h1, h2, h3 {
+    color: #111827;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+    font-weight: 700;
+  }
 
-  /* 公式渲染：在大屏幕下更显眼 */
+  /* 数学公式视觉增强 */
   .katex-display {
-    margin: 2rem 0 !important;
-    padding: 2rem;
+    margin: 1.8em 0 !important;
+    padding: 1.2rem;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    /* 允许在大屏上横向滚动，防止超长公式挤压页面 */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     overflow-x: auto;
+    text-align: center;
   }
 
-  /* 保持响应式：手机端自动调回小间距 */
-  @media (max-width: 768px) {
-    .full-screen-layout {
-      padding: 2rem 5%;
-    }
+  /* 🛡️ 核心修复：防止公式重复渲染的强力补丁 */
+  .katex-display + .katex-display, 
+  .katex + .katex {
+    display: none !important;
+  }
+
+  /* 引用块（用于 Tips 或 定理） */
+  blockquote {
+    border-left: 4px solid var(--primary-color);
+    background: #eff6ff;
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    font-style: normal;
+  }
+
+  /* 分割线 */
+  hr {
+    margin: 3rem 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
   }
 </style>
