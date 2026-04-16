@@ -1,7 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// 1. 定义笔记集合 (Notes Collection) - 加上了最强保底！
+// 1. 定义笔记集合 (Notes Collection) - 加入绝对防御默认值
 const notes = defineCollection({
   loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
@@ -13,6 +13,7 @@ const notes = defineCollection({
   }),
 });
 
+// 2. 博客、视频、写作等其他集合
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
   schema: ({ image }) =>
@@ -66,7 +67,7 @@ const changelog = defineCollection({
   }),
 });
 
-// 2. 统一导出
+// 统一导出所有集合
 export const collections = { 
   blog, 
   vlog, 
