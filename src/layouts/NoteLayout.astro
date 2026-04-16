@@ -23,71 +23,71 @@ const { Content } = await render(post);
   .note-page {
     max-width: 860px;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
-    line-height: 1.85;
-    font-size: 1.05rem;
+    padding: 2.5rem 1.5rem;
+    line-height: 1.9;
+    font-size: 1.06rem;
     color: #1a1a1a;
   }
 
   .note-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
     padding-bottom: 2rem;
     border-bottom: 2px solid #e0e4ea;
   }
 
   .note-header h1 {
-    font-size: 2.6rem;
+    font-size: 2.65rem;
     margin-bottom: 0.8rem;
   }
 
   .note-description {
-    font-size: 1.1rem;
-    color: #666;
+    font-size: 1.12rem;
+    color: #555;
     line-height: 1.7;
   }
 
   .note-content h2 {
-    margin-top: 2.8rem;
+    margin-top: 3rem;
     margin-bottom: 1.2rem;
-    font-size: 1.85rem;
+    font-size: 1.9rem;
     color: #1a1a1a;
     border-bottom: 2px solid #cbd5e1;
     padding-bottom: 0.6rem;
   }
 
   .note-content h3 {
-    margin-top: 2rem;
-    font-size: 1.45rem;
+    margin-top: 2.2rem;
+    font-size: 1.5rem;
     color: #2c3e50;
   }
 
-  /* KaTeX 公式美化 */
+  /* KaTeX 公式优化 */
   .katex-display {
     background: #f8f9fa;
-    padding: 1.8rem 1.5rem;
+    padding: 2rem 1.8rem;
     border-radius: 12px;
-    margin: 2.2rem 0;
+    margin: 2.5rem 0;
     overflow-x: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
 
   .katex {
-    font-size: 1.08em;
+    font-size: 1.09em;
   }
 </style>
 
-<!-- 🔥 KaTeX 自动渲染脚本（最关键！） -->
+<!-- 🔥 最可靠的 KaTeX 渲染方式 -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
-  import renderMathInElement from 'katex/contrib/auto-render';
-
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", function() {
     renderMathInElement(document.body, {
       delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false},
+        {left: "\\[", right: "\\]", display: true}
       ],
       throwOnError: false
     });

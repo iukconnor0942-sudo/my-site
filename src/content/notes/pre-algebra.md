@@ -4,6 +4,7 @@ description: "BJU Press Pre-Algebra 核心知识点与代数基础结构化汇�
 category: "BJU PRESS"
 cover: "/images/notes-cover-1.jpg"
 order: 1
+layout: ../../layouts/NoteLayout.astro   # ← 必须加上这一行！
 ---
 
 ## Chapter 1: 基础运算与代数逻辑
