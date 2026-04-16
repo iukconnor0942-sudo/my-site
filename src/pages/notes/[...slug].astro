@@ -1,20 +1,20 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // 1. 生成所有笔记的路径
 export async function getStaticPaths() {
   const notes = await getCollection('notes');
   return notes.map(note => ({
-    params: { slug: note.id }, // 使用文件 ID 作为路径（如 pre-algebra）
+    params: { slug: note.id },
     props: { note },
   }));
 }
 
 // 2. 获取笔记数据
 const { note } = Astro.props;
-// 3. 使用新的 render() 函数解析 Markdown 内容
-const { Content, headings } = await render(note);
+// 3. 解析内容
+const { Content } = await render(note);
 ---
 
 <BaseLayout title={note.data.title}>
@@ -34,51 +34,111 @@ const { Content, headings } = await render(note);
     <hr class="divider" />
 
     <div class="markdown-content">
-      {/* 渲染 Markdown 转换后的 HTML 内容 */}
       <Content />
     </div>
 
     <footer class="note-footer">
       <a href="/notes" class="back-to-list">← 返回列表</a>
-    </div>
+    </footer>
   </article>
 </BaseLayout>
 
-<style>
+<style is:global>
+  /* 🐉 关键修复：使用 is:global 确保所有 Markdown 内容（含公式）都被抓到 */
+  
   .note-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 120px 20px;
+    /* 🛠️ 桌面端全屏化修复：去掉 800px 限制 */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0;
+    padding: 80px 6% !important; /* 保持大气的边距 */
+    background-color: #F8FAFC; /* 稍微亮一点的背景 */
+    min-height: 100vh;
   }
+
   .note-header { margin-bottom: 40px; }
   .meta { font-size: 12px; letter-spacing: 1px; color: #888; margin-bottom: 20px; }
   .back-link { color: inherit; text-decoration: none; }
   .category-tag { color: #4AACDB; font-weight: 600; }
   
-  h1 { font-size: 48px; margin: 10px 0; font-weight: 800; }
+  h1 { font-size: 48px; margin: 10px 0; font-weight: 800; color: #0f172a; }
   h1 span { color: #4AACDB; }
-  .description { font-size: 18px; color: #666; line-height: 1.6; }
+  .description { font-size: 18px; color: #666; line-height: 1.6; max-width: 800px; }
   
   .hero-image {
     width: 100%;
-    height: 400px;
+    max-height: 500px; /* 增加高度限制，防止图片太高 */
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 24px;
     margin-top: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   }
 
-  .divider { border: 0; border-top: 1px solid #eee; margin: 60px 0; }
+  .divider { border: 0; border-top: 1px solid #e2e8f0; margin: 60px 0; }
 
-  /* Markdown 内容样式 */
+  /* 💎 Markdown & KaTeX 样式强化区 */
   .markdown-content {
-    font-size: 16px;
+    font-size: 1.15rem;
     line-height: 1.8;
-    color: #333;
+    color: #1e293b;
   }
-  .markdown-content :global(h2) { font-size: 28px; margin-top: 40px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
-  .markdown-content :global(p) { margin-bottom: 1.5em; }
-  .markdown-content :global(code) { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
+  /* 修复公式乱码：确保强制渲染 */
+  .katex-display {
+    background: white !important;
+    padding: 2.5rem !important;
+    border-radius: 20px !important;
+    margin: 3rem 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04) !important;
+    overflow-x: auto;
+    border: 1px solid #f1f5f9;
+  }
+
+  .katex { font-size: 1.2em !important; }
+
+  /* 标题美化 */
+  .markdown-content h2 { 
+    font-size: 2.2rem; 
+    margin-top: 3em; 
+    border-bottom: 2px solid #f1f5f9; 
+    padding-bottom: 10px;
+    color: #0f172a;
+  }
   
-  .note-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #eee; }
+  /* 列表和引用 */
+  .markdown-content p { margin-bottom: 1.5em; }
+  .markdown-content blockquote {
+    border-left: 5px solid #4AACDB;
+    background: #f0f9ff;
+    padding: 1.5rem 2rem;
+    border-radius: 0 16px 16px 0;
+    margin: 2rem 0;
+  }
+
+  .note-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid #e2e8f0; }
   .back-to-list { color: #4AACDB; text-decoration: none; font-weight: 600; }
+
+  /* 适配移动端 */
+  @media (max-width: 768px) {
+    .note-container { padding: 40px 5% !important; }
+    h1 { font-size: 32px; }
+  }
 </style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script>
+  import renderMathInElement from 'katex/contrib/auto-render';
+
+  const initMath = () => {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false }
+      ],
+      throwOnError: false
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initMath);
+  document.addEventListener('astro:page-load', initMath);
+</script>
