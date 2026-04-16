@@ -75,9 +75,18 @@ const { Content } = await render(post);
   .katex {
     font-size: 1.09em;
   }
+
+  .note-content ul, .note-content ol {
+    padding-left: 1.8rem;
+    margin: 1.4rem 0;
+  }
+
+  .note-content li {
+    margin-bottom: 0.6rem;
+  }
 </style>
 
-<!-- 🔥 KaTeX 自动渲染（最稳版本） -->
+<!-- 🔥 KaTeX 自动渲染（你喜欢的版本） -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
