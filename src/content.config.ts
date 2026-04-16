@@ -1,12 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// 1. 定义笔记集合 (Notes Collection)
+// 1. 定义笔记集合 (Notes Collection) - 加上了最强保底！
 const notes = defineCollection({
   loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
-    // 使用 .optional().default() 确保字段缺失时有保底，不再报 Required 错误
     description: z.string().optional().default('暂无描述'),
     category: z.string().optional().default('BJU PRESS'),
     cover: z.string().optional().default('/images/notes-cover-1.jpg'),
