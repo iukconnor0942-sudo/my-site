@@ -1,11 +1,12 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { render } from 'astro:content';
 
 const { post } = Astro.props;
-const { Content } = await render(post);   // 注意这里要用 render
+const { Content } = await render(post);
 ---
 
-<BaseLayout title={post.data.title || "Pre-Algebra"}>
+<BaseLayout title={post.data.title || "笔记"}>
   <article class="note-page">
     <header class="note-header">
       <h1>{post.data.title}</h1>
@@ -55,6 +56,12 @@ const { Content } = await render(post);   // 注意这里要用 render
     padding-bottom: 0.6rem;
   }
 
+  .note-content h3 {
+    margin-top: 2rem;
+    font-size: 1.45rem;
+    color: #2c3e50;
+  }
+
   /* KaTeX 公式美化 */
   .katex-display {
     background: #f8f9fa;
@@ -70,10 +77,10 @@ const { Content } = await render(post);   // 注意这里要用 render
   }
 </style>
 
-<!-- 🔥 最稳妥的 KaTeX 渲染方式（使用 CDN） -->
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
+<!-- 🔥 KaTeX 自动渲染脚本（最关键！） -->
 <script>
+  import renderMathInElement from 'katex/contrib/auto-render';
+
   document.addEventListener('DOMContentLoaded', () => {
     renderMathInElement(document.body, {
       delimiters: [
