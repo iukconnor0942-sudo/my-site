@@ -6,13 +6,13 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BaseLayout title={post.data.title || "笔记"}>
+<BaseLayout title={post.data.title || "Pre-Algebra"}>
   <article class="note-page">
     <header class="note-header">
       <h1>{post.data.title}</h1>
       <p class="note-description">{post.data.description}</p>
     </header>
-    
+   
     <div class="note-content">
       <Content />
     </div>
@@ -23,70 +23,81 @@ const { Content } = await render(post);
   .note-page {
     max-width: 860px;
     margin: 0 auto;
-    padding: 2.5rem 1.5rem;
-    line-height: 1.9;
-    font-size: 1.06rem;
+    padding: 2rem 1.5rem;
+    line-height: 1.85;
+    font-size: 1.05rem;
     color: #1a1a1a;
   }
 
   .note-header {
     text-align: center;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
     padding-bottom: 2rem;
     border-bottom: 2px solid #e0e4ea;
   }
 
   .note-header h1 {
-    font-size: 2.65rem;
+    font-size: 2.6rem;
     margin-bottom: 0.8rem;
   }
 
   .note-description {
-    font-size: 1.12rem;
+    font-size: 1.1rem;
     color: #666;
     line-height: 1.7;
   }
 
   .note-content h2 {
-    margin-top: 3rem;
+    margin-top: 2.8rem;
     margin-bottom: 1.2rem;
-    font-size: 1.9rem;
+    font-size: 1.85rem;
     color: #1a1a1a;
     border-bottom: 2px solid #cbd5e1;
     padding-bottom: 0.6rem;
   }
 
   .note-content h3 {
-    margin-top: 2.2rem;
-    font-size: 1.5rem;
+    margin-top: 2rem;
+    font-size: 1.45rem;
     color: #2c3e50;
   }
 
-  /* KaTeX 公式美化 - 你最喜欢的样式 */
+  /* KaTeX 公式块美化 - 你最喜欢的样式 */
   .katex-display {
     background: #f8f9fa;
-    padding: 2rem 1.8rem;
+    padding: 1.8rem 1.5rem;
     border-radius: 12px;
-    margin: 2.5rem 0;
+    margin: 2.2rem 0;
     overflow-x: auto;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }
 
   .katex {
-    font-size: 1.09em;
+    font-size: 1.08em;
   }
 
   .note-content ul, .note-content ol {
     padding-left: 1.8rem;
-    margin: 1.4rem 0;
+    margin: 1.2rem 0;
+  }
+
+  .note-content li {
+    margin-bottom: 0.6rem;
+  }
+
+  .note-content blockquote {
+    border-left: 4px solid #4AACDB;
+    padding-left: 1.2rem;
+    color: #555;
+    font-style: italic;
   }
 </style>
 
-<!-- 🔥 KaTeX 自动渲染（最稳版本） -->
+<!-- 🔥 KaTeX 自动渲染 -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener('DOMContentLoaded', () => {
     renderMathInElement(document.body, {
       delimiters: [
         { left: '$$', right: '$$', display: true },
