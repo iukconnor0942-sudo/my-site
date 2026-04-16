@@ -2,8 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getEntry, render } from 'astro:content';
 
-// 获取你的笔记内容（根据你的集合和 slug 修改）
-const post = await getEntry('notes', 'pre-algebra');   // 如果你的集合名不是 notes，请改成正确的
+const post = await getEntry('notes', 'pre-algebra');
 if (!post) {
   return Astro.redirect('/404');
 }
@@ -23,98 +22,77 @@ const { Content } = await render(post);
   </article>
 </BaseLayout>
 
-<style>
+<style is:global>
+  /* 🐉 关键 1: 使用 is:global 确保样式能穿透到 Markdown 内容中 */
+  
   .note-page {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    line-height: 1.85;
-    font-size: 1.05rem;
+    /* 桌面端全屏逻辑：去掉 max-width 限制 */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0;
+    padding: 3rem 6%; /* 留 6% 边距，既填满屏幕又好看 */
+    line-height: 1.8;
     color: #1a1a1a;
   }
 
   .note-header {
-    text-align: center;
-    margin-bottom: 3rem;
+    text-align: left; /* 桌面端建议左对齐，更专业 */
+    margin-bottom: 4rem;
     padding-bottom: 2rem;
-    border-bottom: 2px solid #e0e4ea;
+    border-bottom: 2px solid #e2e8f0;
   }
 
   .note-header h1 {
-    font-size: 2.6rem;
-    margin-bottom: 0.8rem;
-    color: #1a1a1a;
+    font-size: 3rem;
+    color: #0f172a;
   }
 
-  .note-description {
-    font-size: 1.1rem;
-    color: #666;
-    line-height: 1.7;
-  }
-
-  .note-content h2 {
-    margin-top: 2.8rem;
-    margin-bottom: 1.2rem;
-    font-size: 1.85rem;
-    color: #1a1a1a;
-    border-bottom: 2px solid #cbd5e1;
-    padding-bottom: 0.6rem;
-  }
-
-  .note-content h3 {
-    margin-top: 2rem;
-    font-size: 1.45rem;
-    color: #2c3e50;
-  }
-
-  /* KaTeX 公式优化 */
+  /* 💎 KaTeX 渲染效果强化 */
   .katex-display {
-    background: #f8f9fa;
-    padding: 1.8rem 1.5rem;
-    border-radius: 12px;
-    margin: 2.2rem 0;
+    background: white !important;
+    padding: 2.5rem !important;
+    border-radius: 16px !important;
+    margin: 3rem 0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
     overflow-x: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    width: 100%;
   }
 
   .katex {
-    font-size: 1.08em;
+    font-size: 1.15em !important;
   }
 
-  /* 让列表和段落更舒服 */
-  .note-content ul, .note-content ol {
-    padding-left: 1.8rem;
-    margin: 1.2rem 0;
-  }
-
-  .note-content li {
-    margin-bottom: 0.6rem;
-  }
-
-  /* 代码块和引用优化 */
+  /* 优化引用块（你笔记里的 Tips） */
   .note-content blockquote {
-    border-left: 4px solid #4AACDB;
-    padding-left: 1.2rem;
-    color: #555;
-    font-style: italic;
+    border-left: 5px solid #2563eb;
+    background: #eff6ff;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 0 12px 12px 0;
+    font-style: normal;
   }
 </style>
 
-<!-- 🔥 关键：KaTeX 自动渲染脚本 -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+/>
+
 <script>
-  import katex from 'katex';
   import renderMathInElement from 'katex/contrib/auto-render';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // 这里的函数可以处理页面加载后的数学渲染
+  const renderMath = () => {
     renderMathInElement(document.body, {
       delimiters: [
         { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
+        { left: '$', right: '$', display: false }
       ],
-      throwOnError: false,
-      errorColor: '#cc0000'
+      throwOnError: false
     });
-  });
+  };
+
+  // 支持 Astro 的生命周期
+  document.addEventListener('DOMContentLoaded', renderMath);
+  document.addEventListener('astro:page-load', renderMath);
 </script>
