@@ -43,7 +43,7 @@ const { Content } = await render(post);
 
   .note-description {
     font-size: 1.12rem;
-    color: #555;
+    color: #666;
     line-height: 1.7;
   }
 
@@ -62,7 +62,7 @@ const { Content } = await render(post);
     color: #2c3e50;
   }
 
-  /* KaTeX 公式优化 */
+  /* KaTeX 公式美化 - 你最喜欢的样式 */
   .katex-display {
     background: #f8f9fa;
     padding: 2rem 1.8rem;
@@ -75,19 +75,24 @@ const { Content } = await render(post);
   .katex {
     font-size: 1.09em;
   }
+
+  .note-content ul, .note-content ol {
+    padding-left: 1.8rem;
+    margin: 1.4rem 0;
+  }
 </style>
 
-<!-- 🔥 最可靠的 KaTeX 渲染方式 -->
+<!-- 🔥 KaTeX 自动渲染（最稳版本） -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     renderMathInElement(document.body, {
       delimiters: [
-        {left: "$$", right: "$$", display: true},
-        {left: "$", right: "$", display: false},
-        {left: "\\(", right: "\\)", display: false},
-        {left: "\\[", right: "\\]", display: true}
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
       ],
       throwOnError: false
     });
