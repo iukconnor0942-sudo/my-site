@@ -13,7 +13,6 @@ const { title = "康予纳安" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <title>{title}</title>
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
@@ -25,35 +24,79 @@ const { title = "康予纳安" } = Astro.props;
     <main class="super-wide-layout">
       <slot />
     </main>
-
     <Analytics />
   </body>
 </html>
 
 <style is:global>
-  /* 强制覆盖所有可能的限制 */
   html, body {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     background-color: #F2F4F6;
+    overflow-x: hidden;
   }
 
+  /* 🚀 核心修复：让布局真正撑满 + 控制好左右留白 */
   .super-wide-layout {
-    /* 🚀 核心：强制撑开到屏幕两端 */
-    width: 100vw !important; 
-    max-width: 100vw !important;
+    width: 100%;
     min-height: 100vh;
-    
-    /* 留一点点边距（3%）是为了美感，不想要的话可以改回 0 */
-    padding: 4rem 4% !important; 
-    
-    margin: 0 !important;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     display: block;
   }
 
-  /* 针对公式的桌面端优化 */
+  /* 让所有主要内容区都能自动响应，但保持美观的左右边距 */
+  nav, .hero, .content-section, .tags-strip, .footer {
+    width: 100%;
+    max-width: 1200px;           /* 最大不要超过 1200px，太宽会显得空 */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  /* 大屏幕时收紧一点边距，更好看 */
+  @media (min-width: 1200px) {
+    nav, .hero, .content-section, .tags-strip, .footer {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  /* 小屏幕时边距再小一点 */
+  @media (max-width: 768px) {
+    nav, .hero, .content-section, .tags-strip, .footer {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  /* 恢复你原来的色块和背景 */
+  .hero {
+    background-image: url('/images/hero-bg.png') !important;
+    background-size: cover;
+    background-position: center 30%;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.65);
+    z-index: 0;
+  }
+
+  .camellya-block {
+    background: white;
+    border: 0.5px solid #e0e4ea;
+  }
+  .cam-header {
+    background: #E8F5FC;
+  }
+
+  /* 公式优化 */
   .katex-display {
     width: 100% !important;
     margin: 2rem 0 !important;
@@ -63,12 +106,10 @@ const { title = "康予纳安" } = Astro.props;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
 
-  /* 增强可读性 */
   h1 { font-size: 2.8rem; }
   h2 { font-size: 2.2rem; margin-top: 2em; border-bottom: 2px solid #cbd5e1; }
   p, li { font-size: 1.15rem; line-height: 1.8; }
 
-  /* 彻底消除重复渲染的残留 */
+  /* 彻底清除重复渲染问题 */
   .katex-display + .katex-display { display: none !important; }
-
 </style>
