@@ -21,9 +21,11 @@ const { title = "康予纳安" } = Astro.props;
     />
   </head>
   <body>
-    <main class="super-wide-layout">
-      <slot />
-    </main>
+    <div class="frame">
+      <main class="super-wide-layout">
+        <slot />
+      </main>
+    </div>
     <Analytics />
   </body>
 </html>
@@ -33,31 +35,42 @@ const { title = "康予纳安" } = Astro.props;
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-    background-color: #F2F4F6;
+    background-color: #1a1a1a;   /* 深色背景，衬托黑边 */
     overflow-x: hidden;
   }
 
-  /* 🚀 核心修复：让布局真正撑满 + 控制好左右留白 */
-  .super-wide-layout {
+  /* 黑边框架 */
+  .frame {
+    position: relative;
     width: 100%;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
+    background: #1a1a1a;         /* 深灰黑背景 */
+    padding: 0 40px;             /* 左右黑边宽度（可调） */
     box-sizing: border-box;
-    display: block;
   }
 
-  /* 让所有主要内容区都能自动响应，但保持美观的左右边距 */
+  /* 内容区域 */
+  .super-wide-layout {
+    width: 100%;
+    max-width: 1180px;           /* 内容最大宽度，留出黑边 */
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #F2F4F6;         /* 你原来的浅色内容背景 */
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08); /* 轻微高光 */
+    padding: 0;
+  }
+
+  /* 让内部元素保持原来的居中和间距 */
   nav, .hero, .content-section, .tags-strip, .footer {
     width: 100%;
-    max-width: 1200px;           /* 最大不要超过 1200px，太宽会显得空 */
+    max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 5%;
     padding-right: 5%;
   }
 
-  /* 大屏幕时收紧一点边距，更好看 */
+  /* 大屏幕时再收紧一点 */
   @media (min-width: 1200px) {
     nav, .hero, .content-section, .tags-strip, .footer {
       padding-left: 40px;
@@ -65,15 +78,18 @@ const { title = "康予纳安" } = Astro.props;
     }
   }
 
-  /* 小屏幕时边距再小一点 */
+  /* 手机端黑边变窄，更舒服 */
   @media (max-width: 768px) {
+    .frame {
+      padding: 0 16px;
+    }
     nav, .hero, .content-section, .tags-strip, .footer {
       padding-left: 16px;
       padding-right: 16px;
     }
   }
 
-  /* 恢复你原来的色块和背景 */
+  /* 恢复你原来的颜色和样式 */
   .hero {
     background-image: url('/images/hero-bg.png') !important;
     background-size: cover;
@@ -88,15 +104,9 @@ const { title = "康予纳安" } = Astro.props;
     z-index: 0;
   }
 
-  .camellya-block {
-    background: white;
-    border: 0.5px solid #e0e4ea;
-  }
-  .cam-header {
-    background: #E8F5FC;
-  }
+  .camellya-block { background: white; border: 0.5px solid #e0e4ea; }
+  .cam-header { background: #E8F5FC; }
 
-  /* 公式优化 */
   .katex-display {
     width: 100% !important;
     margin: 2rem 0 !important;
@@ -110,6 +120,5 @@ const { title = "康予纳安" } = Astro.props;
   h2 { font-size: 2.2rem; margin-top: 2em; border-bottom: 2px solid #cbd5e1; }
   p, li { font-size: 1.15rem; line-height: 1.8; }
 
-  /* 彻底清除重复渲染问题 */
   .katex-display + .katex-display { display: none !important; }
 </style>
