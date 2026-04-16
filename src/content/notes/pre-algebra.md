@@ -64,7 +64,7 @@ $$
    * $a \times (b + c) = ab + ac$
 
 > **💡 特殊情况：除法的“分配”性质**
-> $\frac{a + b}{c} = \frac{a}{c} + \frac{b}{c}$
+> $$\frac{a + b}{c} = \frac{a}{c} + \frac{b}{c}$$
 
 ---
 
@@ -90,7 +90,8 @@ $$
   $$a_n = a_1 \times r^{n-1}$$
 
 ### 🌟 最大公因数 (GCF) & 最小公倍数 (LCM)
-* **辗转相除法求 GCF**：如求 $gcd(48, 18)$。$48 \div 18 = 2 \dots 12$ $\Rightarrow$ $18 \div 12 = 1 \dots 6$ $\Rightarrow$ $12 \div 6 = 2 \dots 0$。故 $GCF = 6$。
+* **辗转相除法求 GCF**：如求 $gcd(48, 18)$。
+  $48 \div 18 = 2 \dots 12 \Rightarrow 18 \div 12 = 1 \dots 6 \Rightarrow 12 \div 6 = 2 \dots 0$。故 $GCF = 6$。
 * **求 LCM**：
   $$LCM(a, b) = \frac{|a \times b|}{gcd(a, b)}$$
 
@@ -113,9 +114,7 @@ $$
 
 ### 🌟 核心公式
 所有百分数问题都围绕这个核心：
-$$
-\text{Part} = \text{Percent} \times \text{Whole} \quad (p = r \times w)
-$$
+$$\text{Part} = \text{Percent} \times \text{Whole} \quad (p = r \times w)$$
 
 ### 🌟 常见应用场景
 1. **比例尺 (Scales)**：$\frac{\text{图上距离}}{\text{实际距离}} = \text{比例尺}$
@@ -124,7 +123,6 @@ $$
 4. **单利 (Simple Interest)**：$I = P \times R \times T$
 5. **百分变化 (Percent Change)**：
    $$\text{Percent Change} = \frac{\text{New} - \text{Old}}{\text{Old}} \times 100\%$$
-   *正数代表增长，负数代表减少。*
 
 ---
 
@@ -132,9 +130,7 @@ $$
 
 ### 🌟 未知数在两边的方程
 **解题原则**：先消去一边的变量项（移项集中变量），再移常数项。
-$$
-8x + 4 = 6x + 10 \Rightarrow 2x = 6 \Rightarrow x = 3
-$$
+$$8x + 4 = 6x + 10 \Rightarrow 2x = 6 \Rightarrow x = 3$$
 
 ### 🌟 不等式应用翻译
 * **至少 (at least)** $\Rightarrow \ge$
@@ -146,30 +142,25 @@ $$
 ## Chapter 9: 关系与函数 (Relations and Functions)
 
 ### 🌟 函数的判定与斜率
-* **函数 (Function)**：每个 $x$（定义域）对应**唯一**的 $y$（值域）。可用垂线测试判断。
-* **斜率 (Slope, $m$)**：表示直线的倾斜程度。
+* **函数 (Function)**：每个 $x$ 对应唯一的 $y$。可用垂线测试判断。
+* **斜率 (Slope, $m$)**：
   $$m = \frac{y_2 - y_1}{x_2 - x_1}$$
 
 ### 🌟 线性函数方程
 * **斜截式 (Slope-Intercept Form)**：
   $$y = mx + b$$
-  （$m$ 为斜率，$b$ 为 $y$ 截距）
-* **正比例 (Direct Variation)**：过原点的直线。
-  $$y = kx$$
+* **正比例 (Direct Variation)**：$y = kx$
 
 ---
 
 ## Chapter 10: 统计与概率
 
 ### 🌟 统计特征量
-* **平均数 (Mean)**：总和除以个数。
-* **中位数 (Median)**：按序排列最中间的数。
-* **众数 (Mode)**：出现频率最高的数。
-* **极差 (Range)**：最大值减最小值。
+* **平均数 (Mean)**、**中位数 (Median)**、**众数 (Mode)**、**极差 (Range)**。
 
 ### 🌟 概率与计数 (Probability & Counting)
-* **排列 (Permutations, 顺序有关)**：$P(n, r) = \frac{n!}{(n-r)!}$
-* **组合 (Combinations, 顺序无关)**：$C(n, r) = \frac{n!}{r!(n-r)!}$
+* **排列 (Permutations)**：$P(n, r) = \frac{n!}{(n-r)!}$
+* **组合 (Combinations)**：$C(n, r) = \frac{n!}{r!(n-r)!}$
 * **概率公式**：$P(\text{事件}) = \frac{\text{有利结果数}}{\text{总可能结果数}}$
 
 ---
@@ -177,57 +168,35 @@ $$
 ## Chapter 11: 根式 (Radicals)
 
 ### 🌟 根式的性质与运算
-* **乘除法则**：$\sqrt{ab} = \sqrt{a} \cdot \sqrt{b}$，$\sqrt{\frac{a}{b}} = \frac{\sqrt{a}}{\sqrt{b}}$
-* **加减法则**：只有**同类根式**才能合并。$2\sqrt{3} + 5\sqrt{3} = 7\sqrt{3}$
-* **有理化分母**：分母不能留根号，需上下同乘化简。$\frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$
+* **乘除法则**：$\sqrt{ab} = \sqrt{a} \cdot \sqrt{b}$
+* **有理化分母**：$\frac{1}{\sqrt{3}} = \frac{\sqrt{3}}{3}$
 
 ### 🌟 勾股定理 (Pythagorean Theorem)
-在直角三角形中：
-$$
-a^2 + b^2 = c^2
-$$
+$$a^2 + b^2 = c^2$$
 
 ---
 
 ## Chapter 12 & 13: 几何图形、面积与体积
 
-### 🌟 角的关系
-* **余角 (Complementary)**：和为 $90^\circ$。
-* **补角 (Supplementary)**：和为 $180^\circ$。
-* **对顶角 (Vertical)**：相交直线的对角，相等。
-
 ### 🌟 常见面积公式
 * **平行四边形**：$A = bh$
 * **三角形**：$A = \frac{1}{2}bh$
-* **梯形**：$A = \frac{1}{2}(b_1 + b_2)h$
-* **圆**：$A = \pi r^2$，周长 $C = 2\pi r$
-
-### 🌟 相似图形比例关系
-若边长比为 $k$，则面积比为 $k^2$，体积比为 $k^3$。
+* **圆**：$A = \pi r^2$
 
 ### 🌟 立体几何体积公式
-* **柱体 (Prisms/Cylinders)**：$V = Bh$
-* **锥体 (Pyramids/Cones)**：$V = \frac{1}{3}Bh$
-* **球体 (Sphere)**：$V = \frac{4}{3}\pi r^3$
+* **柱体**：$V = Bh$
+* **锥体**：$V = \frac{1}{3}Bh$
+* **球体**：$V = \frac{4}{3}\pi r^3$
 
 ---
 
 ## Chapter 14: 多项式 (Polynomials)
 
-### 🌟 基本概念与分类
-* **单项式 (Monomial)**：$5x^3$
-* **二项式 (Binomial)**：$3x + 2$
-* **三项式 (Trinomial)**：$x^2 + 2x + 1$
-* **注意**：分母含变量（$\frac{1}{x}$）、变量在根号内（$\sqrt{x}$）、负指数（$x^{-2}$）都**不是**多项式。
-
 ### 🌟 多项式的乘法
 **二项式相乘 (FOIL 法则)**：
-First (首项), Outer (外项), Inner (内项), Last (末项)
-$$
-(x+3)(x+5) = x^2 + 5x + 3x + 15 = x^2 + 8x + 15
-$$
+$$(x+3)(x+5) = x^2 + 8x + 15$$
 
-**乘法乘法公式**：
+**乘法公式**：
 * 平方差：$(a+b)(a-b) = a^2 - b^2$
 * 完全平方和：$(a+b)^2 = a^2 + 2ab + b^2$
 * 完全平方差：$(a-b)^2 = a^2 - 2ab + b^2$
