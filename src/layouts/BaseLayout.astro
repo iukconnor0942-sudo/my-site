@@ -24,7 +24,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
       integrity="sha384-n8MVd8M5bezhhgVSIdW6A7wGNF7fCqnH076xe21qL2TwH6ux9nbp0i67Ywc67Nf3"
       crossorigin="anonymous"
     />
-    <!-- 🔥 新增：KaTeX JS 文件（必须加） -->
+    <!-- 🔥 KaTeX JS 文件（必须保留） -->
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
   </head>
@@ -161,18 +161,21 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     });
   }
 
-  // 🔥 KaTeX 自动渲染（全局生效）
-  document.addEventListener('DOMContentLoaded', () => {
-    if (typeof renderMathInElement !== 'undefined') {
-      renderMathInElement(document.body, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false },
-          { left: '\\(', right: '\\)', display: false },
-          { left: '\\[', right: '\\]', display: true }
-        ],
-        throwOnError: false
-      });
-    }
+  // 🔥 KaTeX 自动渲染（全局生效 + 延迟执行）
+  document.addEventListener('DOMContentLoaded', function() {
+    // 再加一层延迟，确保 DOM 完全准备好
+    setTimeout(() => {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+          ],
+          throwOnError: false
+        });
+      }
+    }, 100);
   });
 </script>
