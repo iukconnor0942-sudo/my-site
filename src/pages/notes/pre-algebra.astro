@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEntry, render } from 'astro:content';
+
+// 获取你的笔记内容（根据你的集合和 slug 修改）
+const post = await getEntry('notes', 'pre-algebra');   // 如果你的集合名不是 notes，请改成正确的
+if (!post) {
+  return Astro.redirect('/404');
+}
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title || "Pre-Algebra"}>
+  <article class="note-page">
+    <header class="note-header">
+      <h1>{post.data.title}</h1>
+      <p class="note-description">{post.data.description}</p>
+    </header>
+    
+    <div class="note-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .note-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    line-height: 1.85;
+    font-size: 1.05rem;
+    color: #1a1a1a;
+  }
+
+  .note-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e0e4ea;
+  }
+
+  .note-header h1 {
+    font-size: 2.6rem;
+    margin-bottom: 0.8rem;
+    color: #1a1a1a;
+  }
+
+  .note-description {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.7;
+  }
+
+  .note-content h2 {
+    margin-top: 2.8rem;
+    margin-bottom: 1.2rem;
+    font-size: 1.85rem;
+    color: #1a1a1a;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 0.6rem;
+  }
+
+  .note-content h3 {
+    margin-top: 2rem;
+    font-size: 1.45rem;
+    color: #2c3e50;
+  }
+
+  /* KaTeX 公式优化 */
+  .katex-display {
+    background: #f8f9fa;
+    padding: 1.8rem 1.5rem;
+    border-radius: 12px;
+    margin: 2.2rem 0;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .katex {
+    font-size: 1.08em;
+  }
+
+  /* 让列表和段落更舒服 */
+  .note-content ul, .note-content ol {
+    padding-left: 1.8rem;
+    margin: 1.2rem 0;
+  }
+
+  .note-content li {
+    margin-bottom: 0.6rem;
+  }
+
+  /* 代码块和引用优化 */
+  .note-content blockquote {
+    border-left: 4px solid #4AACDB;
+    padding-left: 1.2rem;
+    color: #555;
+    font-style: italic;
+  }
+</style>
+
+<!-- 🔥 关键：KaTeX 自动渲染脚本 -->
+<script>
+  import katex from 'katex';
+  import renderMathInElement from 'katex/contrib/auto-render';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false,
+      errorColor: '#cc0000'
+    });
+  });
+</script>
