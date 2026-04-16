@@ -43,18 +43,26 @@ const { Content } = await render(note);
     width: 100% !important;
     max-width: 100% !important;
     margin: 0;
-    padding: 100px 8% !important; /* AI 专区需要更多留白来展示代码和图表 */
+    padding: 100px 8% !important; 
     background-color: #F8FAFC; 
     min-height: 100vh;
+    box-sizing: border-box; /* 确保 padding 不会导致溢出 */
   }
 
   .note-header { margin-bottom: 60px; }
   .meta { font-size: 12px; letter-spacing: 2px; color: #888; margin-bottom: 25px; text-transform: uppercase; }
   .category-tag { color: #4AACDB; font-weight: 700; }
   
-  h1 { font-size: 56px; margin: 10px 0; font-weight: 800; color: #0f172a; letter-spacing: -1px; }
+  h1 { 
+    font-size: clamp(32px, 5vw, 56px); /* 🌟 修复：使用 clamp 让字体随屏幕缩放 */
+    margin: 10px 0; 
+    font-weight: 800; 
+    color: #0f172a; 
+    letter-spacing: -1px; 
+    line-height: 1.1;
+  }
   h1 span { color: #4AACDB; }
-  .description { font-size: 20px; color: #64748b; line-height: 1.6; max-width: 900px; margin-top: 15px; }
+  .description { font-size: 1.2rem; color: #64748b; line-height: 1.6; max-width: 900px; margin-top: 15px; }
 
   .divider { border: 0; border-top: 1px solid #e2e8f0; margin: 60px 0; }
 
@@ -63,33 +71,36 @@ const { Content } = await render(note);
     font-size: 1.15rem;
     line-height: 1.9;
     color: #334155;
+    word-wrap: break-word; /* 🌟 修复：防止长单词/公式撑破布局 */
   }
 
-  /* 💻 代码块优化（针对 AI 代码、Prompt） */
+  /* 💻 代码块优化 */
   pre {
     background: #1e293b !important;
     padding: 2rem !important;
     border-radius: 20px !important;
     margin: 2.5rem 0 !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    overflow-x: auto;
+    overflow-x: auto; /* 🌟 修复：允许手机端代码横向滚动 */
   }
   code {
     font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
-    font-size: 0.95em !important;
+    font-size: 0.9em !important;
   }
 
-  /* 💎 KaTeX 公式（AI 模型中的数学推导） */
+  /* 💎 KaTeX 公式（移动端响应式优化） */
   .katex-display {
     background: white !important;
-    padding: 2.8rem !important;
+    padding: 2rem !important;
     border-radius: 24px !important;
     margin: 3.5rem 0 !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
     border: 1px solid #f1f5f9;
+    overflow-x: auto; /* 🌟 修复：防止超长公式遮挡 */
+    overflow-y: hidden;
   }
 
-  /* 💡 AI 专区的引用块 (Tips/Caveats) */
+  /* 💡 引用块 */
   .markdown-content blockquote {
     border-left: 6px solid #4AACDB;
     background: linear-gradient(to right, #f0f9ff, #ffffff);
@@ -99,20 +110,48 @@ const { Content } = await render(note);
     color: #475569;
   }
 
+  /* 🌟 修复核心：笔记内部章节标题 (H2) 的响应式处理 */
   .markdown-content h2 { 
-    font-size: 2.4rem; 
+    font-size: clamp(22px, 4vw, 2.4rem); 
     margin-top: 4rem; 
     padding-bottom: 15px;
     color: #0f172a;
     font-weight: 800;
+    line-height: 1.2;
   }
 
-  .note-footer { margin-top: 120px; padding-top: 50px; border-top: 1px solid #e2e8f0; }
+  .note-footer { margin-top: 100px; padding-top: 50px; border-top: 1px solid #e2e8f0; }
   .back-to-list { color: #4AACDB; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
 
+  /* 📱 移动端针对性强效覆盖 */
   @media (max-width: 768px) {
-    .note-container { padding: 60px 5% !important; }
-    h1 { font-size: 36px; }
+    .note-container { 
+      padding: 40px 20px !important; /* 🌟 修复：手机端减小边距，增加内容空间 */
+    }
+    .note-header { margin-bottom: 40px; }
+    h1 { font-size: 28px !important; } /* 🌟 修复：手机端主标题强制变小 */
+    .description { font-size: 1rem !important; }
+    
+    .markdown-content h2 { 
+      font-size: 22px !important; /* 🌟 修复：彻底解决 Chapter 标题换行尴尬 */
+      margin-top: 2.5rem;
+    }
+
+    pre {
+      padding: 1.2rem !important; /* 缩小代码块内边距 */
+      margin: 1.5rem 0 !important;
+      border-radius: 12px !important;
+    }
+    
+    .katex-display {
+      padding: 1.2rem !important;
+      border-radius: 16px !important;
+    }
+    
+    .markdown-content blockquote {
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+    }
   }
 </style>
 
