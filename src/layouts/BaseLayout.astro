@@ -22,7 +22,7 @@ const { title = "康予纳安" } = Astro.props;
     />
   </head>
   <body>
-    <main class="desktop-fluid-layout">
+    <main class="super-wide-layout">
       <slot />
     </main>
 
@@ -31,67 +31,44 @@ const { title = "康予纳安" } = Astro.props;
 </html>
 
 <style is:global>
-  :root {
-    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --primary-color: #2563eb;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: var(--font-main);
+  /* 强制覆盖所有可能的限制 */
+  html, body {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background-color: #F2F4F6;
-    color: #1a1a1a;
-    -webkit-font-smoothing: antialiased;
-    line-height: 1.6;
+  }
+
+  .super-wide-layout {
+    /* 🚀 核心：强制撑开到屏幕两端 */
+    width: 100vw !important; 
+    max-width: 100vw !important;
     min-height: 100vh;
+    
+    /* 留一点点边距（3%）是为了美感，不想要的话可以改回 0 */
+    padding: 4rem 4% !important; 
+    
+    margin: 0 !important;
+    box-sizing: border-box;
+    display: block;
   }
 
-  /* 🚀 桌面端铺满逻辑修复 */
-  .desktop-fluid-layout {
-    width: 100%;           /* 宽度强制 100% */
-    max-width: 100%;       /* 移除任何 max-width 限制 */
-    margin: 0;             /* 移除水平居中的 auto 边距 */
-    padding: 3rem 4%;      /* 仅保留 4% 的呼吸空隙，让内容最大化利用屏幕 */
-    background: transparent;
-  }
-
-  /* 优化：在大屏下，标题和正文会自动调整大小 */
-  h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-  h2 { font-size: 1.8rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3em; }
-
-  /* 公式渲染：在大屏幕下更显大气 */
+  /* 针对公式的桌面端优化 */
   .katex-display {
+    width: 100% !important;
     margin: 2rem 0 !important;
     padding: 2rem;
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    /* 允许长公式在超大屏上也能完美展示 */
-    overflow-x: auto;
   }
 
-  .katex {
-    font-size: 1.15em; 
-  }
+  /* 增强可读性 */
+  h1 { font-size: 2.8rem; }
+  h2 { font-size: 2.2rem; margin-top: 2em; border-bottom: 2px solid #cbd5e1; }
+  p, li { font-size: 1.15rem; line-height: 1.8; }
 
-  /* 引用块样式优化 */
-  blockquote {
-    border-left: 5px solid var(--primary-color);
-    background: #eff6ff;
-    padding: 1.5rem 2rem;
-    margin: 2rem 0;
-    border-radius: 0 12px 12px 0;
-  }
+  /* 彻底消除重复渲染的残留 */
+  .katex-display + .katex-display { display: none !important; }
 
-  /* 适配移动端：如果用手机看，会自动收缩回来 */
-  @media (max-width: 768px) {
-    .desktop-fluid-layout {
-      padding: 2rem 1rem;
-    }
-  }
 </style>
