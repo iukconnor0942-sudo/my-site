@@ -171,7 +171,7 @@ const characters = [
       <a href="/camellya/story/episode-1" class="story-card">
         <div class="story-number">第一话</div>
         <h3 class="story-card-title">「一首歌写不完」</h3>
-        <p class="story-card-desc">百部提议四个人一起写首自己的歌。从副歌开始，四个人的意见频频相左，但络雪的一句话拨开了分歧。排练室里，一个想法开始生根。</p>
+        <p class="story-card-desc">百部提议四个人一起写首自己的歌。从副歌开始，四个人的意见频频相错，但络雪的一句话拨开了分歧。排练室里，一个想法开始生根。</p>
         <div class="story-card-footer">在排练室，在便利店，他们四个开始铺陈属于自己的旋律</div>
       </a>
       <a href="/camellya/story/episode-2" class="story-card">
@@ -238,16 +238,14 @@ const characters = [
 
     const maxPetals = 24;
     let activePetals = 0;
-
     const createPetal = (isInitial = false) => {
       if (activePetals >= maxPetals) return;
       activePetals++;
-
       const petal = document.createElement('div');
       const inner = document.createElement('div');
       petal.className = 'sakura-petal';
       inner.className = 'sakura-inner';
-      
+
       const scale = Math.random() * 0.6 + 0.5;
       const fallDuration = Math.random() * 6 + 7;
       const swayDuration = Math.random() * 2 + 2;
@@ -260,13 +258,11 @@ const characters = [
 
       inner.style.animationDuration = `${swayDuration}s`;
       inner.style.animationDelay = `${delay}s`;
-      
       const hueShift = Math.floor(Math.random() * 15);
       inner.style.background = `linear-gradient(135deg, #fff0f2 0%, hsl(348, 100%, ${78 + hueShift}%) 100%)`;
 
       petal.appendChild(inner);
       env.appendChild(petal);
-
       setTimeout(() => {
         petal.remove();
         activePetals--;
@@ -282,7 +278,6 @@ const characters = [
   // 现实崩解跨维度跳转控制
   const initDimensionTransit = () => {
     spawnSakuraSystem();
-
     document.querySelectorAll('a').forEach(link => {
       const href = link.getAttribute('href');
       if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.getAttribute('target') === '_blank') return;
@@ -325,38 +320,52 @@ const characters = [
 </script>
 
 <style is:global>
-  /* 🌟 全局变量与基本样式移到这里，解决 Astro Scoping 问题并防御自动暗黑模式 */
-  :root {
-    color-scheme: light;
-    --bg: #f6f8fa; 
-    --surface: #ffffff; 
-    --surface-2: #fcfdfe;
-    --sky: #5ba4e5; 
-    --sky-light: rgba(91,164,229,0.08); 
-    --sky-border: rgba(91,164,229,0.3);
+  /* 🌟 全局变量与基本样式升级，增加多层级、高权重选择器与 !important 强力压制外部暗黑样式 */
+  :root, html, body, html.dark, [data-theme="dark"], .dark {
+    color-scheme: light !important;
+    --bg: #f6f8fa !important;
+    --surface: #ffffff !important; 
+    --surface-2: #fcfdfe !important;
+    --sky: #5ba4e5 !important; 
+    --sky-light: rgba(91,164,229,0.08) !important; 
+    --sky-border: rgba(91,164,229,0.3) !important;
     
-    --indigo: #6c71c4;
-    --indigo-light: rgba(108,113,196,0.08); 
-    --indigo-border: rgba(108,113,196,0.3);
+    --indigo: #6c71c4 !important;
+    --indigo-light: rgba(108,113,196,0.08) !important; 
+    --indigo-border: rgba(108,113,196,0.3) !important;
     
-    --sea: #4ca1a3; 
-    --sea-light: rgba(76,161,163,0.08);
-    --sea-border: rgba(76,161,163,0.3);
+    --sea: #4ca1a3 !important; 
+    --sea-light: rgba(76,161,163,0.08) !important;
+    --sea-border: rgba(76,161,163,0.3) !important;
     
-    --sakura: #ff8da1; 
-    --sakura-light: rgba(255,141,161,0.09); 
-    --sakura-border: rgba(255,141,161,0.35);
+    --sakura: #ff8da1 !important; 
+    --sakura-light: rgba(255,141,161,0.09) !important; 
+    --sakura-border: rgba(255,141,161,0.35) !important;
     
-    --text: #3a424a; 
-    --muted: #66727f;
-    --hint: #9faec0; 
-    --border: rgba(91,164,229,0.12);
-    --font-youth: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Microsoft YaHei', sans-serif;
+    --text: #3a424a !important; 
+    --muted: #66727f !important;
+    --hint: #9faec0 !important; 
+    --border: rgba(91,164,229,0.12) !important;
+    --font-youth: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Microsoft YaHei', sans-serif !important;
+  }
+
+  /* 🌸 强制捕获并粉碎针对系统预设或容器级别的暗黑样式 */
+  @media (prefers-color-scheme: dark) {
+    :root, html, body, html.dark, [data-theme="dark"], .dark {
+      color-scheme: light !important;
+      --bg: #f6f8fa !important;
+      --surface: #ffffff !important; 
+      --surface-2: #fcfdfe !important;
+      --text: #3a424a !important; 
+      --muted: #66727f !important;
+      --hint: #9faec0 !important; 
+      --border: rgba(91,164,229,0.12) !important;
+    }
   }
 
   body {
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
     font-family: var(--font-youth);
     margin: 0;
   }
@@ -569,7 +578,8 @@ const characters = [
   .nav-logo {
     display: flex; align-items: center; gap: 8px;
     font-size: 16px; font-weight: 600;
-    color: var(--text); text-decoration: none;
+    color: var(--text);
+    text-decoration: none;
   }
   .logo-note { color: var(--sky); font-size: 16px; }
   .nav-links { display: flex; gap: 28px; }
@@ -623,7 +633,8 @@ const characters = [
   .cam-desc { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 32px; text-align: left; }
   .cam-nav-pills { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .pill {
-    font-size: 14px; padding: 10px 24px; border-radius: 20px; transition: all 0.25s; text-decoration: none;
+    font-size: 14px; padding: 10px 24px; border-radius: 20px;
+    transition: all 0.25s; text-decoration: none;
   }
   .pill-primary { background: var(--sky); color: #fff; }
   .pill-primary:hover { background: #4a93d6; box-shadow: 0 4px 12px rgba(91,164,229,0.2); }
@@ -667,7 +678,8 @@ const characters = [
     background: #f0f4f8;
   }
   .tape-deco {
-    position: absolute; top: 6px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+    position: absolute; top: 6px; left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
     width: 40px; height: 14px; background: rgba(255,255,255,0.45);
     backdrop-filter: blur(1px);
   }
