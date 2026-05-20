@@ -1,159 +1,826 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const characters = [
+  {
+    id: 'luoxue', href: '/camellya/luoxue',
+    name: '络雪', en: 'Luoxue', role: '键盘 · 布偶猫', color: 'sky',
+    desc: '乐队的键盘手，布偶猫，外表安静疏离，对熟悉的人温柔体贴。声音是整支乐队最柔软也最锋利的部分。',
+    tags: ['键盘手', '布偶猫'],
+  },
+  {
+    id: 'baibu', href: '/camellya/baibu',
+    name: '百部', en: 'Baibu', role: '主音吉他 · 小青龙', color: 'indigo',
+    desc: '乐队的主音吉他手，乐观阳光，天然治愈。弹起吉他时整个人都会变得不一样，是那种安静燃烧的类型。',
+    tags: ['吉他手', '热情治愈'],
+  },
+  {
+    id: 'qingshu', href: '/camellya/qingshu',
+    name: '晴舒', en: 'Qingshu', role: '架子鼓 · 小金色边牧', color: 'sea',
+    desc: '乐队的鼓手兼队长，说话直接，脸上少有表情，却是最认真负责的那一个。节奏稳如磐石，是乐队的骨架。',
+    tags: ['架子鼓', '队长'],
+  },
+  {
+    id: 'richu', href: '/camellya/richu',
+    name: '日出', en: 'Richu', role: '贝斯 · 主唱 · 三花猫', color: 'sakura',
+    desc: '乐队的贝斯手兼主唱，调皮古灵精怪，从悲观中诞生的乐观者。台上认真投入，台下调皮捣蛋。',
+    tags: ['贝斯主唱', '三花猫'],
+  },
+];
 ---
 
+
 <BaseLayout title="CamEllya · 康予纳安">
+
+  <div id="sakura-env" aria-hidden="true"></div>
+
+  <div id="youth-splash" class="youth-splash">
+    <div class="splash-content">
+      <div class="splash-track">
+        <span class="note animate-note-1">♩</span>
+        <span class="note animate-note-2">♪</span>
+        <span class="note animate-note-3">♫</span>
+      </div>
+      <h1 class="splash-title">CamEllya</h1>
+      <p class="splash-subtitle">我们的旋律，在青春里交错共鸣</p>
+    </div>
+    <div class="splash-curtain-left"></div>
+    <div class="splash-curtain-right"></div>
+  </div>
+
   <nav class="nav">
-    <a href="/" class="nav-logo">康予纳安</a>
+    <a href="/" class="nav-logo">
+      <span class="logo-note">♬</span>
+      <span>康予纳安</span>
+    </a>
     <div class="nav-links">
       <a href="/explore">到处看看</a>
-      <a href="/camellya" class="nav-active">CamEllya</a>
+      <a href="/camellya" class="nav-active nav-accent">CamEllya</a>
+      <a href="/changelog">更新日志</a>
       <a href="/about">关于我</a>
     </div>
   </nav>
 
-  <div class="cam-hero">
-    <img src="/images/logo.png" alt="CamEllya" class="cam-logo" />
-    <p class="cam-intro">CamEllya 是康纳构建的创作宇宙。<br/>四个少年，一支乐队，一个属于他们的世界。</p>
-    <div class="cam-meta">
-      <span class="meta-tag">世界观</span>
-      <span class="meta-tag">角色设定</span>
-      <span class="meta-tag">漫画连载</span>
+  <section class="cam-hero">
+    <div class="hero-sky-bg"></div>
+    <div class="hero-clouds"></div>
+    <div class="cam-hero-inner">
+      <div class="cam-sys-label">
+        青春特写 · 校园乐队物语 · 连载中
+      </div>
+      <div class="cam-logo-row">
+        <span class="cam-big-title">CamEllya</span>
+        <span class="cam-title-badge">部室主页</span>
+      </div>
+      <p class="cam-tagline">青春随笔 ✧ 角色档案 ✧ 音乐排练室</p>
+      <p class="cam-desc">
+        CamEllya 是一个由康纳构建的青春创作宇宙。在蝉鸣与落日交织的校园角落，四个性格迥异的少年少女因音乐相遇，在属于他们的音符里演奏着关于成长、友情与寻找自我的温柔故事。
+      </p>
+      <div class="cam-nav-pills">
+        <a href="#characters" class="pill pill-primary">遇见社员 →</a>
+        <a href="#world" class="pill pill-ghost">舞台背景 →</a>
+        <a href="#comics" class="pill pill-ghost">社团日志 →</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <main class="cam-main">
-
-    <section class="cam-section" id="characters">
-      <div class="cam-section-title">角色介绍</div>
-      <div class="char-grid">
-
-        <a href="/camellya/luoxue" class="char-card">
-          <div class="char-cover" style="background:#EDF5F8">
-            <img src="/images/camellya/luoxue.png" alt="络雪" class="char-img" />
-          </div>
-          <div class="char-body">
-            <div class="char-name">络雪</div>
-            <div class="char-role" style="color:#7BBDD4">键盘手 · 布偶猫</div>
-            <div class="char-desc">温柔体贴，知识渊博，优雅文静的学霸。在她身边总有一种安心的感觉。</div>
-          </div>
-        </a>
-
-        <a href="/camellya/baibu" class="char-card">
-          <div class="char-cover" style="background:#F5F0E8">
-            <img src="/images/camellya/baibu.png" alt="百部" class="char-img" />
-          </div>
-          <div class="char-body">
-            <div class="char-name">百部</div>
-            <div class="char-role" style="color:#C4935A">主音吉他 · 小青龙</div>
-            <div class="char-desc">乐观开朗，阳光天真，像小孩子一样，总能治愈身边的人。</div>
-          </div>
-        </a>
-
-        <a href="/camellya/qingshu" class="char-card">
-          <div class="char-cover" style="background:#F2F0E8">
-            <img src="/images/camellya/qingshu.png" alt="晴舒" class="char-img" />
-          </div>
-          <div class="char-body">
-            <div class="char-name">晴舒</div>
-            <div class="char-role" style="color:#B8A86A">架子鼓 · 小金色边牧</div>
-            <div class="char-desc">说话直接，沉稳负责，冷淡外表下是深沉的温柔与安全感。</div>
-          </div>
-        </a>
-
-        <a href="/camellya/richu" class="char-card">
-          <div class="char-cover" style="background:#F8EEEE">
-            <img src="/images/camellya/richu.png" alt="日出" class="char-img" />
-          </div>
-          <div class="char-body">
-            <div class="char-name">日出</div>
-            <div class="char-role" style="color:#C47070">贝斯 · 主唱 · 三花猫</div>
-            <div class="char-desc">古灵精怪，调皮有趣，从悲观中生长出来的乐观者，热爱生活。</div>
-          </div>
-        </a>
-
+  <section class="section" id="characters">
+    <div class="section-hd">
+      <div class="section-label-row">
+        <span class="youth-badge">TRACK_01</span>
+        <span class="label-text">乐团成员档案</span>
       </div>
-    </section>
+    </div>
 
-    <section class="cam-section" id="world">
-      <div class="cam-section-title">世界观</div>
-      <div class="world-block">
-        <div class="world-text">世界观设定正在整理中，敬请期待 ✦</div>
+    <div class="char-grid">
+      {characters.map(c => (
+        <a class={`char-card char-${c.color}`} href={c.href}>
+          <div class="char-top">
+            <div class="char-photo-frame">
+              <img
+                src={`/images/camellya/${c.id}.png`}
+                alt={c.name}
+                class="char-avatar"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="char-avatar-fallback">
+                {c.name[0]}
+              </div>
+            </div>
+            <div class="tape-deco"></div>
+          </div>
+          <div class="char-body">
+            <div class="char-name-row">
+              <span class="char-name">{c.name}</span>
+              <span class="char-en">{c.en}</span>
+            </div>
+            <div class="char-role">{c.role}</div>
+            <p class="char-desc">{c.desc}</p>
+            <div class="char-tags">
+              {c.tags.map(t => (
+                <span class={`ctag ctag-${c.color}`}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-alt" id="world">
+    <div class="section-hd">
+      <div class="section-label-row">
+        <span class="youth-badge">TRACK_02</span>
+        <span class="label-text">世界观与乐章</span>
       </div>
-    </section>
+    </div>
 
-    <section class="cam-section" id="comics">
-      <div class="cam-section-title">漫画</div>
-      <div class="comics-grid">
-        <div class="comic-card">
-          <div class="comic-cover">第一话 · 即将上线</div>
-          <div class="comic-title">第一话 · 相遇</div>
-          <div class="comic-date">敬请期待</div>
-        </div>
+    <div class="world-grid">
+      <div class="world-card">
+        <div class="world-icon">🌤️</div>
+        <div class="world-name">舞台背景</div>
+        <p class="world-desc">故事发生在一座临海的温柔城市中。午后洒进排练室的金色阳光、天台上吹过的微风，音乐成为了少年们连接彼此最纯粹的桥梁。</p>
       </div>
-    </section>
+      <div class="world-card">
+        <div class="world-icon">🎸</div>
+        <div class="world-name">乐团起源</div>
+        <p class="world-desc">四个人因为放学后一次奇妙的乐器交响而驻足。各自带着青春期的敏感与固执，在这个小小的空间里，用声音填补彼此青春的空白。</p>
+      </div>
+      <div class="world-card">
+        <div class="world-icon">🌸</div>
+        <div class="world-name">物语内核</div>
+        <p class="world-desc">关于陪伴、那些无法轻易说出口的悸动，以及在傍晚的晚霞里，大家一起为了同一个音符拼尽全力的夏天。</p>
+      </div>
+    </div>
 
-  </main>
+    <div class="world-notice">
+      <span class="notice-heart">♪</span>
+      社团活动记录持续更新中，期待下一次排练的旋律
+    </div>
+  </section>
+
+  <section class="section" id="comics">
+    <div class="section-hd">
+      <div class="section-label-row">
+        <span class="youth-badge">TRACK_03</span>
+        <span class="label-text">小说正传</span>
+      </div>
+    </div>
+
+    <div class="story-grid">
+      <a href="/camellya/story/episode-1" class="story-card">
+        <div class="story-number">第一话</div>
+        <h3 class="story-card-title">「一首歌写不完」</h3>
+        <p class="story-card-desc">百部提议四个人一起写首自己的歌。从副歌开始，四个人的意见频频相左，但络雪的一句话拨开了分歧。排练室里，一个想法开始生根。</p>
+        <div class="story-card-footer">在排练室，在便利店，他们四个开始铺陈属于自己的旋律</div>
+      </a>
+      <a href="/camellya/story/episode-2" class="story-card">
+        <div class="story-number">第二话</div>
+        <h3 class="story-card-title">「四个人，一个锅」</h3>
+        <p class="story-card-desc">晴舒邀请他们周六来家吃饭。买菜、做饭、围着热锅，这是四个人第一次这样聚在一起。在蒸腾的热气中，日出想到了那首歌的新词。</p>
+        <div class="story-card-footer">还没起飞的那一秒，是他们想要永远抓住的青春</div>
+      </a>
+    </div>
+
+    <div class="story-notice">
+      <span class="notice-icon">✍️</span>
+      <p>新的故事仍在创作中，期待在音符里再次相遇</p>
+    </div>
+  </section>
 
   <footer class="footer">
-    <span>© 2026 康予纳安 · CamEllya</span>
-    <span class="footer-dot">持续更新中 ✦</span>
+    <span>© 2026 康予纳安 · CamEllya 物语宇宙</span>
+    <span class="footer-dot">愿青春歌声永不谢幕 ✦</span>
   </footer>
+
+  <div id="dimension-shatter-overlay" aria-hidden="true">
+    <div class="matrix-grid-bg"></div>
+    <div class="terminal-override-box">
+      <div class="glitch-text" data-text="REALITY_DECONSTRUCTING">REALITY_DECONSTRUCTING</div>
+      <div class="loading-status">OVERRIDING_CAMPUS_ENVIRONMENT... <span class="percent">00%</span></div>
+    </div>
+    <div class="horizontal-shutter top"></div>
+    <div class="horizontal-shutter bottom"></div>
+  </div>
+
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const splash = document.getElementById('youth-splash');
+    if (!splash) return;
+
+    const hasVisited = sessionStorage.getItem('camellya_visited');
+
+    if (!hasVisited) {
+      sessionStorage.setItem('camellya_visited', 'true');
+      setTimeout(() => {
+        splash.classList.add('fade-out');
+        setTimeout(() => { splash.style.display = 'none'; }, 800);
+      }, 2500);
+    } else {
+      splash.classList.add('is-short');
+      setTimeout(() => {
+        splash.classList.add('fade-out');
+        setTimeout(() => { splash.style.display = 'none'; }, 400);
+      }, 600);
+    }
+  })();
+</script>
+
+<script>
+  // 🌸 樱花动态粒子引擎
+  const spawnSakuraSystem = () => {
+    const env = document.getElementById('sakura-env');
+    if (!env) return;
+
+    // 清空旧粒子，防止路由缓存重复叠加
+    env.innerHTML = '';
+
+    const maxPetals = 24; // 优雅的环境浓度，不抢内容视觉
+    let activePetals = 0;
+
+    const createPetal = (isInitial = false) => {
+      if (activePetals >= maxPetals) return;
+      activePetals++;
+
+      const petal = document.createElement('div');
+      const inner = document.createElement('div');
+      petal.className = 'sakura-petal';
+      inner.className = 'sakura-inner';
+
+      // 赋予随机物理特质
+      const scale = Math.random() * 0.6 + 0.5; // 尺寸缩放
+      const fallDuration = Math.random() * 6 + 7; // 坠落时间 7s - 13s
+      const swayDuration = Math.random() * 2 + 2; // 左右摇摆周期
+      const delay = isInitial ? Math.random() * -10 : Math.random() * -0.5; // 初始批量生成时做负延迟以打散断层
+
+      petal.style.left = `${Math.random() * 100}vw`;
+      petal.style.animationDuration = `${fallDuration}s`;
+      petal.style.animationDelay = `${delay}s`;
+      petal.style.transform = `scale(${scale})`;
+
+      inner.style.animationDuration = `${swayDuration}s`;
+      inner.style.animationDelay = `${delay}s`;
+      
+      // 随机樱花色泽微调（纯白偏粉到元气日出粉）
+      const hueShift = Math.floor(Math.random() * 15);
+      inner.style.background = `linear-gradient(135deg, #fff0f2 0%, hsl(348, 100%, ${78 + hueShift}%) 100%)`;
+
+      petal.appendChild(inner);
+      env.appendChild(petal);
+
+      // 回收机制
+      setTimeout(() => {
+        petal.remove();
+        activePetals--;
+        createPetal(false);
+      }, (fallDuration) * 1000);
+    };
+
+    // 预填充满屏幕空间，避免用户进页面后上方出现空白断层
+    for (let i = 0; i < maxPetals; i++) {
+      createPetal(true);
+    }
+  };
+
+  // 现实崩解跨维度跳转控制
+  const initDimensionTransit = () => {
+    spawnSakuraSystem(); // 路由加载时唤醒樱花环境
+
+    document.querySelectorAll('a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.getAttribute('target') === '_blank') return;
+      if (link.hostname !== window.location.hostname) return;
+
+      const targetUrl = new URL(href, window.location.href);
+      if (targetUrl.pathname === '/camellya' || targetUrl.pathname.startsWith('/camellya/')) return;
+
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        document.body.classList.add('reality-shattering');
+
+        const percentEl = document.querySelector('#dimension-shatter-overlay .percent');
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += Math.floor(Math.random() * 25) + 10;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+          }
+          if (percentEl) percentEl.textContent = `${progress.toString().padStart(2, '0')}%`;
+        }, 50);
+
+        setTimeout(() => {
+          window.location.href = href;
+        }, 450);
+      });
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initDimensionTransit);
+  document.addEventListener('astro:page-load', initDimensionTransit);
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      document.body.classList.remove('reality-shattering');
+    }
+  });
+</script>
+
+<style is:global>
+  body.reality-shattering nav,
+  body.reality-shattering section,
+  body.reality-shattering footer,
+  body.reality-shattering #sakura-env {
+    animation: deconstructPage 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: none;
+  }
+
+  /* 🌸 樱花容器与物理轨道 */
+  #sakura-env {
+    position: fixed;
+    inset: 0;
+    z-index: 5; /* 位于背景之上，卡片及交互组件之下，确保完全不阻碍点击交互 */
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .sakura-petal {
+    position: absolute;
+    top: -40px;
+    will-change: transform;
+    animation: sakura-vertical-fall linear forwards;
+  }
+
+  .sakura-inner {
+    width: 14px;
+    height: 11px;
+    border-radius: 150% 10% 150% 150%;
+    box-shadow: 0 2px 5px rgba(255, 141, 161, 0.2);
+    will-change: transform;
+    animation: sakura-3d-sway ease-in-out infinite alternate;
+  }
+
+  /* 垂直下落：添加微弱的横向地球自转偏向偏移 */
+  @keyframes sakura-vertical-fall {
+    0% {
+      top: -40px;
+    }
+    100% {
+      top: 105vh;
+    }
+  }
+
+  /* 三维空间轻柔摇摆与旋转 */
+  @keyframes sakura-3d-sway {
+    0% {
+      transform: rotate3d(1, 1, 0, 0deg) translateX(0px);
+    }
+    50% {
+      transform: rotate3d(1, 0.5, 1, 180deg) translateX(40px);
+    }
+    100% {
+      transform: rotate3d(0.5, 1, 0.5, 360deg) translateX(-20px);
+    }
+  }
+
+  #dimension-shatter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+  }
+
+  .matrix-grid-bg {
+    position: absolute;
+    inset: 0;
+    background: #05070d;
+    background-image: 
+      linear-gradient(rgba(77, 223, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(77, 223, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  body.reality-shattering .matrix-grid-bg {
+    opacity: 1;
+  }
+
+  .horizontal-shutter {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: #080b14;
+    border-color: #4dfdfd;
+    transition: transform 0.35s cubic-bezier(0.85, 0, 0.15, 1);
+  }
+  .horizontal-shutter.top { top: 0; transform: translateY(-100%); border-bottom: 0px solid transparent; }
+  .horizontal-shutter.bottom { bottom: 0; transform: translateY(100%); border-top: 0px solid transparent; }
+
+  body.reality-shattering .horizontal-shutter.top {
+    transform: translateY(0);
+    border-bottom: 2px solid #4dfdfd;
+    box-shadow: 0 5px 20px rgba(77, 223, 255, 0.2);
+  }
+  body.reality-shattering .horizontal-shutter.bottom {
+    transform: translateY(0);
+    border-top: 2px solid #7B5EFF;
+    box-shadow: 0 -5px 20px rgba(123, 94, 255, 0.2);
+  }
+
+  .terminal-override-box {
+    position: relative;
+    z-index: 100000;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  body.reality-shattering .terminal-override-box {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.25s 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glitch-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 4px;
+    position: relative;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  }
+  .loading-status {
+    font-size: 12px;
+    color: #7B5EFF;
+    margin-top: 12px;
+    letter-spacing: 2px;
+  }
+  .loading-status .percent { color: #4dfdfd; font-weight: bold; }
+
+  @keyframes deconstructPage {
+    0% { filter: blur(0) grayscale(0) contrast(1); transform: scale(1); }
+    30% { filter: blur(4px) grayscale(0.5) contrast(1.2); transform: scale(0.99) skewX(1deg); }
+    100% { filter: blur(12px) grayscale(1) contrast(2); transform: scale(0.95); opacity: 0; }
+  }
+</style>
 
 <style>
 :root {
-  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
-  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+  --bg: #f6f8fa; 
+  --surface: #ffffff; 
+  --surface-2: #fcfdfe;
+  --sky: #5ba4e5; 
+  --sky-light: rgba(91,164,229,0.08); 
+  --sky-border: rgba(91,164,229,0.3);
+  
+  --indigo: #6c71c4; 
+  --indigo-light: rgba(108,113,196,0.08); 
+  --indigo-border: rgba(108,113,196,0.3);
+  
+  --sea: #4ca1a3; 
+  --sea-light: rgba(76,161,163,0.08);
+  --sea-border: rgba(76,161,163,0.3);
+  
+  --sakura: #ff8da1; 
+  --sakura-light: rgba(255,141,161,0.09); 
+  --sakura-border: rgba(255,141,161,0.35);
+  
+  --text: #3a424a; 
+  --muted: #66727f; 
+  --hint: #9faec0; 
+  --border: rgba(91,164,229,0.12);
+  --font-youth: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Microsoft YaHei', sans-serif;
 }
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
-.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
-.nav-links { display: flex; gap: 22px; }
-.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
-.nav-links a:hover { color: var(--blue); }
-.nav-active { color: var(--blue) !important; font-weight: 500; }
 
-.cam-hero { background: #FDFCF5; border-bottom: 0.5px solid var(--border); padding: 56px 32px 48px; text-align: center; }
-.cam-logo { height: 80px; object-fit: contain; margin-bottom: 20px; }
-.cam-intro { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
-.cam-meta { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.meta-tag { font-size: 12px; padding: 4px 14px; border-radius: 20px; background: #F5F0E0; color: #8A7A50; border: 0.5px solid #E8E0C8; }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-youth);
+}
 
-.cam-main { max-width: 1000px; margin: 0 auto; padding: 48px 32px; }
-.cam-section { margin-bottom: 52px; }
-.cam-section-title { font-size: 12px; font-weight: 500; color: #999; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
+.youth-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.char-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.char-card { background: var(--surface); border-radius: 14px; border: 0.5px solid var(--border); overflow: hidden; text-decoration: none; color: inherit; transition: border-color 0.2s; }
-.char-card:hover { border-color: #C4A882; }
-.char-cover { width: 100%; aspect-ratio: 1/1; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.char-img { width: 100%; height: 100%; object-fit: cover; }
-.char-body { padding: 14px 14px 16px; }
-.char-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-.char-role { font-size: 11px; margin-bottom: 8px; }
-.char-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.splash-curtain-left, .splash-curtain-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: #eef5fa;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  z-index: 1;
+}
+.splash-curtain-left { left: 0; transform-origin: left; }
+.splash-curtain-right { right: 0; transform-origin: right; }
 
-.world-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); padding: 40px; text-align: center; }
-.world-text { font-size: 14px; color: var(--hint); }
+.splash-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.splash-title {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--sky);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.splash-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  transition: display 0.2s;
+}
+.splash-track {
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: var(--sakura);
+}
+.note { display: inline-block; margin: 0 4px; animation: bounceNote 0.6s ease-in-out infinite alternate; }
+.animate-note-2 { animation-delay: 0.2s; }
+.animate-note-3 { animation-delay: 0.4s; }
 
-.comics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.comic-card { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
-.comic-cover { width: 100%; aspect-ratio: 3/4; background: #F5F0E0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #8A7A50; }
-.comic-title { font-size: 13px; font-weight: 500; padding: 10px 12px 4px; color: var(--text); }
-.comic-date { font-size: 11px; color: var(--hint); padding: 0 12px 12px; }
+@keyframes bounceNote {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
 
-.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 0; }
-.footer-dot { color: var(--blue); }
+.youth-splash.is-short .splash-subtitle {
+  display: none;
+}
+.youth-splash.is-short .splash-title {
+  font-size: 32px;
+}
+.youth-splash.is-short .splash-curtain-left,
+.youth-splash.is-short .splash-curtain-right {
+  transition-duration: 0.4s;
+}
+
+.youth-splash.fade-out .splash-content { opacity: 0; transform: scale(0.95); }
+.youth-splash.fade-out .splash-curtain-left { transform: scaleX(0); }
+.youth-splash.fade-out .splash-curtain-right { transform: scaleX(0); }
+
+.nav {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 32px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 16px; font-weight: 600;
+  color: var(--text); text-decoration: none;
+}
+.logo-note { color: var(--sky); font-size: 16px; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 14px; color: var(--muted);
+  text-decoration: none; transition: color 0.2s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--sky); }
+.nav-active { color: var(--sky) !important; font-weight: 600; }
+
+.cam-hero {
+  position: relative; padding: 100px 32px 88px;
+  display: flex; justify-content: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden; background: #ffffff;
+}
+.hero-sky-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #e6f3fc 0%, #ffffff 100%);
+  opacity: 0.8;
+}
+.cam-hero-inner {
+  position: relative; z-index: 1;
+  max-width: 680px; text-align: center;
+}
+.cam-sys-label {
+  font-size: 12px; color: var(--sky);
+  letter-spacing: 0.1em; margin-bottom: 16px;
+  font-weight: 500;
+}
+.cam-logo-row { display: flex; align-items: baseline; gap: 14px; justify-content: center; margin-bottom: 14px; }
+.cam-big-title {
+  font-size: 52px; font-weight: 700; color: var(--text);
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--text) 30%, var(--sky) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cam-title-badge {
+  font-size: 12px;
+  background: var(--sky-light); color: var(--sky);
+  border: 1px solid var(--sky-border); padding: 2px 10px; border-radius: 12px;
+  align-self: center;
+}
+.cam-tagline {
+  font-size: 13px; color: var(--hint); letter-spacing: 0.15em;
+  margin-bottom: 24px;
+}
+.cam-desc { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 32px; text-align: left; }
+.cam-nav-pills { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.pill {
+  font-size: 14px; padding: 10px 24px; border-radius: 20px; transition: all 0.25s; text-decoration: none;
+}
+.pill-primary {
+  background: var(--sky); color: #fff;
+}
+.pill-primary:hover { background: #4a93d6; box-shadow: 0 4px 12px rgba(91,164,229,0.2); }
+.pill-ghost {
+  background: transparent; color: var(--muted); border: 1px solid var(--hint);
+}
+.pill-ghost:hover { border-color: var(--sky); color: var(--sky); background: var(--sky-light); }
+
+.section { padding: 64px 32px; max-width: 1140px; margin: 0 auto; }
+.section-alt { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-top: 20px; margin-bottom: 20px; }
+
+.section-hd { margin-bottom: 36px; }
+.section-label-row { display: flex; align-items: center; gap: 12px; }
+.youth-badge {
+  font-size: 11px; color: #ffffff; font-weight: 600;
+  background: var(--text); padding: 3px 10px; border-radius: 4px;
+}
+.label-text { font-size: 18px; font-weight: 600; color: var(--text); }
+
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.char-card {
+  background: var(--surface);
+  border: 1px solid #eef2f6;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(150,165,180,0.08);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.char-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(91,164,229,0.15); }
+
+.char-top { aspect-ratio: 1; overflow: hidden; background: #fafbfc; position: relative; padding: 12px 12px 0 12px; }
+.char-photo-frame { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; box-shadow: inset 0 0 8px rgba(0,0,0,0.05); }
+.char-avatar { width: 100%; height: 100%; object-fit: cover; display: block; }
+.char-avatar-fallback {
+  width: 100%; height: 100%;
+  display: none; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: 600; color: var(--hint);
+  background: #f0f4f8;
+}
+.tape-deco {
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+  width: 40px; height: 14px; background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(1px);
+}
+
+.char-body { padding: 16px; }
+.char-name-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.char-name { font-size: 18px; font-weight: 600; color: var(--text); }
+.char-en { font-size: 12px; color: var(--hint); }
+.char-role {
+  font-size: 12px; color: var(--muted); margin-bottom: 12px;
+  font-weight: 500;
+}
+.char-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; text-align: justify; }
+.char-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.ctag {
+  font-size: 11px; padding: 2px 10px; border-radius: 12px; font-weight: 500;
+}
+.ctag-sky    { background: var(--sky-light);    color: var(--sky);    border: 1px solid var(--sky-border); }
+.ctag-indigo { background: var(--indigo-light); color: var(--indigo); border: 1px solid var(--indigo-border); }
+.ctag-sea    { background: var(--sea-light);    color: var(--sea);    border: 1px solid var(--sea-border); }
+.ctag-sakura { background: var(--sakura-light); color: var(--sakura); border: 1px solid var(--sakura-border); }
+
+.world-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.world-card {
+  background: var(--surface-2); border: 1px solid #eef2f6;
+  border-radius: 8px; padding: 28px 24px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.world-card:hover { border-color: var(--sky-border); background-color: #ffffff; }
+.world-icon { font-size: 24px; margin-bottom: 14px; line-height: 1; }
+.world-name { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.world-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+.world-notice {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--hint);
+}
+.notice-heart { color: var(--sakura); animation: pulseHeart 1.5s infinite alternate; }
+@keyframes pulseHeart { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+
+.comics-placeholder {
+  position: relative;
+  border: 1px dashed var(--hint); border-radius: 8px;
+  padding: 64px 32px; text-align: center;
+  background: #fafbfc;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.comics-icon { font-size: 32px; }
+.comics-label {
+  font-size: 13px; color: var(--hint); letter-spacing: 0.1em; font-weight: 600;
+}
+.comics-desc { font-size: 14px; color: var(--muted); }
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.story-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid #eef2f6;
+  border-radius: 8px;
+  padding: 24px;
+  text-decoration: none;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.2s;
+}
+.story-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(91, 164, 229, 0.15);
+  border-color: var(--sky-border);
+}
+.story-number {
+  font-size: 11px;
+  color: var(--sky);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.story-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+.story-card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.story-card-footer {
+  font-size: 12px;
+  color: var(--hint);
+  padding-top: 12px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.story-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--hint);
+  padding: 24px;
+  background: #fafbfc;
+  border-radius: 8px;
+}
+.notice-icon { font-size: 18px; }
+.story-notice p { margin: 0; }
+
+.footer {
+  padding: 24px 32px; display: flex; justify-content: space-between;
+  font-size: 13px; color: var(--hint); border-top: 1px solid var(--border);
+  background: #ffffff;
+}
+.footer-dot { color: var(--sky); font-weight: 500; }
 
 @media (max-width: 768px) {
-  .nav-links { gap: 12px; }
-  .nav-links a { font-size: 12px; }
-  .cam-hero { padding: 36px 20px 32px; }
-  .cam-logo { height: 56px; }
-  .cam-intro { font-size: 13px; }
-  .cam-main { padding: 28px 16px; }
-  .char-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .comics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .nav { padding: 12px 20px; }
+  .nav-links { gap: 16px; }
+  .cam-hero { padding: 72px 20px 60px; }
+  .cam-big-title { font-size: 38px; }
+  .section { padding: 40px 20px; }
+  .char-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .world-grid { grid-template-columns: 1fr; }
+  .story-grid { grid-template-columns: 1fr; }
+  .footer { flex-direction: column; align-items: center; gap: 10px; padding: 24px 20px; }
 }
 </style>

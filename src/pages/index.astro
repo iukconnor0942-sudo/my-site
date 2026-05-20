@@ -1,18 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro'; // 确保路径指向你的布局文件
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 自动获取最新的更新日期
 const allChangelogs = await getCollection('changelog');
 const latestChangelog = allChangelogs
   .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date))[0];
-
 const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 ---
 
 <BaseLayout title="康予纳安 · 首页">
+
+  <!-- ── NAV ── -->
   <nav class="nav">
-    <div class="nav-logo">康予纳安</div>
+    <div class="nav-logo">
+      <span class="logo-arrow">▶</span>
+      <span class="logo-text">康予纳安</span>
+    </div>
     <div class="nav-links">
       <a href="/explore">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
@@ -24,29 +27,51 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     </div>
   </nav>
 
+  <!-- ── HERO ── -->
   <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-scan"></div>
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner tr"></div>
+    <div class="hero-corner bl"></div>
+    <div class="hero-corner br"></div>
     <div class="hero-center">
+      <div class="sys-label">
+        <span class="sys-dot"></span>
+        SYS_ONLINE · PLAYER_PROFILE · LV.999
+      </div>
       <div class="hero-badges">
-        <span class="badge badge-blue">创作者</span>
-        <span class="badge badge-blue">画师</span>
+        <span class="badge badge-purple">创作者</span>
+        <span class="badge badge-cyan">画师</span>
         <span class="badge badge-red">乐手</span>
       </div>
-      <h1 class="hero-name">你好，我是<span>康纳</span> ✦</h1>
-      <p class="hero-intro">欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦</p>
+      <h1 class="hero-name">
+        你好，我是<span class="name-hl">康纳</span><span class="cursor">▌</span>
+      </h1>
+      <p class="hero-intro">
+        欢迎来到我的网站！我是康纳，是一名创作者，我的网站里有许多关于我的事情，
+        可以在网站的各个区里到处看看，希望对你有所帮助！我会不断更新的哦
+      </p>
       <div class="hero-btns">
         <a href="/explore" class="btn-primary">到处看看 →</a>
-        <a href="/about" class="btn-secondary">关于我</a>
+        <a href="/about" class="btn-ghost">关于我</a>
         <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
       </div>
     </div>
   </section>
 
+  <!-- ── CAMELLYA ── -->
   <section class="content-section">
     <div class="section-hd">
-      <span class="section-label">CamEllya 专区</span>
+      <div class="section-label-row">
+        <span class="mono-chip">STAGE_01</span>
+        <span class="label-slash">/</span>
+        <span class="label-text">CamEllya 专区</span>
+      </div>
       <a href="/camellya" class="section-more">进入专区 →</a>
     </div>
-    <div class="camellya-block">
+
+    <div class="cam-card">
       <div class="cam-header">
         <div>
           <div class="cam-title">CamEllya</div>
@@ -56,14 +81,17 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
       </div>
       <div class="cam-grid">
         <a href="/camellya#characters" class="cam-cell">
+          <div class="cell-icon">◈</div>
           <div class="cam-cname">角色</div>
           <div class="cam-cdesc">络雪 · 百部 · 晴舒 · 日出，四人介绍与设定</div>
         </a>
         <a href="/camellya#world" class="cam-cell">
+          <div class="cell-icon">◉</div>
           <div class="cam-cname">世界观</div>
           <div class="cam-cdesc">CamEllya 的背景设定与世界架构</div>
         </a>
         <a href="/camellya#comics" class="cam-cell">
+          <div class="cell-icon">▦</div>
           <div class="cam-cname">漫画</div>
           <div class="cam-cdesc">故事连载、短篇与番外更新</div>
         </a>
@@ -71,6 +99,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     </div>
   </section>
 
+  <!-- ── TAGS ── -->
   <div class="tags-strip">
     <div class="tags">
       <span class="atag">画画</span>
@@ -82,93 +111,418 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     <a href="/about" class="section-more">了解更多关于我 →</a>
   </div>
 
+  <!-- ── FOOTER ── -->
   <footer class="footer">
-    <span>© 2026 康予纳安</span>
-    <span class="footer-dot">持续更新中 ✦</span>
+    <span><span class="mono">©</span> 2026 康予纳安</span>
+    <span class="footer-right">持续更新中 <span class="star">✦</span></span>
   </footer>
+
 </BaseLayout>
 
 <style>
 :root {
-  --bg: #F2F4F6;
-  --surface: #ffffff;
-  --blue: #4AACDB;
-  --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0;
-  --red: #C94040;
-  --red-light: #FDECEC;
-  --red-border: #f0bfbf;
-  --text: #1a1a1a;
-  --muted: #666666;
-  --hint: #aaaaaa;
-  --border: #e0e4ea;
+  --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+  --bg: #080b14;
+  --surface: #0d1020;
+  --surface-2: #131a2e;
+  --purple: #7B5EFF;
+  --purple-light: rgba(123,94,255,0.1);
+  --purple-border: rgba(123,94,255,0.28);
+  --cyan: #4DDFFF;
+  --cyan-light: rgba(77,223,255,0.07);
+  --cyan-border: rgba(77,223,255,0.25);
+  --red: #FF4D8F;
+  --red-light: rgba(255,77,143,0.08);
+  --red-border: rgba(255,77,143,0.28);
+  --text: #E8EAFF;
+  --muted: #8B8FA8;
+  --hint: #4a4e6a;
+  --border: rgba(123,94,255,0.15);
 }
 
-/* 基础桌面端样式 */
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
-.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); }
-.nav-links { display: flex; gap: 22px; }
-.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
-.nav-accent { color: var(--red) !important; font-weight: 500; }
-.nav-updates { position: relative; font-size: 13px; }
-.new-badge { position: absolute; top: -6px; right: -12px; background: var(--red); color: white; font-size: 9px; padding: 1px 6px; border-radius: 20px; display: none; }
+/* ─ NAV ─ */
+.nav {
+  background: rgba(13,16,32,0.96);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.logo-arrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  animation: blink 1.4s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.logo-text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-accent { color: var(--red) !important; }
+.nav-accent:hover { text-shadow: 0 0 12px var(--red); }
+.nav-updates { position: relative; }
+.new-badge {
+  position: absolute;
+  top: -6px; right: -14px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  display: none;
+  letter-spacing: 0.08em;
+}
 
-.hero { background-image: url('/images/hero-bg.png'); background-size: cover; background-position: center 30%; position: relative; padding: 80px 32px; display: flex; justify-content: center; border-bottom: 0.5px solid var(--border); }
-.hero::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.65); z-index: 0; }
-.hero-center { position: relative; z-index: 1; text-align: center; max-width: 580px; }
-.hero-badges { display: flex; gap: 6px; margin-bottom: 18px; justify-content: center; }
-.badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; }
-.badge-blue { background: var(--blue-light); color: #1A7FAD; }
-.badge-red { background: var(--red-light); color: var(--red); }
-.hero-name { font-size: 34px; font-weight: 500; margin-bottom: 16px; color: var(--text); }
-.hero-name span { color: var(--blue); }
-.hero-intro { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 28px; }
-.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn-primary { font-size: 14px; padding: 10px 24px; border-radius: 10px; background: var(--blue); color: #fff; text-decoration: none; }
-.btn-secondary { font-size: 14px; padding: 10px 24px; border-radius: 10px; background: #fff; border: 0.5px solid var(--border); text-decoration: none; color: #555; }
-.btn-red { font-size: 14px; padding: 10px 24px; border-radius: 10px; background: var(--red-light); color: var(--red); border: 0.5px solid var(--red-border); text-decoration: none; }
+/* ─ HERO ─ */
+.hero {
+  position: relative;
+  padding: 96px 32px 80px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(123,94,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123,94,255,0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.hero-scan {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+}
+/* pixel corner brackets */
+.hero-corner {
+  position: absolute;
+  width: 16px; height: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-corner.tl { top: 16px; left: 16px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.hero-corner.tr { top: 16px; right: 16px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.hero-corner.bl { bottom: 16px; left: 16px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.hero-corner.br { bottom: 16px; right: 16px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
 
-.content-section { padding: 32px; border-bottom: 0.5px solid var(--border); }
-.section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.section-label { font-size: 12px; color: #999; }
-.section-more { font-size: 12px; color: var(--blue); text-decoration: none; }
-.camellya-block { background: var(--surface); border-radius: 12px; border: 0.5px solid var(--border); overflow: hidden; }
-.cam-header { background: var(--blue-light); padding: 16px 20px; border-bottom: 0.5px solid var(--blue-border); display: flex; align-items: center; justify-content: space-between; }
-.cam-title { font-size: 16px; color: #1A7FAD; font-weight: 500; }
-.cam-sub { font-size: 12px; color: var(--blue); }
-.cam-badge { font-size: 11px; background: #fff; padding: 3px 10px; border-radius: 20px; color: #1A7FAD; border: 0.5px solid var(--blue-border); }
-.cam-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-.cam-cell { padding: 20px; border-right: 0.5px solid var(--border); text-decoration: none; color: inherit; display: block; }
+.hero-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 600px;
+}
+.sys-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.14em;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+.sys-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 4px var(--cyan); }
+  50% { box-shadow: 0 0 12px var(--cyan), 0 0 24px rgba(77,223,255,0.4); }
+}
+.hero-badges {
+  display: flex; gap: 8px;
+  margin-bottom: 22px;
+  justify-content: center;
+}
+.badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+}
+.badge-purple { background: var(--purple-light); color: var(--purple); border: 1px solid var(--purple-border); }
+.badge-cyan   { background: var(--cyan-light);   color: var(--cyan);   border: 1px solid var(--cyan-border); }
+.badge-red    { background: var(--red-light);    color: var(--red);    border: 1px solid var(--red-border); }
+
+.hero-name {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 18px;
+  letter-spacing: 0.02em;
+}
+.name-hl {
+  color: var(--purple);
+  text-shadow: 0 0 28px rgba(123,94,255,0.55);
+}
+.cursor {
+  color: var(--cyan);
+  animation: blink 1s step-end infinite;
+  font-size: 26px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+.hero-intro {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.95;
+  margin-bottom: 34px;
+}
+.hero-btns {
+  display: flex; gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 2px;
+  background: var(--purple);
+  color: #fff;
+  border: 1px solid var(--purple);
+  letter-spacing: 0.04em;
+  transition: all 0.22s;
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--purple);
+  box-shadow: 0 0 20px rgba(123,94,255,0.35), inset 0 0 20px rgba(123,94,255,0.05);
+}
+.btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  transition: all 0.22s;
+}
+.btn-ghost:hover { border-color: var(--cyan-border); color: var(--cyan); }
+.btn-red {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 2px;
+  background: var(--red-light);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+  letter-spacing: 0.04em;
+  transition: all 0.22s;
+}
+.btn-red:hover {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,77,143,0.35);
+}
+
+/* ─ CONTENT SECTION ─ */
+.content-section {
+  padding: 36px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.section-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.section-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mono-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  background: var(--cyan-light);
+  border: 1px solid var(--cyan-border);
+  padding: 2px 9px;
+  border-radius: 2px;
+}
+.label-slash { color: var(--hint); font-size: 14px; }
+.label-text { font-size: 13px; color: var(--muted); }
+.section-more {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--purple);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.section-more:hover { color: var(--cyan); }
+
+/* ─ CAM CARD ─ */
+.cam-card {
+  background: var(--surface-2);
+  border: 1px solid var(--purple-border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 40px rgba(123,94,255,0.06);
+}
+.cam-card::before,
+.cam-card::after {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+  pointer-events: none;
+  z-index: 2;
+}
+.cam-card::before { top: -1px; left: -1px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+.cam-card::after  { bottom: -1px; right: -1px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.cam-header {
+  background: var(--purple-light);
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--purple-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cam-title {
+  font-size: 16px;
+  color: var(--purple);
+  font-weight: 500;
+  text-shadow: 0 0 18px rgba(123,94,255,0.45);
+}
+.cam-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+}
+.cam-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--surface);
+  padding: 3px 10px;
+  border-radius: 2px;
+  color: var(--purple);
+  border: 1px solid var(--purple-border);
+  letter-spacing: 0.06em;
+}
+.cam-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.cam-cell {
+  padding: 24px 22px;
+  border-right: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background 0.2s;
+}
 .cam-cell:last-child { border-right: none; }
-.cam-cname { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-.cam-cdesc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.tags-strip { padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
-.tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.atag { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 0.5px solid var(--border); color: var(--muted); }
-.atag-red { background: var(--red-light); color: var(--red); border-color: var(--red-border); }
-.footer { padding: 16px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); }
-.footer-dot { color: var(--blue); }
+.cam-cell:hover { background: var(--purple-light); }
+.cell-icon {
+  font-size: 18px;
+  color: var(--cyan);
+  margin-bottom: 10px;
+  line-height: 1;
+  opacity: 0.8;
+}
+.cam-cname { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 7px; }
+.cam-cdesc { font-size: 12px; color: var(--muted); line-height: 1.65; }
 
-/* 🔥 手机端优化（必填） */
+/* ─ TAGS ─ */
+.tags-strip {
+  padding: 22px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.atag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+.atag:hover { border-color: var(--cyan-border); color: var(--cyan); }
+.atag-red { background: var(--red-light); color: var(--red); border-color: var(--red-border); }
+.atag-red:hover { background: var(--red); color: #fff; }
+
+/* ─ FOOTER ─ */
+.footer {
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--hint);
+}
+.mono { font-family: var(--font-mono); }
+.footer-right { font-family: var(--font-mono); }
+.star { color: var(--purple); }
+
+/* ─ MOBILE ─ */
 @media (max-width: 768px) {
-  .nav { padding: 12px 16px; overflow-x: auto; white-space: nowrap; }
-  .nav-logo { font-size: 14px; margin-right: 15px; }
-  .nav-links { gap: 14px; }
-  
-  .hero { padding: 60px 20px; }
-  .hero::before { background: rgba(255,255,255,0.8); }
+  .nav { padding: 12px 16px; overflow-x: auto; gap: 12px; }
+  .nav-logo { flex-shrink: 0; }
+  .nav-links { gap: 16px; flex-shrink: 0; }
+  .nav-links a { font-size: 12px; }
+
+  .hero { padding: 60px 20px 50px; }
   .hero-name { font-size: 26px; }
-  .hero-intro { font-size: 14px; text-align: justify; }
-  
+  .hero-intro { font-size: 14px; text-align: left; }
+  .sys-label { font-size: 9px; gap: 5px; }
   .hero-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .btn-red { grid-column: span 2; }
+  .hero-corner { width: 10px; height: 10px; }
 
   .content-section { padding: 24px 16px; }
   .cam-grid { grid-template-columns: 1fr; }
-  .cam-cell { border-right: none; border-bottom: 0.5px solid var(--border); }
-  
+  .cam-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .cam-cell:last-child { border-bottom: none; }
+
   .tags-strip { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 16px; }
-  .footer { flex-direction: column; align-items: center; gap: 8px; padding: 20px 16px; }
+  .footer { flex-direction: column; align-items: center; gap: 8px; padding: 20px 16px; text-align: center; }
 }
 </style>
 
@@ -177,11 +531,9 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   const link = document.getElementById('updates-link');
   const lastUpdateDate = badge?.dataset.lastDate || '2026-04-10';
   const lastSeen = localStorage.getItem('lastSeenChangelog');
-
   if (badge && (!lastSeen || lastSeen < lastUpdateDate)) {
     badge.style.display = 'inline';
   }
-
   link?.addEventListener('click', () => {
     localStorage.setItem('lastSeenChangelog', lastUpdateDate);
     if (badge) badge.style.display = 'none';

@@ -37,30 +37,33 @@ const { categoryName, notes } = Astro.props;
 ---
 
 <BaseLayout title={`${categoryName} · 笔记列表`}>
-  <main style="max-width: 1100px; margin: 0 auto; padding: 120px 40px;">
-    <h1 style="font-size: 42px; margin-bottom: 60px;">{categoryName}<span style="color: #4AACDB;">.</span></h1>
+  <main class="category-hall">
+    <div class="nav-back">
+      <a href="/notes" class="back-link">◀ BACK_TO_KNOWLEDGE</a>
+    </div>
+
+    <h1 class="category-title">{categoryName}<span class="title-dot">.</span></h1>
 
     {notes.length > 0 ? (
-      /* 🐉 情况 A：有笔记时，显示列表网格 */
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;">
+      <div class="notes-grid">
         {notes.map((note) => (
-          <a href={`/notes/${note.id}`} style="text-decoration: none; color: inherit;">
-            <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
-              <img src={note.cover} style="width: 100%; height: 200px; object-fit: cover;" />
-              <div style="padding: 24px;">
-                <div style="font-size: 10px; color: #4AACDB; font-weight: 800; margin-bottom: 8px;">STEP {note.order}</div>
-                <h3 style="margin: 0 0 10px 0;">{note.title}</h3>
-                <p style="font-size: 14px; color: #666;">{note.description}</p>
-              </div>
+          <a href={`/notes/${note.id}`} class="note-card">
+            <div class="card-thumb">
+              <img src={note.cover} alt={note.title} loading="lazy" />
+              <div class="thumb-scan"></div>
+            </div>
+            <div class="card-content">
+              <div class="step-badge">STEP {note.order.toString().padStart(2, '0')}</div>
+              <h3>{note.title}</h3>
+              <p>{note.description}</p>
             </div>
           </a>
         ))}
       </div>
     ) : (
-      /* 🐉 情况 B：没笔记时（比如 AI 专区），显示敬请期待 */
       <div class="coming-soon-container">
-        <div class="status-badge">AI RESEARCH IN PROGRESS</div>
-        <h2>敬请期待<span>.</span></h2>
+        <div class="status-badge">// CORE_DATA_COMPILING</div>
+        <h2>敬请期待<span class="dot">.</span></h2>
         <p>正在构建一个将创意可视化、结构化的 AI 知识库...</p>
         <div class="loading-bar">
           <div class="progress"></div>
@@ -71,53 +74,62 @@ const { categoryName, notes } = Astro.props;
 </BaseLayout>
 
 <style>
+  .category-hall { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
+  
+  .nav-back { margin-bottom: 2rem; }
+  .back-link { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--cyan); }
+
+  .category-title { font-family: var(--font-main); font-size: 2.5rem; margin-bottom: 4rem; color: var(--text); font-weight: 600; }
+  .category-title .title-dot { color: var(--cyan); }
+
+  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+  
+  .note-card { 
+    text-decoration: none; color: inherit; background: var(--surface-2); 
+    border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .note-card:hover { 
+    transform: translateY(-6px); border-color: var(--cyan-border);
+    box-shadow: 0 12px 24px rgba(77, 223, 255, 0.1);
+  }
+
+  .card-thumb { height: 180px; overflow: hidden; position: relative; background: #080b14; border-bottom: 1px solid var(--border); }
+  .card-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: transform 0.4s; }
+  .note-card:hover .card-thumb img { transform: scale(1.03); opacity: 0.85; }
+  .thumb-scan { position: absolute; inset: 0; background: linear-gradient(rgba(77,223,255,0.01) 1px, transparent 1px); background-size: 100% 4px; pointer-events: none; }
+
+  .card-content { padding: 24px; }
+  .step-badge { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); font-weight: 600; margin-bottom: 8px; letter-spacing: 1px; }
+  .card-content h3 { font-family: var(--font-main); font-size: 1.25rem; margin: 0 0 10px 0; color: var(--text); font-weight: 600; }
+  .card-content p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
   /* 🏗️ 敬请期待专属样式 */
   .coming-soon-container {
-    padding: 100px 20px;
-    text-align: center;
-    background: white;
-    border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-    border: 1px solid #f1f5f9;
+    padding: 80px 20px; text-align: center; background: var(--surface-2); border-radius: 16px;
+    border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   }
-
   .status-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    background: #eff6ff;
-    color: #4AACDB;
-    font-size: 11px;
-    font-weight: 800;
-    border-radius: 100px;
-    letter-spacing: 2px;
-    margin-bottom: 25px;
+    display: inline-block; padding: 4px 12px; background: var(--purple-light);
+    border: 1px solid var(--purple-border); color: var(--purple); font-family: var(--font-mono);
+    font-size: 11px; font-weight: 600; border-radius: 4px; letter-spacing: 1px; margin-bottom: 25px;
   }
-
-  h2 { font-size: 48px; font-weight: 800; color: #0f172a; margin-bottom: 15px; }
-  h2 span { color: #4AACDB; }
-
-  p { font-size: 18px; color: #64748b; max-width: 450px; margin: 0 auto 40px; line-height: 1.7; }
-
-  .loading-bar {
-    width: 240px;
-    height: 6px;
-    background: #f1f5f9;
-    border-radius: 10px;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .progress {
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, #4AACDB, #93c5fd);
-    border-radius: 10px;
-    animation: loading 2.5s infinite ease-in-out;
-  }
+  .coming-soon-container h2 { font-family: var(--font-main); font-size: 2.5rem; font-weight: 600; color: var(--text); margin-bottom: 15px; }
+  .coming-soon-container h2 .dot { color: var(--purple); }
+  .coming-soon-container p { font-size: 1rem; color: var(--muted); max-width: 450px; margin: 0 auto 40px; line-height: 1.7; }
+  .loading-bar { width: 200px; height: 4px; background: var(--surface); border-radius: 10px; margin: 0 auto; overflow: hidden; border: 1px solid var(--border); }
+  .progress { width: 60%; height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); border-radius: 10px; animation: loading 2.5s infinite ease-in-out; }
 
   @keyframes loading {
     0% { transform: translateX(-110%); }
     50% { transform: translateX(110%); }
     100% { transform: translateX(-110%); }
+  }
+
+  @media (max-width: 768px) {
+    .category-hall { padding: 4rem 1.2rem; }
+    .category-title { font-size: 2rem; margin-bottom: 2.5rem; }
+    .notes-grid { gap: 20px; }
   }
 </style>

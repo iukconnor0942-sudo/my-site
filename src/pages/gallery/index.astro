@@ -17,14 +17,23 @@ const posts = (await getCollection('gallery'))
   </nav>
 
   <main class="page-main">
-    <h1 class="page-title">画集</h1>
+    <header class="page-header">
+      <div class="page-meta-tag">VISUAL_ARCHIVE // GALLERY</div>
+      <h1 class="page-title">画集<span>.</span></h1>
+    </header>
+
     <div class="masonry">
       {posts.map(post => (
         <a href={`/gallery/${post.id}`} class="masonry-item">
-          <img src={post.data.image} alt={post.data.title} loading="lazy" />
+          <div class="image-wrapper">
+            <img src={post.data.image} alt={post.data.title} loading="lazy" />
+          </div>
           <div class="overlay">
-            <div class="overlay-title">{post.data.title}</div>
-            <div class="overlay-date">{post.data.date}</div>
+            <div class="overlay-corner-decor"></div>
+            <div class="overlay-content">
+              <div class="overlay-title">{post.data.title}</div>
+              <div class="overlay-date">{post.data.date}</div>
+            </div>
           </div>
         </a>
       ))}
@@ -33,73 +42,151 @@ const posts = (await getCollection('gallery'))
 
   <footer class="footer">
     <span>© 2026 康予纳安</span>
-    <span class="footer-dot">持续更新中 ✦</span>
+    <span class="footer-status">CORE_UPDATE: SUCCESS ✦</span>
   </footer>
 </BaseLayout>
 
 <style>
-:root {
-  --bg: #F2F4F6;
-  --surface: #ffffff;
-  --blue: #4AACDB;
-  --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0;
-  --red: #C94040;
-  --red-light: #FDECEC;
-  --red-border: #f0bfbf;
-  --text: #1a1a1a;
-  --muted: #666666;
-  --hint: #aaaaaa;
-  --border: #e0e4ea;
+/* ── 导航栏：全面接入主页的暗色半透明毛玻璃质感 ── */
+.nav { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 18px 32px; 
+  border-bottom: 1px solid var(--border);
+  background: rgba(13, 16, 32, 0.75);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-logo { 
+  font-family: var(--font-mono);
+  font-size: 16px; 
+  font-weight: 600; 
+  color: var(--text); 
+  text-decoration: none;
+  letter-spacing: 0.08em;
+}
+.nav-links { 
+  display: flex; 
+  gap: 24px; 
+}
+.nav-links a { 
+  font-size: 14px; 
+  color: var(--muted); 
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.nav-links a:hover { 
+  color: var(--cyan); 
+  text-shadow: 0 0 8px rgba(77, 223, 255, 0.5);
+}
+.nav-active { 
+  color: var(--purple) !important; 
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(123, 94, 255, 0.4);
+}
+.nav-accent { 
+  color: var(--red) !important; 
+  font-weight: 600; 
 }
 
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
-.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
-.nav-links { display: flex; gap: 22px; }
-.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
-.nav-links a:hover { color: var(--blue); }
-.nav-active { color: var(--blue) !important; font-weight: 500; }
-.nav-accent { color: var(--red) !important; font-weight: 500; }
+/* ── 页面头部：融入主页的科技感 HUD 引导小字 ── */
+.page-main { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 50px 32px 80px; 
+}
+.page-header {
+  margin-bottom: 40px;
+}
+.page-meta-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.18em;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+.page-title { 
+  font-size: 36px; 
+  font-weight: 800; 
+  color: var(--text); 
+  letter-spacing: -0.5px;
+}
+.page-title span {
+  color: var(--purple);
+  text-shadow: 0 0 10px var(--purple);
+}
 
-.page-main { max-width: 1200px; margin: 0 auto; padding: 40px 32px; }
-.page-title { font-size: 24px; font-weight: 500; color: var(--text); margin-bottom: 32px; }
-
+/* ── 瀑布流网格 ── */
 .masonry {
   columns: 4;
-  column-gap: 14px;
+  column-gap: 18px;
 }
 
+@media(max-width: 968px) { .masonry { columns: 3; } }
+@media(max-width: 768px) { 
+  .masonry { columns: 2; column-gap: 12px; } 
+  .page-main { padding: 30px 16px 60px; } 
+  .nav { padding: 16px; } 
+}
+
+/* ── 画集卡片：完美继承主页的次级表面色与青色霓虹发光边框 ── */
 .masonry-item {
   display: block;
   break-inside: avoid;
-  margin-bottom: 14px;
-  border-radius: 12px;
+  margin-bottom: 18px;
+  border-radius: 14px;
   overflow: hidden;
   position: relative;
-  background: var(--surface);
-  border: 0.5px solid var(--border);
+  background: var(--surface-2); 
+  border: 1px solid var(--border);
   text-decoration: none;
   cursor: pointer;
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-wrapper {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: rgba(8, 11, 20, 0.5);
 }
 
 .masonry-item img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: brightness(0.92);
+}
+
+/* 悬浮瞬间：边框变青色、触发主页标志性的霓虹微光、卡片极轻微利落上浮 */
+.masonry-item:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 25px rgba(77, 223, 255, 0.18);
+  transform: translateY(-4px);
 }
 
 .masonry-item:hover img {
-  transform: scale(1.03);
+  transform: scale(1.02);
+  filter: brightness(1.02);
 }
 
+/* ── 遮罩层：赛博风透明 HUD 窗格设计 ── */
 .overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
-  padding: 24px 14px 12px;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 11, 20, 0.92) 0%, rgba(8, 11, 20, 0.3) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 16px;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -108,18 +195,55 @@ const posts = (await getCollection('gallery'))
   opacity: 1;
 }
 
+/* 遮罩内部的赛博科技感小角标，呼应主页的 loader 直角定位线 */
+.overlay-corner-decor {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid var(--cyan);
+  border-right: 1.5px solid var(--cyan);
+  opacity: 0.7;
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 2;
+}
+
 .overlay-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
 }
 
+/* 日期文本完全同步主页同款等宽高亮字体 */
 .overlay-date {
+  font-family: var(--font-mono); 
   font-size: 11px;
-  color: rgba(255,255,255,0.7);
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 4px rgba(77, 223, 255, 0.3);
 }
 
-.footer { background: var(--surface); padding: 14px 32px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--hint); margin-top: 40px; }
-.footer-dot { color: var(--blue); }
+/* ── 页脚 ── */
+.footer { 
+  padding: 24px 32px; 
+  border-top: 1px solid var(--border); 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 13px; 
+  color: var(--hint); 
+  margin-top: 60px;
+  background: transparent;
+}
+.footer-status { 
+  font-family: var(--font-mono);
+  color: var(--purple); 
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
 </style>

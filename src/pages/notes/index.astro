@@ -7,15 +7,15 @@ const noteCategories = [
     id: "bju-press",
     title: "BJU PRESS",
     desc: "美国 BJU 教材体系的深度自学笔记，涵盖代数、科学等逻辑构建。",
-    cover: "/images/notes/cover/bju-press.jpg", // 记得在 public/images/ 放这张图
-    color: "#E8F6F3"
+    cover: "/images/notes/cover/bju-press.jpg",
+    color: "var(--cyan)"
   },
   {
     id: "coding",
     title: "AI使用",
     desc: "Python 自动化、Astro 建站与 AI 集成的实战记录。",
     cover: "/images/notes/cover/code-cover.jpg",
-    color: "#F0F4FF"
+    color: "var(--purple)"
   }
 ];
 ---
@@ -23,9 +23,9 @@ const noteCategories = [
 <BaseLayout title="笔记专区 · 康予纳安">
   <main class="notes-portal">
     <header class="portal-header">
-      <nav class="breadcrumb">EXPLORE / NOTES</nav>
-      <h1>知识库<span>.</span></h1>
-      <p>知识不是碎片的堆积，而是结构的生长。</p>
+      <nav class="breadcrumb">EXPLORE // KNOWLEDGE_BASE</nav>
+      <h1>知识库<span class="dot">.</span></h1>
+      <p class="portal-desc">“知识不是碎片的堆积，而是结构的生长。”</p>
     </header>
 
     <div class="category-grid">
@@ -34,11 +34,12 @@ const noteCategories = [
           <div class="window-cover" style={`background-image: url(${cat.cover});`}>
             <div class="window-overlay"></div>
           </div>
+     
           <div class="window-info">
-            <span class="type-tag">COLLECTION</span>
+            <span class="type-tag">CORE_COLLECTION</span>
             <h2>{cat.title}</h2>
             <p>{cat.desc}</p>
-            <div class="enter-link">进入专区 →</div>
+            <div class="enter-link">进入数据区 <span class="arrow">▶</span></div>
           </div>
         </a>
       ))}
@@ -47,30 +48,95 @@ const noteCategories = [
 </BaseLayout>
 
 <style>
-  /* 这里的样式模仿 Apple 的窗口化设计 */
-  .notes-portal { max-width: 1100px; margin: 0 auto; padding: 120px 40px; }
-  .portal-header { margin-bottom: 60px; }
-  .breadcrumb { font-size: 11px; color: #666; letter-spacing: 2px; }
-  .portal-header h1 { font-size: 48px; margin: 16px 0; }
-  .portal-header h1 span { color: #333; }
+  .notes-portal { 
+    max-width: 1100px;
+    margin: 0 auto; 
+    padding: 6rem 2rem; 
+  }
+  .portal-header { margin-bottom: 4rem; }
+  .breadcrumb { 
+    font-family: var(--font-mono); 
+    font-size: 11px; 
+    color: var(--cyan);
+    letter-spacing: 2px; 
+  }
+  .portal-header h1 { 
+    font-family: var(--font-main);
+    font-size: 3rem; 
+    margin: 12px 0; 
+    color: var(--text);
+    font-weight: 600;
+  }
+  .portal-header h1 .dot { color: var(--purple); }
+  .portal-desc { color: var(--muted); font-size: 1rem; opacity: 0.85; }
   
   .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
   
   .category-window { 
-    position: relative; height: 450px; border-radius: 24px; overflow: hidden;
-    text-decoration: none; color: white; display: flex; align-items: flex-end;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid #1a1a1a;
+    position: relative; 
+    height: 420px; 
+    border-radius: 16px; 
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text); 
+    display: flex; 
+    align-items: flex-end;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid var(--border);
+    background: var(--surface-2);
   }
-  .category-window:hover { transform: scale(1.02); }
+  .category-window:hover { 
+    transform: translateY(-4px);
+    border-color: var(--purple-border);
+    box-shadow: 0 12px 32px rgba(123, 94, 255, 0.15);
+  }
   
-  .window-cover { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.6s; }
-  .category-window:hover .window-cover { transform: scale(1.1); }
-  .window-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
+  .window-cover { 
+    position: absolute; 
+    inset: 0; 
+    background-size: cover; 
+    background-position: center;
+    transition: 0.6s; 
+    opacity: 0.35;
+    filter: grayscale(20%);
+  }
+  .category-window:hover .window-cover { transform: scale(1.04); opacity: 0.45; }
+  .window-overlay { 
+    position: absolute; 
+    inset: 0;
+    background: linear-gradient(to top, #080b14 15%, rgba(8, 11, 20, 0.3) 70%, transparent); 
+  }
   
-  .window-info { position: relative; z-index: 2; padding: 40px; }
-  .type-tag { font-size: 10px; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 6px; color: #aaa; }
-  .window-info h2 { font-size: 32px; margin: 12px 0; }
-  .window-info p { font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 24px; max-width: 300px; }
-  .enter-link { font-size: 13px; font-weight: 600; }
+  .window-info { position: relative; z-index: 2; padding: 40px; width: 100%; }
+  .type-tag { 
+    font-family: var(--font-mono);
+    font-size: 10px; 
+    background: rgba(77, 223, 255, 0.08); 
+    border: 1px solid var(--cyan-border);
+    padding: 4px 10px; 
+    border-radius: 4px; 
+    color: var(--cyan);
+  }
+  .window-info h2 { font-family: var(--font-main); font-size: 2rem; margin: 16px 0 10px 0; font-weight: 600; }
+  .window-info p { font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px; max-width: 340px; }
+  
+  .enter-link { 
+    font-family: var(--font-mono); 
+    font-size: 13px; 
+    font-weight: 600; 
+    color: var(--purple);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .enter-link .arrow { font-size: 9px; color: var(--cyan); }
+  .category-window:hover .enter-link { color: var(--cyan); }
+
+  @media (max-width: 768px) {
+    .notes-portal { padding: 4rem 1.2rem; }
+    .category-grid { grid-template-columns: 1fr; gap: 20px; }
+    .window-info { padding: 24px; }
+    .window-info h2 { font-size: 1.6rem; }
+  }
 </style>

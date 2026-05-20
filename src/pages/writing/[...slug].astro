@@ -19,19 +19,201 @@ if (!post) {
 const { Content } = await render(post);
 ---
 
-<BaseLayout  title={`${post.data.title} · 藏书阁`}>
-  <main class="ai-future-cover" style="max-width: 800px; margin: 0 auto; padding: 4rem 2rem; background: #fdfbf7;">
-    <!cover: public/writing/ai-future-cover.png>
-    <img 
-      src={post.data.cover && post.data.cover.startsWith('/') ? post.data.cover : `/${post.data.cover}`} 
-      alt={post.data.title}
-      style="width: 100%; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.1);"
-    />
-    <h1 style="font-family: 'Noto Serif SC', serif; color: #3d2b1f; text-align: center; margin-bottom: 0.5rem;">{post.data.title}</h1>
-    <p style="text-align: center; color: #a69683; margin-bottom: 3rem;">{post.data.date}</p>
-    
-    <article class="prose" style="line-height: 1.8; font-size: 1.05rem;">
-      <Content />
+<BaseLayout title={`${post.data.title} · 藏书阁`}>
+  <main class="cyber-article-view">
+    <div class="article-back-nav">
+      <a href="/writing" class="back-link"><span class="arrow">◀</span> RETURN_TO_ARCHIVE</a>
+    </div>
+
+    <article class="article-container">
+      {post.data.cover && (
+        <div class="article-cover-wrap">
+          <img 
+            src={post.data.cover.startsWith('/') ? post.data.cover : `/${post.data.cover}`} 
+            alt={post.data.title}
+            class="article-cover-img"
+          />
+          <div class="corner-deco tl"></div>
+          <div class="corner-deco tr"></div>
+          <div class="corner-deco bl"></div>
+          <div class="corner-deco br"></div>
+        </div>
+      )}
+      
+      <header class="article-header">
+        <div class="article-meta">
+          <span class="meta-code">DOC_SEC_01</span>
+          <span class="article-date">{post.data.date}</span>
+        </div>
+        <h1 class="article-title">{post.data.title}</h1>
+        <div class="header-divider"></div>
+      </header>
+      
+      <div class="prose-wrapper">
+        <Content />
+      </div>
     </article>
   </main>
 </BaseLayout>
+
+<style>
+  .cyber-article-view {
+    max-width: 820px; 
+    margin: 0 auto; 
+    padding: 4rem 2rem 6rem; 
+  }
+
+  .article-back-nav {
+    margin-bottom: 2.5rem;
+  }
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.05em;
+  }
+  .back-link .arrow {
+    font-size: 10px;
+    color: var(--purple);
+    transition: color 0.2s;
+  }
+  .back-link:hover {
+    color: var(--cyan);
+  }
+  .back-link:hover .arrow {
+    color: var(--cyan);
+  }
+
+  .article-container {
+    position: relative;
+  }
+
+  .article-cover-wrap {
+    position: relative;
+    margin-bottom: 3.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #080b14;
+    padding: 6px;
+  }
+  .article-cover-img {
+    width: 100%; 
+    border-radius: 4px;
+    display: block;
+    opacity: 0.85;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  
+  /* 科技边角线条装饰 */
+  .corner-deco {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+  }
+  .corner-deco.tl { top: -1px; left: -1px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .corner-deco.tr { top: -1px; right: -1px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+  .corner-deco.bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .corner-deco.br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+  .article-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .meta-code {
+    font-family: var(--font-mono);
+    font-size: 10px; 
+    color: var(--purple);
+    border: 1px solid var(--purple-border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .article-date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .article-title {
+    font-family: var(--font-main);
+    font-size: 2.3rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 2rem 0;
+    line-height: 1.4;
+  }
+  .header-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  }
+
+  /* 文章正文排版，将原本浅色模式样式洗掉，融入暗色代码感 */
+  .prose-wrapper {
+    font-family: var(--font-main);
+    line-height: 1.95; 
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .prose-wrapper :global(p) {
+    margin-bottom: 1.8rem;
+    text-align: justify;
+    opacity: 0.92;
+  }
+  
+  .prose-wrapper :global(h2), .prose-wrapper :global(h3) {
+    font-family: var(--font-main);
+    color: var(--text);
+    margin-top: 3.2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+  .prose-wrapper :global(h2) {
+    font-size: 1.5rem;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 10px;
+    color: var(--cyan);
+  }
+  .prose-wrapper :global(h3) {
+    font-size: 1.25rem;
+    color: var(--purple);
+  }
+  
+  .prose-wrapper :global(img) {
+    max-width: 100%;
+    border-radius: 6px;
+    margin: 2rem auto;
+    display: block;
+    border: 1px solid var(--border);
+  }
+
+  /* 注入内联代码和正文区块的赛博细节 */
+  .prose-wrapper :global(code) {
+    font-family: var(--font-mono);
+    background: var(--surface-2);
+    color: var(--cyan);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 768px) {
+    .cyber-article-view { padding: 2rem 1rem; }
+    .article-title { font-size: 1.7rem; }
+    .prose-wrapper { font-size: 1rem; }
+  }
+</style>

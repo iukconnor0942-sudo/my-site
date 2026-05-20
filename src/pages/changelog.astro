@@ -1,146 +1,196 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-const allLogs = await getCollection('changelog');
-allLogs.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
-
-const renderedLogs = await Promise.all(
-  allLogs.map(async (log) => {
-    const { Content } = await render(log);
-    return { ...log, Content };
-  })
-);
+const allChangelogs = await getCollection('changelog');
+const changelogs = allChangelogs
+  .sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
 ---
 
 <BaseLayout title="更新日志 · 康予纳安">
+
   <nav class="nav">
-    <a href="/" class="nav-logo">康予纳安</a>
+    <a href="/" class="nav-logo">
+      <span class="logo-arrow">▶</span>
+      <span>康予纳安</span>
+    </a>
     <div class="nav-links">
       <a href="/explore">到处看看</a>
       <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/changelog" class="nav-active">更新日志</a>
       <a href="/about">关于我</a>
     </div>
   </nav>
 
   <main class="page-main">
-    <h1 class="page-title">更新日志</h1>
-    <p class="page-sub">这里记录着网站每一次小小进步～ 欢迎一起见证成长 ✦</p>
 
-    <div class="changelog-list">
-      {renderedLogs.map((log) => (
-        <div class="log-entry">
-          <div class="log-header">
-            <span class="log-date">{log.data.date}</span>
-            <h2 class="log-title">{log.data.title}</h2>
-          </div>
-          
-          <div class="log-content">
-            <log.Content />
-          </div>
-
-          {log.data.tags && log.data.tags.length > 0 && (
-            <div class="log-tags">
-              {log.data.tags.map((tag) => (
-                <span class="tag">#{tag}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+    <div class="page-header">
+      <span class="page-chip">CHANGELOG · PATCH_NOTES</span>
+      <h1 class="page-title">更新日志</h1>
+      <p class="page-desc">记录每次网站内容与结构的变动</p>
     </div>
 
-    {renderedLogs.length === 0 && (
-      <p class="no-logs">暂时还没有更新记录哦～ 敬请期待！</p>
+    <div class="log-list">
+      {await Promise.all(changelogs.map(async (entry, i) => {
+        const { Content } = await render(entry);
+        const isLatest = i === 0;
+        return (
+          <div class={`log-entry ${isLatest ? 'log-latest' : ''}`}>
+            <div class="log-aside">
+              <div class="log-dot-wrap">
+                <div class={`log-dot ${isLatest ? 'log-dot-active' : ''}`}></div>
+                {i < changelogs.length - 1 && <div class="log-line"></div>}
+              </div>
+            </div>
+            <div class="log-body">
+              <div class="log-head">
+                <time class="log-date">{entry.data.date}</time>
+                {isLatest && <span class="log-new">LATEST</span>}
+                {entry.data.title && (
+                  <h2 class="log-title">{entry.data.title}</h2>
+                )}
+              </div>
+              <div class="log-content prose">
+                <Content />
+              </div>
+            </div>
+          </div>
+        );
+      }))}
+    </div>
+
+    {changelogs.length === 0 && (
+      <div class="empty-state">
+        <div class="empty-icon">◎</div>
+        <div class="empty-text">还没有更新记录</div>
+      </div>
     )}
+
   </main>
 
   <footer class="footer">
     <span>© 2026 康予纳安</span>
     <span class="footer-dot">持续更新中 ✦</span>
   </footer>
+
 </BaseLayout>
 
 <style>
 :root {
-  --bg: #F2F4F6; --surface: #ffffff; --blue: #4AACDB; --blue-light: #E8F5FC;
-  --blue-border: #B8DCF0; --red: #C94040; --red-light: #FDECEC;
-  --red-border: #f0bfbf; --text: #1a1a1a; --muted: #666; --hint: #aaa; --border: #e0e4ea;
+  --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+  --bg: #080b14; --surface: #0d1020; --surface-2: #131a2e;
+  --purple: #7B5EFF; --purple-light: rgba(123,94,255,0.1); --purple-border: rgba(123,94,255,0.28);
+  --cyan: #4DDFFF; --cyan-light: rgba(77,223,255,0.07); --cyan-border: rgba(77,223,255,0.25);
+  --red: #FF4D8F; --text: #E8EAFF; --muted: #8B8FA8; --hint: #4a4e6a; --border: rgba(123,94,255,0.15);
 }
 
-.nav { background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; border-bottom: 0.5px solid var(--border); }
-.nav-logo { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
-.nav-links { display: flex; gap: 22px; }
-.nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; }
-.nav-links a:hover { color: var(--blue); }
-.nav-accent { color: var(--red) !important; font-weight: 500; }
-
-.page-main { max-width: 760px; margin: 0 auto; padding: 48px 32px; }
-.page-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-.page-sub { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
-
-.changelog-list { display: flex; flex-direction: column; gap: 32px; }
-.log-entry {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 16px;
-  padding: 28px 32px;
-  transition: all 0.2s;
+.nav {
+  background: rgba(13,16,32,0.96); backdrop-filter: blur(14px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
 }
-.log-entry:hover { border-color: var(--blue); box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+.nav-logo {
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 15px; font-weight: 600;
+  color: var(--text); letter-spacing: 0.06em;
+}
+.logo-arrow { color: var(--cyan); font-size: 10px; animation: blink 1.4s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+  letter-spacing: 0.03em; transition: color 0.2s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-active { color: var(--cyan) !important; }
+.nav-accent { color: var(--red) !important; }
 
-.log-header { margin-bottom: 16px; }
-.log-date {
-  font-size: 13px;
-  color: var(--muted);
-  background: var(--blue-light);
-  padding: 2px 10px;
-  border-radius: 20px;
-}
-.log-title { 
-  font-size: 20px; 
-  font-weight: 500; 
-  color: var(--text); 
-  margin: 12px 0 0 0; 
-}
+.page-main { max-width: 760px; margin: 0 auto; padding: 52px 32px 48px; }
 
-.log-content {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--text);
+.page-header { margin-bottom: 48px; }
+.page-chip {
+  font-family: var(--font-mono); font-size: 10px; color: var(--cyan);
+  letter-spacing: 0.14em; background: var(--cyan-light);
+  border: 1px solid var(--cyan-border); padding: 2px 10px;
+  border-radius: 2px; display: inline-block; margin-bottom: 12px;
 }
-.log-content p { margin-bottom: 16px; }
+.page-title { font-size: 28px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.page-desc { font-size: 14px; color: var(--muted); font-family: var(--font-mono); letter-spacing: 0.04em; }
 
-.log-tags {
-  margin-top: 20px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.log-list { display: flex; flex-direction: column; }
+
+.log-entry { display: flex; gap: 24px; padding-bottom: 40px; }
+.log-entry:last-child { padding-bottom: 0; }
+
+.log-aside { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.log-dot-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.log-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--surface-2); border: 2px solid var(--border);
+  flex-shrink: 0; margin-top: 4px;
 }
-.tag {
-  font-size: 12px;
-  color: var(--blue);
-  background: var(--blue-light);
-  padding: 2px 10px;
-  border-radius: 20px;
+.log-dot-active {
+  border-color: var(--cyan); background: var(--cyan);
+  box-shadow: 0 0 10px rgba(77,223,255,0.5);
+}
+.log-line {
+  width: 1px; flex: 1; background: var(--border);
+  margin-top: 6px; min-height: 24px;
 }
 
-.no-logs {
-  text-align: center;
-  color: var(--muted);
-  font-size: 15px;
-  padding: 60px 20px;
+.log-body { flex: 1; padding-top: 2px; }
+.log-head { margin-bottom: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.log-date { font-family: var(--font-mono); font-size: 12px; color: var(--hint); letter-spacing: 0.08em; }
+.log-new {
+  font-family: var(--font-mono); font-size: 9px;
+  background: var(--cyan-light); color: var(--cyan);
+  border: 1px solid var(--cyan-border); padding: 2px 8px; border-radius: 2px; letter-spacing: 0.1em;
 }
+.log-title { width: 100%; font-size: 16px; font-weight: 500; color: var(--text); margin-top: 4px; }
 
-.footer { 
-  background: var(--surface); 
-  padding: 14px 32px; 
-  border-top: 0.5px solid var(--border); 
-  display: flex; 
-  justify-content: space-between; 
-  font-size: 12px; 
-  color: var(--hint); 
-  margin-top: 60px; 
+.prose { font-size: 14px; color: var(--muted); line-height: 1.9; }
+.prose :global(p) { margin-bottom: 10px; }
+.prose :global(p:last-child) { margin-bottom: 0; }
+.prose :global(ul), .prose :global(ol) { padding-left: 1.4em; margin-bottom: 10px; }
+.prose :global(li) { margin-bottom: 4px; }
+.prose :global(strong) { color: var(--text); font-weight: 500; }
+.prose :global(a) { color: var(--cyan); transition: opacity 0.2s; }
+.prose :global(a:hover) { opacity: 0.75; }
+.prose :global(code) {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  padding: 1px 6px; border-radius: 2px; color: var(--cyan);
 }
-.footer-dot { color: var(--blue); }
+.prose :global(h3) { font-size: 15px; font-weight: 500; color: var(--text); margin: 16px 0 8px; }
+
+.empty-state {
+  text-align: center; padding: 80px 0;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.empty-icon { font-size: 32px; color: var(--hint); }
+.empty-text { font-family: var(--font-mono); font-size: 13px; color: var(--hint); letter-spacing: 0.08em; }
+
+.footer {
+  padding: 18px 32px; display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--hint); border-top: 1px solid var(--border);
+}
+.footer-dot { font-family: var(--font-mono); color: var(--purple); }
+
+@media (max-width: 768px) {
+  .nav { padding: 12px 16px; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 12px; }
+  .page-main { padding: 28px 16px; }
+  .log-entry { gap: 16px; }
+  .footer { flex-direction: column; align-items: center; gap: 8px; padding: 20px 16px; }
+}
 </style>
+
+<script>
+  const lastUpdateDate = document.querySelector('[data-last-date]')
+    ?.getAttribute('data-last-date') || '';
+  if (lastUpdateDate) {
+    localStorage.setItem('lastSeenChangelog', lastUpdateDate);
+  }
+</script>

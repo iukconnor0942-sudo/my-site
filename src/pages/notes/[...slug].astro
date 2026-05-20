@@ -18,140 +18,137 @@ const { Content } = await render(note);
   <article class="note-container">
     <header class="note-header">
       <div class="meta">
-        <a href="/notes" class="back-link">KNOWLEDGE BASE</a> / 
+        <a href="/notes" class="back-link">KNOWLEDGE_BASE</a> / 
         <span class="category-tag">{note.data.category || 'AI RESEARCH'}</span>
       </div>
-      <h1>{note.data.title}<span>.</span></h1>
+      <h1>{note.data.title}<span class="title-dot">.</span></h1>
       <p class="description">{note.data.description}</p>
     </header>
 
-    <hr class="divider" />
+    <div class="divider-line"></div>
 
     <div class="markdown-content">
       <Content />
     </div>
 
     <footer class="note-footer">
-      <a href="/notes" class="back-to-list">← 返回列表</a>
+      <a href="/notes" class="back-to-list"><span class="arrow">◀</span> RETURN_TO_BASE</a>
     </footer>
   </article>
 </BaseLayout>
 
 <style is:global>
-  /* 🛠️ 桌面端铺满逻辑 */
   .note-container {
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 0;
-    padding: 100px 8% !important; 
-    background-color: #F8FAFC; 
+    max-width: 900px !important;
+    margin: 0 auto;
+    padding: 5rem 2rem !important; 
     min-height: 100vh;
-    box-sizing: border-box; /* 确保 padding 不会导致溢出 */
+    box-sizing: border-box;
   }
 
-  .note-header { margin-bottom: 60px; }
-  .meta { font-size: 12px; letter-spacing: 2px; color: #888; margin-bottom: 25px; text-transform: uppercase; }
-  .category-tag { color: #4AACDB; font-weight: 700; }
+  .note-header { margin-bottom: 3.5rem; }
+  .meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; text-transform: uppercase; }
+  .back-link { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .back-link:hover { color: var(--cyan); }
+  .category-tag { color: var(--cyan); font-weight: 600; }
   
-  h1 { 
-    font-size: clamp(32px, 5vw, 56px); /* 🌟 修复：使用 clamp 让字体随屏幕缩放 */
+  .note-container h1 { 
+    font-family: var(--font-main);
+    font-size: clamp(28px, 5vw, 44px);
     margin: 10px 0; 
-    font-weight: 800; 
-    color: #0f172a; 
-    letter-spacing: -1px; 
-    line-height: 1.1;
+    font-weight: 600; 
+    color: var(--text); 
+    line-height: 1.2;
   }
-  h1 span { color: #4AACDB; }
-  .description { font-size: 1.2rem; color: #64748b; line-height: 1.6; max-width: 900px; margin-top: 15px; }
+  .note-container h1 .title-dot { color: var(--purple); }
+  .description { font-size: 1.05rem; color: var(--muted); line-height: 1.6; max-width: 800px; margin-top: 15px; opacity: 0.85; }
 
-  .divider { border: 0; border-top: 1px solid #e2e8f0; margin: 60px 0; }
+  .divider-line { height: 1px; background: linear-gradient(90deg, var(--border), transparent); margin: 3.5rem 0; }
 
-  /* 🤖 AI 专区 & Markdown 深度优化 */
+  /* 🤖 Markdown 深度黑客美化 */
   .markdown-content {
-    font-size: 1.15rem;
-    line-height: 1.9;
-    color: #334155;
-    word-wrap: break-word; /* 🌟 修复：防止长单词/公式撑破布局 */
+    font-family: var(--font-main);
+    font-size: 1.05rem;
+    line-height: 1.95;
+    color: var(--text);
+    word-wrap: break-word;
   }
 
-  /* 💻 代码块优化 */
+  /* 💻 终端代码块优化 */
   pre {
-    background: #1e293b !important;
-    padding: 2rem !important;
-    border-radius: 20px !important;
+    background: #05070d !important;
+    border: 1px solid var(--border);
+    padding: 1.8rem !important;
+    border-radius: 12px !important;
     margin: 2.5rem 0 !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    overflow-x: auto; /* 🌟 修复：允许手机端代码横向滚动 */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3) !important;
+    overflow-x: auto;
   }
   code {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+    font-family: var(--font-mono) !important;
     font-size: 0.9em !important;
   }
 
-  /* 💎 KaTeX 公式（移动端响应式优化） */
+  /* 💎 KaTeX 公式（完美融入暗色数字深空） */
   .katex-display {
-    background: white !important;
-    padding: 2rem !important;
-    border-radius: 24px !important;
-    margin: 3.5rem 0 !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important;
-    border: 1px solid #f1f5f9;
-    overflow-x: auto; /* 🌟 修复：防止超长公式遮挡 */
+    background: var(--surface-2) !important;
+    padding: 1.8rem !important;
+    border-radius: 12px !important;
+    margin: 3rem 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    border: 1px solid var(--border);
+    overflow-x: auto; 
     overflow-y: hidden;
   }
 
   /* 💡 引用块 */
   .markdown-content blockquote {
-    border-left: 6px solid #4AACDB;
-    background: linear-gradient(to right, #f0f9ff, #ffffff);
-    padding: 1.8rem 2.5rem;
-    border-radius: 0 20px 20px 0;
-    margin: 3rem 0;
-    color: #475569;
+    border-left: 4px solid var(--cyan);
+    background: linear-gradient(to right, var(--cyan-light), transparent);
+    padding: 1.5rem 2rem;
+    border-radius: 0 12px 12px 0;
+    margin: 2.5rem 0;
+    color: var(--text);
+    opacity: 0.9;
   }
 
-  /* 🌟 修复核心：笔记内部章节标题 (H2) 的响应式处理 */
   .markdown-content h2 { 
-    font-size: clamp(22px, 4vw, 2.4rem); 
-    margin-top: 4rem; 
-    padding-bottom: 15px;
-    color: #0f172a;
-    font-weight: 800;
-    line-height: 1.2;
+    font-family: var(--font-main);
+    font-size: clamp(20px, 4vw, 1.8rem);
+    margin-top: 3.5rem; 
+    margin-bottom: 1.2rem;
+    padding-bottom: 10px;
+    color: var(--cyan);
+    font-weight: 600;
+    line-height: 1.3;
+    border-bottom: 1px dashed var(--border);
+  }
+  
+  .markdown-content h3 {
+    font-family: var(--font-main);
+    font-size: clamp(16px, 3.5vw, 1.4rem);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--purple);
+    font-weight: 600;
   }
 
-  .note-footer { margin-top: 100px; padding-top: 50px; border-top: 1px solid #e2e8f0; }
-  .back-to-list { color: #4AACDB; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+  .note-footer { margin-top: 6rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+  .back-to-list { font-family: var(--font-mono); color: var(--purple); text-decoration: none; font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .back-to-list .arrow { font-size: 9px; color: var(--cyan); }
+  .back-to-list:hover { color: var(--cyan); }
 
-  /* 📱 移动端针对性强效覆盖 */
+  /* 📱 移动端强效覆盖 */
   @media (max-width: 768px) {
-    .note-container { 
-      padding: 40px 20px !important; /* 🌟 修复：手机端减小边距，增加内容空间 */
-    }
-    .note-header { margin-bottom: 40px; }
-    h1 { font-size: 28px !important; } /* 🌟 修复：手机端主标题强制变小 */
-    .description { font-size: 1rem !important; }
-    
-    .markdown-content h2 { 
-      font-size: 22px !important; /* 🌟 修复：彻底解决 Chapter 标题换行尴尬 */
-      margin-top: 2.5rem;
-    }
-
-    pre {
-      padding: 1.2rem !important; /* 缩小代码块内边距 */
-      margin: 1.5rem 0 !important;
-      border-radius: 12px !important;
-    }
-    
-    .katex-display {
-      padding: 1.2rem !important;
-      border-radius: 16px !important;
-    }
-    
-    .markdown-content blockquote {
-      padding: 1.2rem 1.5rem;
-      margin: 2rem 0;
-    }
+    .note-container { padding: 3rem 1.2rem !important; }
+    .note-header { margin-bottom: 2.5rem; }
+    .note-container h1 { font-size: 24px !important; }
+    .description { font-size: 0.95rem !important; }
+    .markdown-content h2 { font-size: 20px !important; margin-top: 2.5rem; }
+    pre { padding: 1.2rem !important; margin: 1.5rem 0 !important; border-radius: 8px !important; }
+    .katex-display { padding: 1.2rem !important; border-radius: 8px !important; }
+    .markdown-content blockquote { padding: 1.2rem 1.5rem; margin: 2rem 0; }
   }
 </style>
 
