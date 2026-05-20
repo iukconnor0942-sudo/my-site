@@ -50,8 +50,33 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   <footer class="footer"><span>© 2026 CamEllya</span><span class="footer-dot">晴舒 ✦</span></footer>
 </BaseLayout>
 
+<style is:global>
+  :root, html, body, html.dark, [data-theme="dark"], .dark {
+    color-scheme: light !important;
+    --bg: #F2F4F6 !important;
+    --surface: #fff !important;
+    --blue: #4AACDB !important;
+    --text: #1a1a1a !important;
+    --muted: #666 !important;
+    --hint: #aaa !important;
+    --border: #e0e4ea !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root, html, body, html.dark, [data-theme="dark"], .dark {
+      color-scheme: light !important;
+      --bg: #F2F4F6 !important;
+      --surface: #fff !important;
+      --blue: #4AACDB !important;
+      --text: #1a1a1a !important;
+      --muted: #666 !important;
+      --hint: #aaa !important;
+      --border: #e0e4ea !important;
+    }
+  }
+  body { background-color: var(--bg) !important; color: var(--text) !important; }
+</style>
+
 <style>
-:root{--bg:#F2F4F6;--surface:#fff;--blue:#4AACDB;--text:#1a1a1a;--muted:#666;--hint:#aaa;--border:#e0e4ea}
 .nav{background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:0.5px solid var(--border)}
 .nav-logo{font-size:15px;font-weight:500;color:var(--text);text-decoration:none}
 .nav-links{display:flex;gap:22px}
