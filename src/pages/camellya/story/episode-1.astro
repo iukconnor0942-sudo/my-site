@@ -264,17 +264,33 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   <footer class="footer"><span>© 2026 CamEllya</span><span class="footer-dot">第一话 ✦</span></footer>
 </BaseLayout>
 
-<style>
-:root {
-  --bg: #f6f8fa;
-  --surface: #fff;
-  --text: #3a424a;
-  --muted: #66727f;
-  --hint: #9faec0;
-  --border: #e0e4ea;
-  --sky: #5ba4e5;
-}
+<style is:global>
+  :root, html, body, html.dark, [data-theme="dark"], .dark {
+    color-scheme: light !important;
+    --bg: #f6f8fa !important;
+    --surface: #fff !important;
+    --text: #3a424a !important;
+    --muted: #66727f !important;
+    --hint: #9faec0 !important;
+    --border: #e0e4ea !important;
+    --sky: #5ba4e5 !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root, html, body, html.dark, [data-theme="dark"], .dark {
+      color-scheme: light !important;
+      --bg: #f6f8fa !important;
+      --surface: #fff !important;
+      --text: #3a424a !important;
+      --muted: #66727f !important;
+      --hint: #9faec0 !important;
+      --border: #e0e4ea !important;
+      --sky: #5ba4e5 !important;
+    }
+  }
+  body { background-color: var(--bg) !important; color: var(--text) !important; }
+</style>
 
+<style>
 .nav {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
