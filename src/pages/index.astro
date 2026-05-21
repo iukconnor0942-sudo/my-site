@@ -546,30 +546,19 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     align-items: center;
   }
 
-  .hero-avatar {
-    position: relative;
-    transform: none;
-    top: auto;
-    left: auto;
-    right: auto;
-    margin-bottom: 20px;
-    z-index: 1;
-  }
-
   .hero-avatar-left {
-    order: -1;
-    margin-bottom: 20px;
-  }
-
-  .hero-avatar-left img {
-    transform: scaleX(-1);
-    height: 140px;
+    display: none;
   }
 
   .hero-avatar-right {
-    order: 2;
-    margin-top: 20px;
-    margin-bottom: 0;
+    position: relative;
+    transform: none;
+    top: auto;
+    right: auto;
+    left: auto;
+    order: -1;
+    margin-bottom: 15px;
+    margin-top: 0;
   }
 
   .hero-avatar-right img {
@@ -578,7 +567,6 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 
   .hero-center {
     order: 1;
-    flex: 1;
   }
 
   .hero-name { font-size: 26px; }
