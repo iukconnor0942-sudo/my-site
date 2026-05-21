@@ -540,8 +540,47 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   .nav-links { gap: 16px; flex-shrink: 0; }
   .nav-links a { font-size: 12px; }
 
-  .hero { padding: 60px 20px 50px; }
-  .hero-avatar { display: none; }
+  .hero {
+    padding: 40px 20px 50px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-avatar {
+    position: relative;
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin-bottom: 20px;
+    z-index: 1;
+  }
+
+  .hero-avatar-left {
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .hero-avatar-left img {
+    transform: scaleX(-1);
+    height: 140px;
+  }
+
+  .hero-avatar-right {
+    order: 2;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  .hero-avatar-right img {
+    height: 140px;
+  }
+
+  .hero-center {
+    order: 1;
+    flex: 1;
+  }
+
   .hero-name { font-size: 26px; }
   .hero-intro { font-size: 14px; text-align: left; }
   .sys-label { font-size: 9px; gap: 5px; }
