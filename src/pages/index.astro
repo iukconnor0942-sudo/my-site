@@ -35,6 +35,9 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
     <div class="hero-corner tr"></div>
     <div class="hero-corner bl"></div>
     <div class="hero-corner br"></div>
+    <div class="hero-avatar hero-avatar-left">
+      <img src="/Connor2.gif" alt="虚拟形象 Connor" />
+    </div>
     <div class="hero-center">
       <div class="sys-label">
         <span class="sys-dot"></span>
@@ -57,6 +60,9 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
         <a href="/about" class="btn-ghost">关于我</a>
         <a href="/camellya" class="btn-red">CamEllya 专区 ↗</a>
       </div>
+    </div>
+    <div class="hero-avatar hero-avatar-right">
+      <img src="/Connor.gif" alt="虚拟形象 Connor" />
     </div>
   </section>
 
@@ -205,7 +211,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   display: flex;
   justify-content: center;
   border-bottom: 1px solid var(--border);
-  overflow: hidden;
+  overflow: visible;
   background: var(--surface);
 }
 .hero-grid {
@@ -235,6 +241,32 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
 .hero-corner.tr { top: 16px; right: 16px; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
 .hero-corner.bl { bottom: 16px; left: 16px; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
 .hero-corner.br { bottom: 16px; right: 16px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+.hero-avatar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.hero-avatar img {
+  height: 280px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.hero-avatar-left {
+  left: 20px;
+}
+
+.hero-avatar-left img {
+  transform: scaleX(-1);
+}
+
+.hero-avatar-right {
+  right: 20px;
+}
 
 .hero-center {
   position: relative;
@@ -509,6 +541,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   .nav-links a { font-size: 12px; }
 
   .hero { padding: 60px 20px 50px; }
+  .hero-avatar { display: none; }
   .hero-name { font-size: 26px; }
   .hero-intro { font-size: 14px; text-align: left; }
   .sys-label { font-size: 9px; gap: 5px; }
@@ -524,6 +557,7 @@ const latestDate = latestChangelog ? latestChangelog.data.date : '2026-04-10';
   .tags-strip { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 16px; }
   .footer { flex-direction: column; align-items: center; gap: 8px; padding: 20px 16px; text-align: center; }
 }
+
 </style>
 
 <script>
