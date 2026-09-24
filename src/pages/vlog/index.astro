@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const videos = (await getCollection('vlog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+function videoUrl(video) {
+  if (video.data.source === 'bilibili' && video.data.bilibili_id) {
+    return `https://www.bilibili.com/video/${video.data.bilibili_id}`;
+  }
+  return video.data.oss_url;
+}
+---
+
+<BaseLayout title="视频日记 · 康予纳安">
+  <nav class="nav">
+    <a href="/" class="nav-logo">康予纳安</a>
+    <div class="nav-links">
+      <a href="/vlog" class="nav-active">视频日记</a>
+      <a href="/writing">文章</a>
+      <a href="/gallery">画集</a>
+      <a href="/camellya" class="nav-accent">CamEllya</a>
+      <a href="/about">关于我</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <header class="page-header">
+      <div class="page-meta-tag">VIDEO_ARCHIVE // VLOG</div>
+      <h1 class="page-title">视频日记<span>.</span></h1>
+    </header>
+
+    {videos.length ? (
+      <div class="video-list">
+        {videos.map((video) => (
+          <article class="video-card">
+            <div class="video-copy">
+              <div class="video-date">{video.data.date}</div>
+              <h2>{video.data.title}</h2>
+              {video.data.description && <p>{video.data.description}</p>}
+            </div>
+            {videoUrl(video) && (
+              <a class="video-link" href={videoUrl(video)} target="_blank" rel="noopener noreferrer">
+                播放视频 ↗
+              </a>
+            )}
+          </article>
+        ))}
+      </div>
+    ) : (
+      <section class="empty-state">
+        <div class="status-badge">// ARCHIVE_STANDBY</div>
+        <h2>视频日记准备中<span>.</span></h2>
+        <p>新的视频发布后会显示在这里，欢迎之后再来看看。</p>
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .nav { display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid var(--border); background:rgba(13,16,32,.75); backdrop-filter:blur(12px); position:sticky; top:0; z-index:10; }
+  .nav-logo { color:var(--text); text-decoration:none; font-family:var(--font-mono); font-size:16px; }
+  .nav-links { display:flex; gap:24px; }
+  .nav-links a { color:var(--muted); text-decoration:none; }
+  .nav-links a:hover, .nav-links .nav-active { color:var(--cyan); }
+  .nav-links .nav-accent { color:var(--red); }
+  .page-main { max-width:1000px; min-height:70vh; margin:0 auto; padding:5rem 2rem; }
+  .page-header { margin-bottom:3rem; }
+  .page-meta-tag, .video-date { color:var(--cyan); font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; }
+  .page-title { color:var(--text); font-size:clamp(2rem,6vw,3.5rem); }
+  .page-title span, .empty-state h2 span { color:var(--cyan); }
+  .empty-state, .video-card { padding:2rem; border:1px solid var(--border); border-radius:12px; background:var(--surface-2); }
+  .empty-state { text-align:center; }
+  .status-badge { color:var(--purple); font-family:var(--font-mono); font-size:12px; }
+  .empty-state h2, .video-card h2 { color:var(--text); }
+  .empty-state p, .video-card p { color:var(--muted); line-height:1.7; }
+  .video-list { display:grid; gap:1rem; }
+  .video-card { display:flex; justify-content:space-between; align-items:center; gap:1.5rem; }
+  .video-copy h2 { margin:.5rem 0; }
+  .video-link { color:var(--cyan); white-space:nowrap; }
+  @media (max-width:650px) { .nav { align-items:flex-start; gap:1rem; flex-direction:column; padding:16px 20px; } .nav-links { flex-wrap:wrap; gap:12px 18px; } .video-card { align-items:flex-start; flex-direction:column; } }
+</style>
