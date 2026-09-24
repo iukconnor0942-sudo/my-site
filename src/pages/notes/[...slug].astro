@@ -18,7 +18,8 @@ const { Content } = await render(note);
   <article class="note-container">
     <header class="note-header">
       <div class="meta">
-        <a href="/notes" class="back-link">KNOWLEDGE_BASE</a> / 
+        <a href="/notes" class="back-link">KNOWLEDGE_BASE</a>
+        <span class="meta-separator">/</span>
         <span class="category-tag">{note.data.category || 'AI RESEARCH'}</span>
       </div>
       <h1>{note.data.title}<span class="title-dot">.</span></h1>
@@ -38,117 +39,442 @@ const { Content } = await render(note);
 </BaseLayout>
 
 <style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
   .note-container {
     width: 100% !important;
-    max-width: 900px !important;
+    max-width: 1040px !important;
     margin: 0 auto;
-    padding: 5rem 2rem !important; 
+    padding: clamp(3rem, 7vw, 5.5rem) clamp(1.15rem, 4vw, 3rem) !important;
     min-height: 100vh;
     box-sizing: border-box;
   }
 
-  .note-header { margin-bottom: 3.5rem; }
-  .meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; text-transform: uppercase; }
-  .back-link { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-  .back-link:hover { color: var(--cyan); }
-  .category-tag { color: var(--cyan); font-weight: 600; }
-  
-  .note-container h1 { 
-    font-family: var(--font-main);
-    font-size: clamp(28px, 5vw, 44px);
-    margin: 10px 0; 
-    font-weight: 600; 
-    color: var(--text); 
-    line-height: 1.2;
-  }
-  .note-container h1 .title-dot { color: var(--purple); }
-  .description { font-size: 1.05rem; color: var(--muted); line-height: 1.6; max-width: 800px; margin-top: 15px; opacity: 0.85; }
-
-  .divider-line { height: 1px; background: linear-gradient(90deg, var(--border), transparent); margin: 3.5rem 0; }
-
-  /* 🤖 Markdown 深度黑客美化 */
-  .markdown-content {
-    font-family: var(--font-main);
-    font-size: 1.05rem;
-    line-height: 1.95;
-    color: var(--text);
-    word-wrap: break-word;
+  .note-header {
+    margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
   }
 
-  /* 💻 终端代码块优化 */
-  pre {
-    background: #05070d !important;
-    border: 1px solid var(--border);
-    padding: 1.8rem !important;
-    border-radius: 12px !important;
-    margin: 2.5rem 0 !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3) !important;
-    overflow-x: auto;
-  }
-  code {
-    font-family: var(--font-mono) !important;
-    font-size: 0.9em !important;
+  .meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
   }
 
-  /* 💎 KaTeX 公式（完美融入暗色数字深空） */
-  .katex-display {
-    background: var(--surface-2) !important;
-    padding: 1.8rem !important;
-    border-radius: 12px !important;
-    margin: 3rem 0 !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
-    border: 1px solid var(--border);
-    overflow-x: auto; 
-    overflow-y: hidden;
+  .meta-separator {
+    color: var(--hint);
   }
 
-  /* 💡 引用块 */
-  .markdown-content blockquote {
-    border-left: 4px solid var(--cyan);
-    background: linear-gradient(to right, var(--cyan-light), transparent);
-    padding: 1.5rem 2rem;
-    border-radius: 0 12px 12px 0;
-    margin: 2.5rem 0;
-    color: var(--text);
-    opacity: 0.9;
+  .back-link {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  .markdown-content h2 { 
-    font-family: var(--font-main);
-    font-size: clamp(20px, 4vw, 1.8rem);
-    margin-top: 3.5rem; 
-    margin-bottom: 1.2rem;
-    padding-bottom: 10px;
+  .back-link:hover {
+    color: var(--cyan);
+  }
+
+  .category-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0.25rem 0.65rem;
     color: var(--cyan);
     font-weight: 600;
-    line-height: 1.3;
-    border-bottom: 1px dashed var(--border);
+    line-height: 1;
+    border: 1px solid var(--cyan-border);
+    border-radius: 999px;
+    background: var(--cyan-light);
   }
-  
-  .markdown-content h3 {
+
+  .note-container h1 {
     font-family: var(--font-main);
-    font-size: clamp(16px, 3.5vw, 1.4rem);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--purple);
-    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 3.15rem);
+    margin: 0.4rem 0 0;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
   }
 
-  .note-footer { margin-top: 6rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
-  .back-to-list { font-family: var(--font-mono); color: var(--purple); text-decoration: none; font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
-  .back-to-list .arrow { font-size: 9px; color: var(--cyan); }
-  .back-to-list:hover { color: var(--cyan); }
+  .note-container h1 .title-dot {
+    color: var(--purple);
+  }
 
-  /* 📱 移动端强效覆盖 */
+  .description {
+    max-width: 760px;
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.75;
+    opacity: 0.9;
+    text-wrap: pretty;
+  }
+
+  .divider-line {
+    height: 1px;
+    margin: clamp(2.25rem, 5vw, 3.5rem) 0;
+    background: linear-gradient(90deg, var(--border), rgba(77, 223, 255, 0.08), transparent);
+  }
+
+  .markdown-content {
+    font-family: var(--font-main);
+    font-size: clamp(16px, 1.15vw, 17px);
+    line-height: 1.85;
+    color: var(--text);
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
+
+  .markdown-content > h1 {
+    display: none;
+  }
+
+  .markdown-content p {
+    margin: 1rem 0;
+  }
+
+  .markdown-content strong {
+    color: #f2f3ff;
+    font-weight: 700;
+  }
+
+  .markdown-content a {
+    color: var(--cyan);
+    text-decoration: underline;
+    text-decoration-color: var(--cyan-border);
+    text-underline-offset: 0.2em;
+  }
+
+  .markdown-content a:hover {
+    color: #8deaff;
+  }
+
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4,
+  .markdown-content h5 {
+    font-family: var(--font-main);
+    scroll-margin-top: 2rem;
+    text-wrap: balance;
+  }
+
+  .markdown-content h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 4rem 0 1.35rem;
+    padding-bottom: 0.75rem;
+    color: var(--cyan);
+    font-weight: 700;
+    line-height: 1.35;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .markdown-content h2::before {
+    content: '';
+    display: inline-block;
+    width: 0.25rem;
+    height: 0.95em;
+    margin-right: 0.65rem;
+    vertical-align: -0.08em;
+    background: linear-gradient(180deg, var(--cyan), var(--purple));
+    border-radius: 999px;
+  }
+
+  .markdown-content h3 {
+    font-size: clamp(1.18rem, 2.4vw, 1.48rem);
+    margin: 2.8rem 0 1rem;
+    color: #dcd7ff;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .markdown-content h4 {
+    font-size: 1.08rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--purple);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .markdown-content h5 {
+    font-size: 1rem;
+    margin: 1.6rem 0 0.65rem;
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .markdown-content ul,
+  .markdown-content ol {
+    margin: 1rem 0;
+    padding-left: 1.45rem;
+  }
+
+  .markdown-content li {
+    margin: 0.48rem 0;
+    padding-left: 0.18rem;
+  }
+
+  .markdown-content li::marker {
+    color: var(--cyan);
+    font-weight: 700;
+  }
+
+  .markdown-content hr {
+    height: 1px;
+    margin: 3.5rem 0;
+    border: 0;
+    background: linear-gradient(90deg, transparent, var(--border) 18%, var(--border) 82%, transparent);
+  }
+
+  .markdown-content blockquote {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.25rem 1.4rem 1.25rem 1.6rem;
+    color: #d9dcf4;
+    border: 1px solid var(--cyan-border);
+    border-left: 4px solid var(--cyan);
+    border-radius: 0 12px 12px 0;
+    background: linear-gradient(110deg, rgba(77, 223, 255, 0.085), rgba(123, 94, 255, 0.035));
+  }
+
+  .markdown-content blockquote p {
+    margin: 0.35rem 0;
+  }
+
+  .markdown-content blockquote p:first-child {
+    margin-top: 0;
+  }
+
+  .markdown-content blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .markdown-content :not(pre) > code {
+    padding: 0.14em 0.38em;
+    color: #a5efff;
+    font-family: var(--font-mono) !important;
+    font-size: 0.86em !important;
+    line-height: 1.5;
+    white-space: break-spaces;
+    background: rgba(77, 223, 255, 0.075);
+    border: 1px solid rgba(77, 223, 255, 0.13);
+    border-radius: 5px;
+  }
+
+  .markdown-content pre {
+    position: relative;
+    margin: 2rem 0 !important;
+    padding: 1.35rem 1.5rem !important;
+    overflow-x: auto;
+    color: #cbd6ff;
+    background: #060912 !important;
+    border: 1px solid var(--border);
+    border-radius: 12px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .markdown-content pre code {
+    font-family: var(--font-mono) !important;
+    font-size: 0.84rem !important;
+    line-height: 1.75;
+    white-space: pre;
+  }
+
+  .markdown-content table {
+    width: 100%;
+    table-layout: fixed;
+    margin: 1.4rem 0 2.1rem;
+    overflow: hidden;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-collapse: separate;
+    border-radius: 11px;
+    background: rgba(6, 9, 18, 0.34);
+  }
+
+  .markdown-content th,
+  .markdown-content td {
+    padding: 0.78rem 0.9rem;
+    vertical-align: top;
+    text-align: left;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+  }
+
+  .markdown-content th:last-child,
+  .markdown-content td:last-child {
+    border-right: 0;
+  }
+
+  .markdown-content tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .markdown-content th {
+    color: #e4e1ff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.5;
+    background: rgba(123, 94, 255, 0.12);
+  }
+
+  .markdown-content td {
+    color: #d8daf0;
+    font-size: 0.9rem;
+    line-height: 1.68;
+  }
+
+  .markdown-content tbody tr {
+    transition: background-color 0.18s ease;
+  }
+
+  .markdown-content tbody tr:nth-child(even) {
+    background: rgba(123, 94, 255, 0.025);
+  }
+
+  .markdown-content tbody tr:hover {
+    background: rgba(77, 223, 255, 0.045);
+  }
+
+  .katex-display {
+    margin: 2.5rem 0 !important;
+    padding: 1.5rem !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: var(--surface-2) !important;
+    border: 1px solid var(--border);
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .note-footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .back-to-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--purple);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .back-to-list .arrow {
+    color: var(--cyan);
+    font-size: 0.62rem;
+  }
+
+  .back-to-list:hover {
+    color: var(--cyan);
+  }
+
   @media (max-width: 768px) {
-    .note-container { padding: 3rem 1.2rem !important; }
-    .note-header { margin-bottom: 2.5rem; }
-    .note-container h1 { font-size: 24px !important; }
-    .description { font-size: 0.95rem !important; }
-    .markdown-content h2 { font-size: 20px !important; margin-top: 2.5rem; }
-    pre { padding: 1.2rem !important; margin: 1.5rem 0 !important; border-radius: 8px !important; }
-    .katex-display { padding: 1.2rem !important; border-radius: 8px !important; }
-    .markdown-content blockquote { padding: 1.2rem 1.5rem; margin: 2rem 0; }
+    .note-container {
+      padding: 2.6rem 1rem 3.5rem !important;
+    }
+
+    .note-container {
+      overflow-x: clip;
+    }
+
+    .markdown-content table {
+      display: block;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .note-header {
+      margin-bottom: 2.25rem;
+    }
+
+    .meta {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .note-container h1 {
+      font-size: clamp(1.75rem, 9vw, 2.25rem);
+      letter-spacing: -0.02em;
+    }
+
+    .description {
+      font-size: 0.94rem;
+    }
+
+    .divider-line {
+      margin: 2.25rem 0;
+    }
+
+    .markdown-content {
+      font-size: 16px;
+      line-height: 1.82;
+    }
+
+    .markdown-content h2 {
+      margin-top: 3rem;
+      font-size: 1.34rem;
+    }
+
+    .markdown-content h2::before {
+      margin-right: 0.5rem;
+    }
+
+    .markdown-content h3 {
+      margin-top: 2.25rem;
+      font-size: 1.14rem;
+    }
+
+    .markdown-content blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1rem 1rem 1.1rem;
+    }
+
+    .markdown-content pre {
+      margin: 1.5rem 0 !important;
+      padding: 1rem !important;
+      border-radius: 9px !important;
+    }
+
+    .markdown-content pre code {
+      font-size: 0.76rem !important;
+    }
+
+    .markdown-content th,
+    .markdown-content td {
+      padding: 0.66rem 0.6rem;
+    }
+
+    .markdown-content th {
+      font-size: 0.79rem;
+    }
+
+    .markdown-content td {
+      font-size: 0.82rem;
+      line-height: 1.62;
+    }
+
+    .note-footer {
+      margin-top: 4rem;
+    }
   }
 </style>
 
